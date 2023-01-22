@@ -13,6 +13,7 @@ import logo from "./assets/4reddit_logo.png";
 import logoGIF from "./assets/obamasphere.gif";
 
 import LoginIcon from "@mui/icons-material/Login";
+import {TurnRightSharp} from "@mui/icons-material";
 // import "./index.css";
 
 // temporary since importing not working: shift to that later since I can edit css file better there
@@ -62,7 +63,20 @@ class Logo extends React.Component {
 
 class LoginForm extends React.Component {
     state = {
-        login: true // false if registeration required
+        username: "",
+        password: ""
+    };
+
+    handleUsernameChange = event => {
+        this.setState({
+            username: event.target.value
+        });
+    };
+
+    handlePasswordChange = event => {
+        this.setState({
+            password: event.target.value
+        });
     };
 
     render() {
@@ -75,22 +89,30 @@ class LoginForm extends React.Component {
                 }}
             >
                 <TextField
+                    type="text"
                     label="Username"
                     variant="outlined"
                     sx={styles.inputField}
+                    onChange={this.handleUsernameChange}
                 />
                 <TextField
+                    type="password"
                     label="Password"
                     variant="outlined"
-                    type="password"
                     sx={styles.inputField}
+                    onChange={this.handlePasswordChange}
                 />
                 <Button
                     variant="contained"
                     size="large"
                     endIcon={<LoginIcon />}
                     sx={{mt: 1}}
-                    disabled={1 ? false : true}
+                    disabled={
+                        this.state.username.length === 0 ||
+                        this.state.password.length === 0
+                            ? true
+                            : false
+                    }
                 >
                     Sign in
                 </Button>
@@ -113,7 +135,10 @@ function BottomText(props) {
 }
 
 class LoginPage extends React.Component {
-    handleChange() {}
+    // handleChange(event) {
+    //     console.log(event.target.value);
+    // }
+
     render() {
         return (
             <React.Fragment>
