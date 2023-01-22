@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import logo from "./assets/4reddit_logo.png";
-import logoGIF from "./assets/obamasphere.gif";
+// import {HeadingText, BottomText} from "./text";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
-import LoginIcon from "@mui/icons-material/Login";
+import logo from "./assets/4reddit_logo.png";
+import logoGIF from "./assets/obamasphere.gif";
 
+import LoginIcon from "@mui/icons-material/Login";
 // import "./index.css";
 
 // temporary since importing not working: shift to that later since I can edit css file better there
@@ -30,6 +30,14 @@ let styles = {
     },
     inputField: {m: 0.5, width: 400, input: {color: "rgb(51, 118, 204)"}}
 };
+
+function HeadingText(props) {
+    return (
+        <Typography component="h1" variant="h3" sx={{m: 1}}>
+            Sign in
+        </Typography>
+    );
+}
 
 class Logo extends React.Component {
     state = {
@@ -50,14 +58,6 @@ class Logo extends React.Component {
             </React.Fragment>
         );
     }
-}
-
-function HeadingText(props) {
-    return (
-        <Typography component="h1" variant="h3" sx={{m: 1}}>
-            Sign in
-        </Typography>
-    );
 }
 
 class LoginForm extends React.Component {
@@ -111,7 +111,9 @@ function BottomText(props) {
         </Box>
     );
 }
+
 class LoginPage extends React.Component {
+    handleChange() {}
     render() {
         return (
             <React.Fragment>
