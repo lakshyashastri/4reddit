@@ -134,7 +134,15 @@ class RegForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fieldsFilled: 0
+            forms: {
+                firstName: "",
+                lastName: "",
+                username: "",
+                password: "",
+                email: "",
+                number: "",
+                age: 0
+            }
         };
     }
 
@@ -142,23 +150,20 @@ class RegForm extends React.Component {
         return {...styles.flexbox, justifyContent: justify};
     }
 
-    getTextFieldStyle(label, width = 250, type = "text") {
+    getTextFieldStyle = (label, formType, width = 250, type = "text") => {
         return {
             label,
             type,
             variant: "filled",
             sx: {...styles.inputField, width},
-            onChange: this.handleFieldFill
+            onChange: e => this.handleFieldFill(e, formType)
         };
-    }
+    };
 
-    handleFieldFill = event => {
-        let currentFields = this.state.fieldsFilled;
-        if (event.target.value.length != 0) {
-            this.setState({fieldsFilled: currentFields + 1});
-        } else {
-            this.setState({fieldsFilled: currentFields - 1});
-        }
+    handleFieldFill = (event, field) => {
+        let formValues = Object.assign({}, this.state.forms);
+        formValues[field] = event.target.value;
+        this.setState({forms: formValues});
     };
 
     render() {
@@ -166,24 +171,43 @@ class RegForm extends React.Component {
             <React.Fragment>
                 <HeadingText signIn={false} />
                 <Grid style={this.getGridStyle()}>
-                    <TextField {...this.getTextFieldStyle("First name")} />
-                    <TextField {...this.getTextFieldStyle("Last name")} />
-                </Grid>
-                <Grid style={this.getGridStyle()}>
-                    <TextField {...this.getTextFieldStyle("Username")} />
                     <TextField
-                        {...this.getTextFieldStyle("Password", 250, "password")}
+                        {...this.getTextFieldStyle("First name", "firstName")}
+                        // onChange={() => this.handleFieldFill("firstName")}
+                    />
+                    <TextField
+                        {...this.getTextFieldStyle("Last name", "lastName")}
                     />
                 </Grid>
                 <Grid style={this.getGridStyle()}>
                     <TextField
-                        {...this.getTextFieldStyle("Email", 510, "email")}
+                        {...this.getTextFieldStyle("Username", "username")}
+                    />
+                    <TextField
+                        {...this.getTextFieldStyle(
+                            "Password",
+                            "password",
+                            250,
+                            "password"
+                        )}
                     />
                 </Grid>
                 <Grid style={this.getGridStyle()}>
-                    <TextField {...this.getTextFieldStyle("Contact number")} />
                     <TextField
-                        {...this.getTextFieldStyle("Age", 250, "number")}
+                        {...this.getTextFieldStyle(
+                            "Email",
+                            "email",
+                            510,
+                            "email"
+                        )}
+                    />
+                </Grid>
+                <Grid style={this.getGridStyle()}>
+                    <TextField
+                        {...this.getTextFieldStyle("Contact number", "number")}
+                    />
+                    <TextField
+                        {...this.getTextFieldStyle("Age", "age", 250, "number")}
                     />
                 </Grid>
                 <Button
@@ -191,7 +215,13 @@ class RegForm extends React.Component {
                     size="large"
                     endIcon={<BorderColorOutlinedIcon />}
                     sx={{mt: 1}}
-                    disabled={this.state.fieldsFilled === 7 ? false : true}
+                    disabled={
+                        Object.values(this.state.forms).every(item =>
+                            Boolean(item)
+                        )
+                            ? false
+                            : true
+                    }
                 >
                     Register
                 </Button>
@@ -209,7 +239,7 @@ function BottomText(props) {
                     : "Already have an account?"}
             </Typography>
             <Button variant="text" size="small" onClick={props.onClick}>
-                {props.showSignIn ? "Register" : "Sign in"}
+                {props.showSignIn ? "Register" : "Sign in"} here
             </Button>
         </Grid>
     );
