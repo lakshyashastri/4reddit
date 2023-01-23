@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 // import {HeadingText, BottomText} from "./text";
 
@@ -8,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
-import logo from "./assets/4reddit_logo.png";
+import logo from "./assets/4reddit_logo_trans.png";
 import logoGIF from "./assets/obamasphere.gif";
 
 import LoginIcon from "@mui/icons-material/Login";
@@ -67,83 +68,100 @@ class Logo extends React.Component {
     }
 }
 
-class SignInForm extends React.Component {
-    state = {
-        username: "",
-        password: ""
+function SignInForm(props) {
+    const navigate = useNavigate();
+
+    let [username, setUsername] = useState("");
+    let [password, setPassword] = useState("");
+    let [wrongFields, setWrongFields] = useState({username: 0, password: 0});
+
+    let handleUsernameChange = event => {
+        setUsername(event.target.value);
     };
 
-    handleUsernameChange = event => {
-        this.setState({
-            username: event.target.value
-        });
+    let handlePasswordChange = event => {
+        setPassword(event.target.value);
     };
 
-    handlePasswordChange = event => {
-        this.setState({
-            password: event.target.value
-        });
+    let handleSignInClick = event => {
+        event.preventDefault();
+        if (username == "admin" && password == "admin") {
+            navigate(`/u/${username}`);
+        } else {
+            setWrongFields({
+                username: username == "admin" ? 0 : 1,
+                password: password == "admin" ? 0 : 1
+            });
+        }
     };
 
-    render() {
-        return (
-            <React.Fragment>
-                <HeadingText signIn={true} />
-                <Grid
-                    style={{
-                        ...styles.flexbox,
-                        flexDirection: "column",
-                        justifyContent: "space-evenly"
-                    }}
+    return (
+        <React.Fragment>
+            <HeadingText signIn={true} />
+            <Grid
+                style={{
+                    ...styles.flexbox,
+                    flexDirection: "column",
+                    justifyContent: "space-evenly"
+                }}
+            >
+                <TextField
+                    type="text"
+                    label="Username"
+                    variant="outlined"
+                    sx={styles.inputField}
+                    onChange={handleUsernameChange}
+                    error={wrongFields.username}
+                    helperText={
+                        wrongFields.username ? "Incorrect username" : ""
+                    }
+                />
+                <TextField
+                    type="password"
+                    label="Password"
+                    variant="outlined"
+                    sx={styles.inputField}
+                    onChange={handlePasswordChange}
+                    error={wrongFields.password}
+                    helperText={
+                        wrongFields.password ? "Incorrect password" : ""
+                    }
+                />
+                <Button
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    endIcon={<LoginIcon />}
+                    sx={{mt: 1}}
+                    disabled={
+                        username.length === 0 || password.length === 0
+                            ? true
+                            : false
+                    }
+                    onClick={handleSignInClick}
                 >
-                    <TextField
-                        type="text"
-                        label="Username"
-                        variant="outlined"
-                        sx={styles.inputField}
-                        onChange={this.handleUsernameChange}
-                    />
-                    <TextField
-                        type="password"
-                        label="Password"
-                        variant="outlined"
-                        sx={styles.inputField}
-                        onChange={this.handlePasswordChange}
-                    />
-                    <Button
-                        variant="contained"
-                        size="large"
-                        endIcon={<LoginIcon />}
-                        sx={{mt: 1}}
-                        disabled={
-                            this.state.username.length === 0 ||
-                            this.state.password.length === 0
-                                ? true
-                                : false
-                        }
-                    >
-                        Sign in
-                    </Button>
-                </Grid>
-            </React.Fragment>
-        );
-    }
+                    Sign in
+                </Button>
+            </Grid>
+        </React.Fragment>
+    );
 }
 
 class RegForm extends React.Component {
+    state = {
+        forms: {
+            firstName: "",
+            lastName: "",
+            username: "",
+            password: "",
+            email: "",
+            number: "",
+            age: 0
+        }
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            forms: {
-                firstName: "",
-                lastName: "",
-                username: "",
-                password: "",
-                email: "",
-                number: "",
-                age: 0
-            }
-        };
     }
 
     getGridStyle(justify = "center") {
@@ -156,6 +174,7 @@ class RegForm extends React.Component {
             type,
             variant: "filled",
             sx: {...styles.inputField, width},
+            required: true,
             onChange: e => this.handleFieldFill(e, formType)
         };
     };
@@ -173,7 +192,6 @@ class RegForm extends React.Component {
                 <Grid style={this.getGridStyle()}>
                     <TextField
                         {...this.getTextFieldStyle("First name", "firstName")}
-                        // onChange={() => this.handleFieldFill("firstName")}
                     />
                     <TextField
                         {...this.getTextFieldStyle("Last name", "lastName")}
@@ -200,6 +218,7 @@ class RegForm extends React.Component {
                             510,
                             "email"
                         )}
+                        // fullWidth
                     />
                 </Grid>
                 <Grid style={this.getGridStyle()}>
@@ -213,6 +232,7 @@ class RegForm extends React.Component {
                 <Button
                     variant="contained"
                     size="large"
+                    type="submit"
                     endIcon={<BorderColorOutlinedIcon />}
                     sx={{mt: 1}}
                     disabled={
