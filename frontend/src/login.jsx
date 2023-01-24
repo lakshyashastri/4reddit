@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-// import {HeadingText, BottomText} from "./text";
+import Logo from "./components/Logo";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -19,13 +19,6 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 // temporary since importing not working: shift to that later since I can edit css file better there
 let styles = {
-    logo: {
-        height: "256px",
-        width: "256px",
-        marginTop: "20px",
-        borderRadius: "50%",
-        Animation: "levitation 2s ease-in-out infinite"
-    },
     flexbox: {
         display: "flex",
         justifyContent: "center",
@@ -45,27 +38,6 @@ function HeadingText(props) {
             </Typography>
         </React.Fragment>
     );
-}
-
-class Logo extends React.Component {
-    state = {
-        hovering: false
-    };
-
-    render() {
-        return (
-            <React.Fragment>
-                <div style={styles.flexbox}>
-                    <img
-                        src={this.state.hovering ? logoGIF : logo}
-                        onMouseOver={() => this.setState({hovering: true})}
-                        onMouseOut={() => this.setState({hovering: false})}
-                        style={styles.logo}
-                    />
-                </div>
-            </React.Fragment>
-        );
-    }
 }
 
 function SignInForm(props) {
@@ -280,7 +252,19 @@ export default class LoginPage extends React.Component {
         return (
             <React.Fragment>
                 <CssBaseline />
-                <Logo />
+
+                <div style={{...styles.flexbox}}>
+                    <Logo
+                        sx={{
+                            height: "256px",
+                            width: "256px",
+                            marginTop: "20px",
+                            borderRadius: "50%"
+                        }}
+                        href="/"
+                    />
+                </div>
+
                 <Grid component="form" sx={{m: 1, textAlign: "center"}}>
                     {this.state.showSignIn ? <SignInForm /> : <RegForm />}
                 </Grid>

@@ -1,11 +1,15 @@
 import React from "react";
-import fourBar from "../components/appBar";
+import FourBar from "../components/FourBar";
+import ProfileCard from "../components/ProfileCard";
 
 export default function ProfilePage(props) {
     return (
         <React.Fragment>
-            <fourBar />
-            test
+            <FourBar
+                barItems={["Home", "4reddit chat", "Something"]}
+                dropdownItems={["My Profile", "Saved posts", "Logout"]}
+            />
+            <ProfileCard />
         </React.Fragment>
     );
 }
