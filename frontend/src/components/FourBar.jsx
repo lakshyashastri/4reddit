@@ -14,6 +14,7 @@ import Zoom from "@mui/material/Zoom";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import Logo from "./Logo";
 import TrollFace from "../assets/defaultIcon.jpg";
@@ -52,6 +53,15 @@ export default function FourBar(props) {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const barItems = [
+        "Home",
+        "4chat",
+        "My BoardIts",
+        "All BoardIts",
+        "Saved BoardIts"
+    ];
+    const dropdownItems = ["My Profile", "Notifications", "Logout"];
 
     return (
         <ElevationScroll {...props}>
@@ -102,7 +112,7 @@ export default function FourBar(props) {
                                     display: {xs: "block", md: "none"}
                                 }}
                             >
-                                {props.barItems.map(page => (
+                                {barItems.map(page => (
                                     <MenuItem
                                         key={page}
                                         onClick={handleCloseNavMenu}
@@ -123,7 +133,7 @@ export default function FourBar(props) {
                                 justifyContent: "space-evenly"
                             }}
                         >
-                            {props.barItems.map(page => (
+                            {barItems.map(page => (
                                 <Button
                                     key={page}
                                     onClick={handleCloseNavMenu}
@@ -166,7 +176,7 @@ export default function FourBar(props) {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {props.dropdownItems.map(setting => (
+                                {dropdownItems.map(setting => (
                                     <MenuItem
                                         key={setting}
                                         onClick={handleCloseUserMenu}
