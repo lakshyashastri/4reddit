@@ -15,7 +15,7 @@ export default function App() {
     let loggedIn = JSON.parse(window.localStorage.getItem("LOGGED_IN"));
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/">
             <Routes>
                 <Route
                     path="/"
