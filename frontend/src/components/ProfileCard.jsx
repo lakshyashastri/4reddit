@@ -38,8 +38,15 @@ export default function ProfileCard(props) {
                 />
 
                 <CardContent>
-                    <Typography variant="h5" component="div">
+                    <Typography variant="h5" component="div" align="center">
                         u/admin
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        align="center"
+                    >
+                        Lakshya Shastri
                     </Typography>
                 </CardContent>
 
@@ -72,9 +79,6 @@ export default function ProfileCard(props) {
                 <Collapse in={infoShown} timeout="auto" unmountOnExit>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
-                            First name: Lakshya <br></br>
-                            Last name: Shastri <br></br>
-                            <br></br>
                             Email: lakshyashastri11@gmail.com <br></br>
                             Contact number: 9899980020 <br></br>
                             Age: 19 <br></br>
