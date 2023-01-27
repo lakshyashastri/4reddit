@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 import Logo from "./components/Logo";
@@ -58,6 +58,7 @@ function SignInForm(props) {
     let handleSignInClick = event => {
         event.preventDefault();
         if (username == "admin" && password == "admin") {
+            window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
             navigate(`/u/${username}`);
         } else {
             setWrongFields({
