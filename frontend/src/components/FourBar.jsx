@@ -142,6 +142,7 @@ export default function FourBar(props) {
                                         color: "white",
                                         display: "block"
                                     }}
+                                    // disableRipple={true}
                                 >
                                     {page}
                                 </Button>

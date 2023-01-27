@@ -20,7 +20,7 @@ export default function ProfilePage(props) {
             >
                 <MyPosts />
                 <ProfileCard />
-                {/* vertical grid containing profile card and other
+                {/* make vertical grid containing profile card and other
                 stats (on Paper component) */}
             </Grid>
         </React.Fragment>

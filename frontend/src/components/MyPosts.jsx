@@ -105,7 +105,7 @@ export default function MyPosts() {
                                 sx={{color: "text.secondary", flexShrink: 0}}
                             >
                                 26/01/2023
-                                {/* also parse timestamp to this date format */}
+                                {/* parse timestamp to this date format */}
                                 {/* put exact timestamp in tooltip text */}
                                 {/* will also have to add boardit name (might replace with date) and other details somewhere */}
                             </Typography>
