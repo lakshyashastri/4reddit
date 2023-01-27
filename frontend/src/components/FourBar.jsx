@@ -50,7 +50,11 @@ export default function FourBar(props) {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = event => {
+        if (event.target.textContent == "Logout") {
+            window.localStorage.setItem("LOGGED_IN", JSON.stringify(false));
+            window.location.reload();
+        }
         setAnchorElUser(null);
     };
 
