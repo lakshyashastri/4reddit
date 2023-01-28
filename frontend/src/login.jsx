@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, withRouter} from "react-router-dom";
 
 import Logo from "./components/Logo";
 
@@ -120,7 +120,7 @@ function SignInForm(props) {
     );
 }
 
-class RegForm extends React.Component {
+class _RegForm extends React.Component {
     state = {
         forms: {
             firstName: "",
@@ -129,7 +129,7 @@ class RegForm extends React.Component {
             password: "",
             email: "",
             number: "",
-            age: 0
+            age: 18
         }
     };
 
@@ -156,6 +156,12 @@ class RegForm extends React.Component {
         let formValues = Object.assign({}, this.state.forms);
         formValues[field] = event.target.value;
         this.setState({forms: formValues});
+    };
+
+    handleRegClick = event => {
+        event.preventDefault();
+        window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
+        this.props.history.push("/u/admin");
     };
 
     render() {
@@ -191,6 +197,11 @@ class RegForm extends React.Component {
                             510,
                             "email"
                         )}
+                        // error={
+                        //     this.state.forms.email.length != 0 &&
+                        //     (!this.state.forms.email.includes("@") ||
+                        //         !this.state.forms.email.includes("."))
+                        // }
                         // fullWidth
                     />
                 </Grid>
@@ -199,7 +210,13 @@ class RegForm extends React.Component {
                         {...this.getTextFieldStyle("Contact number", "number")}
                     />
                     <TextField
-                        {...this.getTextFieldStyle("Age", "age", 250, "number")}
+                        {...this.getTextFieldStyle(
+                            "Age (18+)",
+                            "age",
+                            250,
+                            "number"
+                        )}
+                        error={this.state.forms.age < 18}
                     />
                 </Grid>
                 <Button
@@ -215,6 +232,7 @@ class RegForm extends React.Component {
                             ? false
                             : true
                     }
+                    onClick={this.handleRegClick}
                 >
                     Register
                 </Button>
@@ -222,6 +240,8 @@ class RegForm extends React.Component {
         );
     }
 }
+
+const RegForm = withRouter(_RegForm);
 
 function BottomText(props) {
     return (
