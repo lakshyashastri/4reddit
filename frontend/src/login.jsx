@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {useNavigate, withRouter} from "react-router-dom";
 
 import Logo from "./components/Logo";
@@ -120,128 +120,110 @@ function SignInForm(props) {
     );
 }
 
-class _RegForm extends React.Component {
-    state = {
-        forms: {
-            firstName: "",
-            lastName: "",
-            username: "",
-            password: "",
-            email: "",
-            number: "",
-            age: 18
-        }
+function RegForm(props) {
+    let [firstName, setFirstName] = useState("");
+    let [lastName, setLastName] = useState("");
+    let [username, setUsername] = useState("");
+    let [password, setPassword] = useState("");
+    let [email, setEmail] = useState("");
+    let [number, setNumber] = useState("");
+    let [age, setAge] = useState("ok");
+
+    let states = {
+        firstName: [firstName, setFirstName],
+        lastName: [lastName, setLastName],
+        username: [username, setUsername],
+        password: [password, setPassword],
+        email: [email, setEmail],
+        number: [number, setNumber],
+        age: [age, setAge]
     };
 
-    constructor(props) {
-        super(props);
-    }
+    const navigate = useNavigate();
 
-    getGridStyle(justify = "center") {
+    let getGridStyle = (justify = "center") => {
         return {...styles.flexbox, justifyContent: justify};
-    }
+    };
 
-    getTextFieldStyle = (label, formType, width = 250, type = "text") => {
+    let getTextFieldStyle = (label, formType, width = 250, type = "text") => {
         return {
             label,
             type,
             variant: "filled",
             sx: {...styles.inputField, width},
             required: true,
-            onChange: e => this.handleFieldFill(e, formType)
+            onChange: e => handleFieldFill(e, formType)
         };
     };
 
-    handleFieldFill = (event, field) => {
-        let formValues = Object.assign({}, this.state.forms);
-        formValues[field] = event.target.value;
-        this.setState({forms: formValues});
+    let handleFieldFill = (event, field) => {
+        states[field][1](event.target.value);
     };
 
-    handleRegClick = event => {
+    let handleRegClick = event => {
         event.preventDefault();
         window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
-        this.props.history.push("/u/admin");
+        navigate("/u/admin");
     };
 
-    render() {
-        return (
-            <React.Fragment>
-                <HeadingText signIn={false} />
-                <Grid style={this.getGridStyle()}>
-                    <TextField
-                        {...this.getTextFieldStyle("First name", "firstName")}
-                    />
-                    <TextField
-                        {...this.getTextFieldStyle("Last name", "lastName")}
-                    />
-                </Grid>
-                <Grid style={this.getGridStyle()}>
-                    <TextField
-                        {...this.getTextFieldStyle("Username", "username")}
-                    />
-                    <TextField
-                        {...this.getTextFieldStyle(
-                            "Password",
-                            "password",
-                            250,
-                            "password"
-                        )}
-                    />
-                </Grid>
-                <Grid style={this.getGridStyle()}>
-                    <TextField
-                        {...this.getTextFieldStyle(
-                            "Email",
-                            "email",
-                            510,
-                            "email"
-                        )}
-                        // error={
-                        //     this.state.forms.email.length != 0 &&
-                        //     (!this.state.forms.email.includes("@") ||
-                        //         !this.state.forms.email.includes("."))
-                        // }
-                        // fullWidth
-                    />
-                </Grid>
-                <Grid style={this.getGridStyle()}>
-                    <TextField
-                        {...this.getTextFieldStyle("Contact number", "number")}
-                    />
-                    <TextField
-                        {...this.getTextFieldStyle(
-                            "Age (18+)",
-                            "age",
-                            250,
-                            "number"
-                        )}
-                        error={this.state.forms.age < 18}
-                    />
-                </Grid>
-                <Button
-                    variant="contained"
-                    size="large"
-                    type="submit"
-                    endIcon={<BorderColorOutlinedIcon />}
-                    sx={{mt: 1}}
-                    disabled={
-                        Object.values(this.state.forms).every(item =>
-                            Boolean(item)
-                        )
-                            ? false
-                            : true
-                    }
-                    onClick={this.handleRegClick}
-                >
-                    Register
-                </Button>
-            </React.Fragment>
-        );
-    }
+    return (
+        <React.Fragment>
+            <HeadingText signIn={false} />
+            <Grid style={getGridStyle()}>
+                <TextField {...getTextFieldStyle("First name", "firstName")} />
+                <TextField {...getTextFieldStyle("Last name", "lastName")} />
+            </Grid>
+            <Grid style={getGridStyle()}>
+                <TextField {...getTextFieldStyle("Username", "username")} />
+                <TextField
+                    {...getTextFieldStyle(
+                        "Password",
+                        "password",
+                        250,
+                        "password"
+                    )}
+                />
+            </Grid>
+            <Grid style={getGridStyle()}>
+                <TextField
+                    {...getTextFieldStyle("Email", "email", 510, "email")}
+                    // error={
+                    //     this.state.forms.email.length != 0 &&
+                    //     (!this.state.forms.email.includes("@") ||
+                    //         !this.state.forms.email.includes("."))
+                    // }
+                    // fullWidth
+                />
+            </Grid>
+            <Grid style={getGridStyle()}>
+                <TextField {...getTextFieldStyle("Contact number", "number")} />
+                <TextField
+                    {...getTextFieldStyle("Age (18+)", "age", 250, "number")}
+                    error={age != "ok" && age < 18}
+                />
+            </Grid>
+            <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                endIcon={<BorderColorOutlinedIcon />}
+                sx={{mt: 1}}
+                disabled={
+                    Object.keys(states).every(item => {
+                        return item === "age"
+                            ? item != "ok" && states[item][0] >= 18
+                            : Boolean(states[item][0]);
+                    })
+                        ? false
+                        : true
+                }
+                onClick={handleRegClick}
+            >
+                Register
+            </Button>
+        </React.Fragment>
+    );
 }
-
-const RegForm = withRouter(_RegForm);
 
 function BottomText(props) {
     return (
