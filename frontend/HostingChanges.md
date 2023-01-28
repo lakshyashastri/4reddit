@@ -2,3 +2,4 @@
 2. changed `Logo`'s `href` property in [FourBar.jsx](src/components/FourBar.jsx) from `/` to `/4reddit` -->
 
 1. Change `ROOT` in [ProtectedRoute.jsx](src/components/ProtectedRoute.jsx) from `/` to `/4reddit`
+   - This is done because `/` will correspond to the root of the website
