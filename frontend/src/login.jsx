@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useNavigate, withRouter} from "react-router-dom";
 
 import Logo from "./components/Logo";
+import {ROOT} from "./components/ProtectedRoute";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -264,7 +265,7 @@ export default class LoginPage extends React.Component {
                             marginTop: "20px",
                             borderRadius: "50%"
                         }}
-                        href="/"
+                        href={ROOT}
                     />
                 </div>
 

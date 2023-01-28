@@ -8,14 +8,14 @@ import {
 
 import LoginPage from "./login";
 import ProfilePage from "./pages/profile";
+import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
-import {ProtectedRoute} from "./components/ProtectedRoute";
 
 export default function App() {
     let loggedIn = JSON.parse(window.localStorage.getItem("LOGGED_IN"));
 
     return (
-        <BrowserRouter basename="/">
+        <BrowserRouter basename={ROOT}>
             <Routes>
                 <Route
                     path="/"

@@ -17,6 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import Logo from "./Logo";
+import {ROOT} from "./ProtectedRoute";
 import TrollFace from "../assets/defaultIcon.jpg";
 
 function ElevationScroll(props) {
@@ -80,7 +81,7 @@ export default function FourBar(props) {
                                 margin: "4px",
                                 marginLeft: "16px"
                             }}
-                            href="/"
+                            href={ROOT}
                         />
                         <Box
                             sx={{
