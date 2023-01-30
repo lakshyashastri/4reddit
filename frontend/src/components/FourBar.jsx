@@ -15,11 +15,12 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import AppsIcon from "@mui/icons-material/Apps";
-import BallotIcon from "@mui/icons-material/Ballot";
-import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import PublicIcon from "@mui/icons-material/Public";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 import Logo from "./Logo";
 import {ROOT} from "./ProtectedRoute";
@@ -52,8 +53,8 @@ export default function FourBar(props) {
         Home: <HomeIcon />,
         "4chat": <ChatIcon />,
         "My BoardIts": <AppsIcon />,
-        "All BoardIts": <BallotIcon />,
-        "Saved BoardIts": <DashboardCustomizeIcon />
+        "All BoardIts": <PublicIcon />,
+        "Saved BoardIts": <BookmarksIcon />
     };
     const profileDropdown = ["My Profile", "Notifications", "Logout"];
 

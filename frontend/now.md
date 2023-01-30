@@ -1,3 +1,0 @@
--followers
--navbar icons
--localhost goes to /4reddit (ok for website but not localhost, make this relevant to ROOT)

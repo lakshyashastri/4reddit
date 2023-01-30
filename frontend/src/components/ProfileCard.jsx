@@ -52,14 +52,14 @@ export default function ProfileCard(props) {
 
                 <CardActions>
                     <Button size="small" variant="text">
-                        4 Followers
+                        3 Followers
                     </Button>
                     <Button variant="text" startIcon={<LiquorIcon />}>
                         26/01/2023
                         {/* time.is link or something (basically lead to info about exact timestamp) */}
                     </Button>
                     <Button size="small" variant="text">
-                        2 Following
+                        4 Following
                     </Button>
                 </CardActions>
 
