@@ -15,26 +15,15 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import HomeIcon from "@mui/icons-material/Home";
+import ChatIcon from "@mui/icons-material/Chat";
+import AppsIcon from "@mui/icons-material/Apps";
+import BallotIcon from "@mui/icons-material/Ballot";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 
 import Logo from "./Logo";
 import {ROOT} from "./ProtectedRoute";
 import TrollFace from "../assets/defaultIcon.jpg";
-
-function ElevationScroll(props) {
-    const {children, window} = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 0,
-        target: window ? window() : undefined
-    });
-
-    return React.cloneElement(children, {
-        elevation: trigger ? 4 : 0
-    });
-}
 
 export default function FourBar(props) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -59,145 +48,157 @@ export default function FourBar(props) {
         setAnchorElUser(null);
     };
 
-    const barItems = [
-        "Home",
-        "4chat",
-        "My BoardIts",
-        "All BoardIts",
-        "Saved BoardIts"
-    ];
-    const dropdownItems = ["My Profile", "Notifications", "Logout"];
+    const barItems = {
+        Home: <HomeIcon />,
+        "4chat": <ChatIcon />,
+        "My BoardIts": <AppsIcon />,
+        "All BoardIts": <BallotIcon />,
+        "Saved BoardIts": <DashboardCustomizeIcon />
+    };
+    const profileDropdown = ["My Profile", "Notifications", "Logout"];
 
     return (
-        <ElevationScroll {...props}>
-            <AppBar position="static">
-                <Grid maxWidth="xl">
-                    <Toolbar disableGutters>
-                        {/* <AdbIcon sx={{display: {xs: "none", md: "flex"}, mr: 1}} /> */}
-                        <Logo
-                            sx={{
-                                height: "48px",
-                                width: "48px",
-                                margin: "4px",
-                                marginLeft: "16px"
+        <AppBar position="static">
+            <Grid maxWidth="xl">
+                <Toolbar disableGutters>
+                    {/* <AdbIcon sx={{display: {xs: "none", md: "flex"}, mr: 1}} /> */}
+                    <Logo
+                        sx={{
+                            height: "48px",
+                            width: "48px",
+                            margin: "4px",
+                            marginLeft: "16px"
+                        }}
+                        href={ROOT}
+                    />
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: {xs: "flex", md: "none"}
+                        }}
+                    >
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left"
                             }}
-                            href={ROOT}
-                        />
-                        <Box
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "left"
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
                             sx={{
-                                flexGrow: 1,
-                                display: {xs: "flex", md: "none"}
+                                display: {xs: "block", md: "none"}
                             }}
                         >
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left"
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "left"
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
-                                sx={{
-                                    display: {xs: "block", md: "none"}
-                                }}
-                            >
-                                {barItems.map(page => (
-                                    <MenuItem
-                                        key={page}
-                                        onClick={handleCloseNavMenu}
-                                    >
-                                        <Typography textAlign="center">
-                                            {page}
-                                        </Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                        {/* <AdbIcon sx={{display: {xs: "flex", md: "none"}, mr: 1}} /> */}
-                        {/* FOR PHONE TILL HERE */}
-                        <Box
-                            sx={{
-                                flexGrow: 1,
-                                display: {xs: "none", md: "flex"},
-                                justifyContent: "space-evenly"
-                            }}
-                        >
-                            {barItems.map(page => (
-                                <Button
+                            {Object.keys(barItems).map(page => (
+                                <MenuItem
                                     key={page}
                                     onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: "white",
-                                        display: "block"
-                                    }}
-                                    // disableRipple={true}
                                 >
-                                    {page}
-                                </Button>
+                                    <Typography textAlign="center">
+                                        {page}
+                                    </Typography>
+                                </MenuItem>
                             ))}
-                        </Box>
-                        <Box sx={{flexGrow: 0.03}}>
-                            <Tooltip
-                                title="Open settings"
-                                TransitionComponent={Zoom}
-                                arrow
+                        </Menu>
+                    </Box>
+                    {/* <AdbIcon sx={{display: {xs: "flex", md: "none"}, mr: 1}} /> */}
+                    {/* FOR PHONE TILL HERE */}
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: {xs: "none", md: "flex"},
+                            justifyContent: "space-evenly"
+                        }}
+                    >
+                        {Object.keys(barItems).map(page => (
+                            <Button
+                                key={page}
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: "white",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    width: "100%"
+                                }}
+                                // disableRipple={true}
                             >
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{p: 0}}
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "flex-start"
+                                    }}
                                 >
-                                    <Avatar src={TrollFace} />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{mt: "45px"}}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right"
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right"
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
+                                    <Box mt={0.8} mr={1}>
+                                        {barItems[page]}
+                                    </Box>
+                                    {page}
+                                </Box>
+                            </Button>
+                        ))}
+                    </Box>
+                    <Box sx={{flexGrow: 0.03}}>
+                        <Tooltip
+                            title="Open settings"
+                            TransitionComponent={Zoom}
+                            arrow
+                        >
+                            <IconButton
+                                onClick={handleOpenUserMenu}
+                                sx={{p: 0}}
                             >
-                                {dropdownItems.map(setting => (
-                                    <MenuItem
-                                        key={setting}
-                                        onClick={handleCloseUserMenu}
-                                    >
-                                        <Typography textAlign="center">
-                                            {setting}
-                                        </Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                    </Toolbar>
-                </Grid>
-            </AppBar>
-        </ElevationScroll>
+                                <Avatar src={TrollFace} />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{mt: "45px"}}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "right"
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "right"
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {profileDropdown.map(setting => (
+                                <MenuItem
+                                    key={setting}
+                                    onClick={handleCloseUserMenu}
+                                >
+                                    <Typography textAlign="center">
+                                        {setting}
+                                    </Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                </Toolbar>
+            </Grid>
+        </AppBar>
     );
     // const [anchorElUser, setAnchorElUser] = React.useState(null);
     // const handleCloseUserMenu = () => {
@@ -258,7 +259,7 @@ export default function FourBar(props) {
     //                         open={Boolean(anchorElUser)}
     //                         onClose={handleCloseUserMenu}
     //                     >
-    //                         {props.dropdownItems.map(item => {
+    //                         {props.profileDropdown.map(item => {
     //                             <MenuItem
     //                                 key={item}
     //                                 onClick={handleCloseUserMenu}
