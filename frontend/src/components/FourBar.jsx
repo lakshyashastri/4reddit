@@ -60,7 +60,7 @@ export default function FourBar(props) {
 
     return (
         <AppBar position="static">
-            <Grid maxWidth="xl">
+            <Grid>
                 <Toolbar disableGutters>
                     {/* <AdbIcon sx={{display: {xs: "none", md: "flex"}, mr: 1}} /> */}
                     <Logo
