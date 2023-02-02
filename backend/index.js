@@ -1,46 +1,22 @@
-//// imports
+// imports
 import express from "express";
-import {getDBCon} from "./config/connections.js";
+import {getModelCon} from "./config/connections.js";
 import bodyParser from "body-parser";
 
-//// setup
+// route imports
+import boardits from "./routes/boardits.js";
 
 // vars
 const app = express(); // express app
-const router = express.Router(); // router
+const router = express.Router();
 const PORT = 3001; // app port
 
 // middleware
-app.use("/4reddit/api", router); // base url
 app.use(bodyParser.urlencoded({extended: true})); // request parser
+app.use("/4reddit/api", router); // base url
 
-//// routes
-
-/// get
-
-// root
-router.get("/", async (req, res) => {
-    const [client, Users] = await getDBCon("boardits");
-    let data = await Users.find();
-
-    res.send(data);
-});
-
-/// post
-router.get("/b", async (req, res) => {
-    const [client, Boardits] = await getDBCon("boardits");
-    let newBoardit = new Boardits({
-        name: "a",
-        description: "aaa",
-        tags: ["a", "b", "c"],
-        bannedKeywords: ["x", "y", "z"],
-        posts: ["abcde", "ABCDE"],
-        followers: ["admin"]
-    });
-    await newBoardit.save();
-
-    res.sendStatus(200);
-});
+// setup routes
+router.use("/boardits", boardits);
 
 // start app
 app.listen(PORT);

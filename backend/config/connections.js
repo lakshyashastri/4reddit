@@ -13,9 +13,9 @@ const nameToSchema = {
     reports: reportSchema
 };
 
-export async function getDBCon(schemaName) {
-    if (!nameToSchema[schemaName]) {
-        console.log(`Unknown schema ${schemaName}`);
+export async function getModelCon(modelName) {
+    if (!nameToSchema[modelName]) {
+        console.log(`Unknown schema ${modelName}`);
         return null;
     }
     mongoose.set("strictQuery", false);
@@ -25,6 +25,6 @@ export async function getDBCon(schemaName) {
     });
     const connection = mongoose.connection;
 
-    const model = mongoose.model(schemaName, nameToSchema[schemaName]);
+    const model = mongoose.model(modelName, nameToSchema[modelName]);
     return [connection, model];
 }

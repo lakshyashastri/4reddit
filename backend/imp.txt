@@ -1,2 +1,0 @@
-go through entire doc and decide all entities and their specs FIRST
-THEN create api
