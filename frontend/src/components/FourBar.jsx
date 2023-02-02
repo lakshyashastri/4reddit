@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
@@ -30,6 +31,8 @@ export default function FourBar(props) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+    const navigate = useNavigate();
+
     const handleOpenNavMenu = event => {
         setAnchorElNav(event.currentTarget);
     };
@@ -38,6 +41,9 @@ export default function FourBar(props) {
     };
 
     const handleCloseNavMenu = (event, page) => {
+        if (event.target.textContent == "All BoardIts") {
+            navigate("/all");
+        }
         setAnchorElNav(null);
     };
 

@@ -25,5 +25,9 @@ export const boarditSchema = new Schema({
     followers: {
         type: [String],
         required: true
+    },
+    createdAt: {
+        type: String,
+        required: true
     }
 });

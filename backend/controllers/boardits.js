@@ -15,7 +15,8 @@ const boarditController = {
             tags: req.body.tags,
             bannedKeywords: req.body.bannedKeywords,
             posts: req.body.posts,
-            followers: req.body.followers
+            followers: req.body.followers,
+            createdAt: req.body.createdAt
         });
         await newBoardit.save();
 
