@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -13,11 +12,14 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
+import InputBase from "@mui/material/InputBase";
+import Grid from "@mui/material/Grid";
 
 import Loading from "../Loading";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Row(props) {
     const [open, setOpen] = useState(false);
@@ -39,7 +41,8 @@ function Row(props) {
                     prop !== "description" &&
                     prop !== "tags" &&
                     prop !== "index" &&
-                    prop !== "createdAt" ? (
+                    prop !== "createdAt" &&
+                    prop !== "createdBy" ? (
                         <TableCell align="center">
                             <Typography variant="subtitle1">
                                 {prop !== "name" ? (
@@ -101,14 +104,43 @@ function Row(props) {
     );
 }
 
+function SearchBox(props) {
+    return (
+        <Grid
+            sx={{
+                m: 1,
+                mr: 0,
+                display: "flex",
+                justifyContent: "right"
+            }}
+            contianer
+        >
+            <Grid item>
+                <InputBase
+                    placeholder="Filter by name"
+                    // value={searchTerm}
+                    onChange={event => props.changeFunc(event.target.value)}
+                    sx={{
+                        backgroundColor: "white",
+                        paddingLeft: 1,
+                        paddingTop: 0.5,
+                        paddingBottom: 0.5,
+                        paddingRight: 5
+                    }}
+                />
+            </Grid>
+        </Grid>
+    );
+}
+
 export default function AllBoarditsTable(props) {
     const [tableData, setTableData] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         (async () => {
             let res = await fetch("http://localhost:3001/4reddit/api/boardits");
             let data = await res.json();
-            console.log(data);
 
             setTimeout(() => setTableData(data), 500);
         })();
@@ -117,8 +149,12 @@ export default function AllBoarditsTable(props) {
     const headings = ["S. No.", "Boardit name", "Posts", "Followers"];
 
     const getRows = () => {
+        const filtered = tableData.filter(rowData =>
+            rowData.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
         let rows = [];
-        for (let [index, rowData] of tableData.entries()) {
+        for (let [index, rowData] of filtered.entries()) {
             rows.push(
                 <Row
                     key={index}
@@ -136,20 +172,26 @@ export default function AllBoarditsTable(props) {
     };
 
     return tableData ? (
-        <TableContainer component={Paper}>
-            <Table stickyHeader>
-                <TableHead>
-                    <TableRow>
-                        {headings.map(heading => (
-                            <TableCell align="center">
-                                <Typography variant="h5">{heading}</Typography>
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>{getRows()}</TableBody>
-            </Table>
-        </TableContainer>
+        <React.Fragment>
+            <SearchBox changeFunc={setSearchTerm} />
+            <TableContainer component={Paper}>
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            {headings.map(heading => (
+                                <TableCell align="center" key={heading}>
+                                    <Typography variant="h5">
+                                        {heading}
+                                    </Typography>
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>{getRows()}</TableBody>
+                </Table>
+            </TableContainer>
+            <p style={{color: "white"}}>{searchTerm}</p>
+        </React.Fragment>
     ) : (
         <Loading />
     );
