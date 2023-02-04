@@ -29,5 +29,9 @@ export const boarditSchema = new Schema({
     createdAt: {
         type: String,
         required: true
+    },
+    createdBy: {
+        type: String,
+        required: true
     }
 });

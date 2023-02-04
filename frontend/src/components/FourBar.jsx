@@ -170,7 +170,7 @@ export default function FourBar(props) {
                         >
                             <IconButton
                                 onClick={handleOpenUserMenu}
-                                sx={{p: 0}}
+                                sx={{p: 0, pl: 2}}
                             >
                                 <Avatar src={TrollFace} />
                             </IconButton>

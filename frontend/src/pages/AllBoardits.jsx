@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 
 import FourBar from "../components/FourBar";
-import AllBoarditsTable from "../components/AllBoardits";
+import AllBoarditsTable from "../components/AllBoardits/AllBoardits";
 
 export default function AllBoarditsPage(props) {
     return (

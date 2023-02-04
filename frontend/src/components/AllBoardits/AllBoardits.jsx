@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
 
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -110,13 +110,13 @@ export default function AllBoarditsTable(props) {
             let data = await res.json();
             console.log(data);
 
-            setInterval(() => setTableData(data), 500);
+            setTimeout(() => setTableData(data), 500);
         })();
     }, []);
 
-    const headings = ["S. No.", "Name", "Posts", "Followers"];
+    const headings = ["S. No.", "Boardit name", "Posts", "Followers"];
 
-    let getRows = () => {
+    const getRows = () => {
         let rows = [];
         for (let [index, rowData] of tableData.entries()) {
             rows.push(

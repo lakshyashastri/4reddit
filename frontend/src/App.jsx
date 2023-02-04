@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import LoginPage from "./login";
-import ProfilePage from "./pages/profile";
+import ProfilePage from "./pages/Profile";
 import AllBoarditsPage from "./pages/AllBoardits";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";

@@ -3,9 +3,9 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 
 import FourBar from "../components/FourBar";
-import ProfileCard from "../components/ProfileCard";
-import MyPosts from "../components/MyPosts";
-import FolloweringList from "../components/FolloweringList";
+import ProfileCard from "../components/Profile/ProfileCard";
+import MyPosts from "../components/Profile/MyPosts";
+import FolloweringList from "../components/Profile/FolloweringList";
 
 import TrollFace from "../assets/defaultIcon.jpg";
 

@@ -11,7 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import LiquorIcon from "@mui/icons-material/Liquor";
 
-import TrollFace from "../assets/defaultIcon.jpg";
+import TrollFace from "../../assets/defaultIcon.jpg";
 
 export default function ProfileCard(props) {
     let [infoShown, setInfoShown] = useState(false);

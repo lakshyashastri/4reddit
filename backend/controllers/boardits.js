@@ -16,7 +16,8 @@ const boarditController = {
             bannedKeywords: req.body.bannedKeywords,
             posts: req.body.posts,
             followers: req.body.followers,
-            createdAt: req.body.createdAt
+            createdAt: req.body.createdAt,
+            createdBy: req.body.createdBy
         });
         await newBoardit.save();
 
