@@ -68,7 +68,8 @@ function SignInForm(props) {
         }
 
         if (username == userData.username && password == userData.password) {
-            window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
+            localStorage.setItem("LOGGED_IN", JSON.stringify(true));
+            localStorage.setItem("username", JSON.stringify(username));
             navigate(`/u/${username}`);
         } else {
             setWrongFields({
@@ -191,11 +192,9 @@ function RegForm(props) {
         postTo("/users", formatData())
             .then(response => {
                 if (response.ok) {
-                    window.localStorage.setItem(
-                        "LOGGED_IN",
-                        JSON.stringify(true)
-                    );
-                    navigate("/u/admin");
+                    localStorage.setItem("LOGGED_IN", JSON.stringify(true));
+                    localStorage.setItem("username", JSON.stringify(username));
+                    navigate(`/u/${username}`);
                 } else {
                     document.write("oops");
                 }

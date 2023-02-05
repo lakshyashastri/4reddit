@@ -42,5 +42,9 @@ export const userSchema = new Schema({
     savedPosts: {
         type: [String],
         required: true
+    },
+    createdAt: {
+        type: String,
+        required: true
     }
 });

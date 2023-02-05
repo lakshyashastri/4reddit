@@ -28,8 +28,8 @@ import {ROOT} from "./ProtectedRoute";
 import TrollFace from "../assets/defaultIcon.jpg";
 
 export default function FourBar(props) {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
 
     const navigate = useNavigate();
 
@@ -49,8 +49,11 @@ export default function FourBar(props) {
 
     const handleCloseUserMenu = event => {
         if (event.target.textContent == "Logout") {
-            window.localStorage.setItem("LOGGED_IN", JSON.stringify(false));
+            localStorage.setItem("LOGGED_IN", JSON.stringify(false));
+            localStorage.setItem("username", JSON.stringify(null));
             window.location.reload();
+        } else if (event.target.textContent == "My Profile") {
+            navigate(`/u/${JSON.parse(localStorage.getItem("username"))}`);
         }
         setAnchorElUser(null);
     };

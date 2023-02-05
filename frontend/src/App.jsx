@@ -21,9 +21,7 @@ export default function App() {
             <Routes>
                 <Route
                     path="/"
-                    element={
-                        !loggedIn ? <LoginPage /> : <Navigate to="/u/admin" />
-                    }
+                    element={!loggedIn ? <LoginPage /> : <Navigate to="/all" />}
                 />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/u/:username" element={<ProfilePage />} />

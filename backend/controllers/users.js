@@ -28,7 +28,8 @@ const userController = {
             dob: req.body.dob,
             followers: [],
             following: [],
-            savedPosts: []
+            savedPosts: [],
+            createdAt: req.body.createdAt
         });
         await newUser.save();
 

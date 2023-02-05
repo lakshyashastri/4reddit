@@ -39,27 +39,27 @@ export default function ProfileCard(props) {
 
                 <CardContent>
                     <Typography variant="h5" component="div" align="center">
-                        u/admin
+                        u/{props.user.username}
                     </Typography>
                     <Typography
                         variant="body2"
                         color="text.secondary"
                         align="center"
                     >
-                        Lakshya Shastri
+                        {`${props.user.firstName} ${props.user.lastName}`}
                     </Typography>
                 </CardContent>
 
                 <CardActions>
                     <Button size="small" variant="text">
-                        3 Followers
+                        {props.user.followers.length} Followers
                     </Button>
                     <Button variant="text" startIcon={<LiquorIcon />}>
-                        26/01/2023
+                        {props.user.dob}
                         {/* time.is link or something (basically lead to info about exact timestamp) */}
                     </Button>
                     <Button size="small" variant="text">
-                        4 Following
+                        {props.user.following.length} Following
                     </Button>
                 </CardActions>
 
@@ -79,9 +79,9 @@ export default function ProfileCard(props) {
                 <Collapse in={infoShown} timeout="auto" unmountOnExit>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary">
-                            Email: lakshyashastri11@gmail.com <br></br>
-                            Contact number: 9899980020 <br></br>
-                            Age: 19 <br></br>
+                            Email: {props.user.email} <br></br>
+                            Contact number: {props.user.number} <br></br>
+                            Age: {props.user.dob} <br></br>
                         </Typography>
                     </CardContent>
                 </Collapse>

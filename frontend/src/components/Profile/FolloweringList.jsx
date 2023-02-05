@@ -34,7 +34,7 @@ export default function FolloweringList(props) {
                         </ListItemAvatar>
                         <ListItemText
                             primary={"u/" + user}
-                            secondary={"Since " + users[user].date}
+                            secondary={users[user].fullName}
                         />
                     </ListItem>
                     {index + 1 === Object.keys(users).length ? null : (
@@ -46,7 +46,13 @@ export default function FolloweringList(props) {
                 break;
             }
         }
-        return <React.Fragment>{fragments}</React.Fragment>;
+        return fragments.length === 0 ? (
+            <Typography align="center">
+                No {props.following ? "following" : "followers"}
+            </Typography>
+        ) : (
+            <React.Fragment>{fragments}</React.Fragment>
+        );
     };
 
     return (

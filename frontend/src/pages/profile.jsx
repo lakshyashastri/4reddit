@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 
@@ -7,10 +8,54 @@ import ProfileCard from "../components/Profile/ProfileCard";
 import MyPosts from "../components/Profile/MyPosts";
 import FolloweringList from "../components/Profile/FolloweringList";
 
+import {getFrom} from "../helpers";
+
 import TrollFace from "../assets/defaultIcon.jpg";
 
 export default function ProfilePage(props) {
-    return (
+    const [userData, setUserData] = useState([]);
+    const [followerData, setFollowerData] = useState([]);
+    const [followingData, setFollowingData] = useState([]);
+    const {username} = useParams();
+
+    useEffect(() => {
+        (async () => {
+            let data = await getFrom("/users/" + username);
+            setUserData(data);
+
+            if (userData.length != 1) {
+                return;
+            }
+
+            for (let follower of userData[0].followers) {
+                data = await getFrom("/users" + follower);
+                setFollowerData([
+                    ...followerData,
+                    [data.username, `${data.firstName} ${data.lastName}`]
+                ]);
+            }
+            for (let following of userData[0].following) {
+                data = await getFrom("/users" + following);
+                setFollowingData([
+                    ...followingData,
+                    [data.username, `${data.firstName} ${data.lastName}`]
+                ]);
+            }
+        })();
+    }, []);
+
+    let formatFollowers = data => {
+        let formattedData = {};
+        for (let follower of data) {
+            formattedData[follower[0]] = {
+                avatar: TrollFace,
+                fullName: follower[1]
+            };
+        }
+        return formattedData;
+    };
+
+    return userData.length === 1 ? (
         <React.Fragment>
             <FourBar />
             <Grid
@@ -23,21 +68,10 @@ export default function ProfilePage(props) {
             >
                 <MyPosts />
                 <Grid sx={{display: "flex", flexDirection: "column"}}>
-                    <ProfileCard />
+                    <ProfileCard user={userData[0]} />
+                    <FolloweringList users={formatFollowers(followerData)} />
                     <FolloweringList
-                        users={{
-                            test: {avatar: TrollFace, date: "26/01/2023"},
-                            test2: {avatar: TrollFace, date: "25/01/2023"},
-                            test3: {avatar: TrollFace, date: "25/01/2023"}
-                        }}
-                    />
-                    <FolloweringList
-                        users={{
-                            test3: {avatar: TrollFace, date: "22/01/2023"},
-                            test4: {avatar: TrollFace, date: "23/01/2023"},
-                            test5: {avatar: TrollFace, date: "20/01/2023"},
-                            test6: {avatar: TrollFace, date: "19/01/2023"}
-                        }}
+                        users={formatFollowers(followingData)}
                         following
                     />
                 </Grid>
@@ -45,5 +79,7 @@ export default function ProfilePage(props) {
                 stats (on Paper component)? */}
             </Grid>
         </React.Fragment>
+    ) : (
+        <h1>User not found</h1>
     );
 }
