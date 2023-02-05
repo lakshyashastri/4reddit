@@ -3,12 +3,15 @@ import {useNavigate, withRouter} from "react-router-dom";
 
 import Logo from "./components/Logo";
 import {ROOT} from "./components/ProtectedRoute";
+import {getFrom, postTo} from "./helpers";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+
+// import bcrypt from "bcrypt";
 
 import logo from "./assets/4reddit_logo_trans.png";
 import logoGIF from "./assets/obamasphere.gif";
@@ -56,15 +59,21 @@ function SignInForm(props) {
         setPassword(event.target.value);
     };
 
-    let handleSignInClick = event => {
-        event.preventDefault();
-        if (username == "admin" && password == "admin") {
+    let handleSignInClick = async event => {
+        event.preventDefault(); // prevents page reload
+
+        let userData = await getFrom("/users/" + username);
+        if (userData.length) {
+            userData = userData[0];
+        }
+
+        if (username == userData.username && password == userData.password) {
             window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
             navigate(`/u/${username}`);
         } else {
             setWrongFields({
-                username: username == "admin" ? 0 : 1,
-                password: password == "admin" ? 0 : 1
+                username: username == userData.username ? 0 : 1,
+                password: password == userData.password ? 0 : 1
             });
         }
     };
@@ -161,10 +170,37 @@ function RegForm(props) {
         states[field][1](event.target.value);
     };
 
+    let formatData = () => {
+        let formattedData = {};
+        for (let state in states) {
+            if (state == "age") {
+                formattedData.dob = states[state][0];
+            } else {
+                formattedData[state] = states[state][0];
+            }
+        }
+        formattedData.followers = [];
+        formattedData.following = [];
+        formattedData.savedPosts = [];
+
+        return formattedData;
+    };
+
     let handleRegClick = event => {
         event.preventDefault();
-        window.localStorage.setItem("LOGGED_IN", JSON.stringify(true));
-        navigate("/u/admin");
+        postTo("/users", formatData())
+            .then(response => {
+                if (response.ok) {
+                    window.localStorage.setItem(
+                        "LOGGED_IN",
+                        JSON.stringify(true)
+                    );
+                    navigate("/u/admin");
+                } else {
+                    document.write("oops");
+                }
+            })
+            .catch(err => console.log(err));
     };
 
     return (

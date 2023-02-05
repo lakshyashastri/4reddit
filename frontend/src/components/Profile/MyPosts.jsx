@@ -81,6 +81,7 @@ export default function MyPosts() {
                             maxWidth: 796,
                             minWidth: 550
                         }}
+                        key={post}
                     >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography sx={{width: "27%", flexShrink: 0}}>

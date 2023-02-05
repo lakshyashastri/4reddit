@@ -1,5 +1,39 @@
 import {getModelCon} from "../config/connections.js";
 
-const userController = {};
+const userController = {
+    getAll: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+        let data = await Users.find();
+        res.send(data);
+    },
+    getOne: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+        const foundUser = await Users.find({username: req.params.username});
+        res.send(foundUser);
+    },
+    create: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+        if (Object.keys(req.body).length == 0) {
+            console.log("Empty request body");
+            return;
+        }
+
+        let newUser = new Users({
+            username: req.body.username,
+            password: req.body.password,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            number: req.body.number,
+            dob: req.body.dob,
+            followers: [],
+            following: [],
+            savedPosts: []
+        });
+        await newUser.save();
+
+        res.sendStatus(200);
+    }
+};
 
 export default userController;

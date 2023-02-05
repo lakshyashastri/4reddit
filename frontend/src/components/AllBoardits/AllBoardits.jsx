@@ -15,6 +15,8 @@ import Tooltip from "@mui/material/Tooltip";
 import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
 
+import Fuse from "fuse.js";
+
 import Loading from "../Loading";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -149,22 +151,34 @@ export default function AllBoarditsTable(props) {
     const headings = ["S. No.", "Boardit name", "Posts", "Followers"];
 
     const getRows = () => {
-        const filtered = tableData.filter(rowData =>
-            rowData.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        const options = {
+            includeScore: true,
+            keys: ["name"]
+        };
+
+        const fuse = new Fuse(tableData, options);
+        const filtered = fuse.search(searchTerm);
+
+        let finalData;
+        if (searchTerm == "") {
+            finalData = tableData;
+        } else {
+            finalData = filtered;
+        }
 
         let rows = [];
-        for (let [index, rowData] of filtered.entries()) {
+        for (let [index, rowData] of finalData.entries()) {
+            let parsedRowData = rowData.item ? rowData.item : rowData;
             rows.push(
                 <Row
                     key={index}
                     index={index}
-                    name={rowData.name}
-                    numPosts={rowData.posts.length}
-                    numFollowers={rowData.followers.length}
-                    description={rowData.description}
-                    tags={rowData.tags}
-                    createdAt={rowData.createdAt}
+                    name={parsedRowData.name}
+                    numPosts={parsedRowData.posts.length}
+                    numFollowers={parsedRowData.followers.length}
+                    description={parsedRowData.description}
+                    tags={parsedRowData.tags}
+                    createdAt={parsedRowData.createdAt}
                 />
             );
         }
@@ -190,7 +204,6 @@ export default function AllBoarditsTable(props) {
                     <TableBody>{getRows()}</TableBody>
                 </Table>
             </TableContainer>
-            <p style={{color: "white"}}>{searchTerm}</p>
         </React.Fragment>
     ) : (
         <Loading />
