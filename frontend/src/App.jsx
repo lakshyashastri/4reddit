@@ -27,7 +27,7 @@ export default function App() {
                     <Route path="/u/:username" element={<ProfilePage />} />
                     <Route path="/all" element={<AllBoarditsPage />} />
                 </Route>
-                <Route path="*" element={<NotFound />} />
+                <Route path="*" element={<NotFound message={404} />} />
             </Routes>
         </BrowserRouter>
     );

@@ -9,14 +9,16 @@ import MyPosts from "../components/Profile/MyPosts";
 import FolloweringList from "../components/Profile/FolloweringList";
 
 import {getFrom} from "../helpers";
+import NotFound from "./notFound";
 
 import TrollFace from "../assets/defaultIcon.jpg";
 
 export default function ProfilePage(props) {
+    const {username} = useParams();
+
     const [userData, setUserData] = useState([]);
     const [followerData, setFollowerData] = useState([]);
     const [followingData, setFollowingData] = useState([]);
-    const {username} = useParams();
 
     useEffect(() => {
         (async () => {
@@ -43,6 +45,12 @@ export default function ProfilePage(props) {
             }
         })();
     }, []);
+
+    if (userData.length === 0) {
+        return <NotFound message={"User not found"} />;
+    } else if (username != JSON.parse(localStorage.getItem("username"))) {
+        return <NotFound message={"This is not your user page"} />;
+    }
 
     let formatFollowers = data => {
         let formattedData = {};

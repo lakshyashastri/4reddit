@@ -13,7 +13,7 @@ export default function NotFound(props) {
 
     return (
         <React.Fragment>
-            <h1>404</h1>
+            <h1>{props.message}</h1>
             <Button size="large" variant="outlined" onClick={handleClick}>
                 Go home
             </Button>
