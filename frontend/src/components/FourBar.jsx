@@ -63,7 +63,7 @@ export default function FourBar(props) {
         "4chat": <ChatIcon />,
         "My BoardIts": <AppsIcon />,
         "All BoardIts": <PublicIcon />,
-        "Saved BoardIts": <BookmarksIcon />
+        "Saved posts": <BookmarksIcon />
     };
     const profileDropdown = ["My Profile", "Notifications", "Logout"];
 

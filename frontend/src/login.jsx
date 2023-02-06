@@ -232,7 +232,15 @@ function RegForm(props) {
                 />
             </Grid>
             <Grid style={getGridStyle()}>
-                <TextField {...getTextFieldStyle("Contact number", "number")} />
+                <TextField
+                    {...getTextFieldStyle(
+                        "Contact number",
+                        "number",
+                        250,
+                        "number"
+                    )}
+                    inputProps={{maxlength: 10}}
+                />
                 <TextField
                     {...getTextFieldStyle("Age (18+)", "age", 250, "number")}
                     error={age != "ok" && age < 18}
