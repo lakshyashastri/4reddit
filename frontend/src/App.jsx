@@ -9,6 +9,7 @@ import {
 import LoginPage from "./login";
 import ProfilePage from "./pages/Profile";
 import AllBoarditsPage from "./pages/AllBoardits";
+import MyBoarditsPage from "./pages/MyBoardits";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
@@ -26,6 +27,7 @@ export default function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route path="/u/:username" element={<ProfilePage />} />
                     <Route path="/all" element={<AllBoarditsPage />} />
+                    <Route path="/my" element={<MyBoarditsPage />} />
                 </Route>
                 <Route path="*" element={<NotFound message={404} />} />
             </Routes>

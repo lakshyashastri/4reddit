@@ -15,14 +15,20 @@ const boarditController = {
     createBoardit: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
 
+        let data = await Boardits.find({name: req.body.name});
+        if (data.length != 0) {
+            res.sendStatus(409);
+            return;
+        }
+
         let newBoardit = new Boardits({
             name: req.body.name,
             description: req.body.description,
-            tags: req.body.tags,
-            bannedKeywords: req.body.bannedKeywords,
-            posts: req.body.posts,
-            followers: req.body.followers,
-            createdBy: req.body.createdBy
+            tags: req.body.tags.split(", "),
+            bannedKeywords: req.body.bannedKeywords.split(", "),
+            posts: [],
+            createdBy: req.body.createdBy,
+            followers: [req.body.createdBy]
         });
         await newBoardit.save();
 

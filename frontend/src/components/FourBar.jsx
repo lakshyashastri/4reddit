@@ -43,6 +43,8 @@ export default function FourBar(props) {
     const handleCloseNavMenu = (event, page) => {
         if (event.target.textContent == "All BoardIts") {
             navigate("/all");
+        } else if (event.target.textContent == "My BoardIts") {
+            navigate("/my");
         }
         setAnchorElNav(null);
     };
