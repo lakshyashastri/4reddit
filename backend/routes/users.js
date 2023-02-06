@@ -5,7 +5,8 @@ import cors from "cors";
 const router = express.Router();
 
 router.get("/", userController.getAll);
-router.get("/:username", userController.getOne);
 router.post("/", userController.create);
+router.get("/:username", userController.getOne);
+router.get("/:username/boardits", userController.getBoards);
 
 export default router;

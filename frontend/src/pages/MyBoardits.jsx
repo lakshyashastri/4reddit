@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import Fade from "@mui/material/Fade";
 
 import FourBar from "../components/FourBar";
 import CreateNew from "../components/MyBoardits/CreateNew";
 import NewForm from "../components/MyBoardits/NewForm";
-import AllBoarditsTable from "../components/AllBoardits/AllBoardits";
+import MyBoarditsTable from "../components/MyBoardits/MyTable";
 
 const modalStyling = {
     position: "absolute",
@@ -38,6 +37,7 @@ export default function MyBoarditsPage(props) {
                     </Box>
                 </Fade>
             </Modal>
+            <MyBoarditsTable />
         </React.Fragment>
     );
 }

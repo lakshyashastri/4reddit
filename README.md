@@ -1,1 +1,2 @@
 - Usernames are unique
+- Boardit names must not have spaces

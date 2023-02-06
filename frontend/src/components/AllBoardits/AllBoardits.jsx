@@ -84,20 +84,24 @@ function Row(props) {
                             >
                                 {props.description}
                             </Typography>
-                            <Typography
-                                variant="h6"
-                                gutterBottom
-                                component="div"
-                            >
-                                Tags
-                            </Typography>
-                            <Typography
-                                color="text.primary"
-                                gutterBottom
-                                component="div"
-                            >
-                                {props.tags.join(", ")}
-                            </Typography>
+                            {props.tags[0] != "" ? (
+                                <React.Fragment>
+                                    <Typography
+                                        variant="h6"
+                                        gutterBottom
+                                        component="div"
+                                    >
+                                        Tags
+                                    </Typography>
+                                    <Typography
+                                        color="text.primary"
+                                        gutterBottom
+                                        component="div"
+                                    >
+                                        {props.tags.join(", ")}
+                                    </Typography>
+                                </React.Fragment>
+                            ) : null}
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -173,7 +177,7 @@ export default function AllBoarditsTable(props) {
                 <Row
                     key={index}
                     index={index}
-                    name={parsedRowData.name}
+                    name={"r/" + parsedRowData.name}
                     numPosts={parsedRowData.posts.length}
                     numFollowers={parsedRowData.followers.length}
                     description={parsedRowData.description}

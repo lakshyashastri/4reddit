@@ -9,6 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {postTo} from "../../helpers";
 
 import AddIcon from "@mui/icons-material/Add";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
 function HeadingText(props) {
     return (
@@ -52,7 +53,10 @@ export default function NewForm(props) {
 
         setNameExists(false);
         setCreated(true);
-        setTimeout(() => props.modalFunc(false), 2000);
+        setTimeout(() => {
+            props.modalFunc(false);
+            window.location.reload();
+        }, 1200);
     };
 
     return (
@@ -120,7 +124,7 @@ export default function NewForm(props) {
                     // disabled={created}
                 >
                     <Box marginRight={0.8} paddingTop={0.6}>
-                        <AddIcon />
+                        {created ? <DoneOutlineIcon /> : <AddIcon />}
                     </Box>
                     {created ? "Boardit created" : "Create"}
                 </Button>

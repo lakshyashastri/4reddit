@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Loading(props) {
     return (
-        <Box sx={{display: "flex", justifyContent: "center"}}>
+        <Box sx={{display: "flex", justifyContent: "center"}} marginTop={3}>
             <CircularProgress
                 color={props.color ? props.color : "info"}
                 size={props.size ? props.size : 60}

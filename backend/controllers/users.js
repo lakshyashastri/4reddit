@@ -33,6 +33,11 @@ const userController = {
         await newUser.save();
 
         res.sendStatus(200);
+    },
+    getBoards: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+        let data = await Boardits.find({followers: req.params.username});
+        res.send(data);
     }
 };
 

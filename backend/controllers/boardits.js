@@ -52,7 +52,6 @@ const boarditController = {
         while (match.length != 0) {
             postID = getID();
             match = await Posts.find({id: postID});
-            console.log(match);
         }
 
         let newPost = new Posts({
@@ -71,6 +70,11 @@ const boarditController = {
         );
 
         res.send(postID);
+    },
+    deleteBoardit: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+        let data = await Boardits.deleteOne({name: req.params.boarditName});
+        res.send(data);
     }
 };
 
