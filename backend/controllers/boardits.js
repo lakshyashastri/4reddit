@@ -22,7 +22,7 @@ const boarditController = {
         }
 
         let newBoardit = new Boardits({
-            name: req.body.name,
+            name: req.body.name.replace(/\s/g, "_"),
             description: req.body.description,
             tags: req.body.tags.split(", "),
             bannedKeywords: req.body.bannedKeywords.split(", "),

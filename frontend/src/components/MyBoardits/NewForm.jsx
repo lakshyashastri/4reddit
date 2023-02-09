@@ -59,6 +59,11 @@ export default function NewForm(props) {
         }, 1200);
     };
 
+    const handleNameChange = event => {
+        event.target.value = event.target.value.replace(/\s/g, "_");
+        setName(event.target.value);
+    };
+
     return (
         <React.Fragment>
             <HeadingText />
@@ -67,7 +72,7 @@ export default function NewForm(props) {
                     {...inputFieldProps}
                     label="Boardit name"
                     fullWidth
-                    onChange={event => setName(event.target.value)}
+                    onChange={handleNameChange}
                     error={nameExists}
                     helperText={
                         nameExists
