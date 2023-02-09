@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -32,6 +33,8 @@ function Row(props) {
     const [open, setOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleted, setDeleted] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleDelete = async () => {
         if (deleted) {
@@ -152,6 +155,7 @@ function Row(props) {
                                 <Button
                                     variant="contained"
                                     sx={{marginBottom: 2, marginTop: 2}}
+                                    onClick={() => navigate("/" + props.name)}
                                 >
                                     <Box mt={0.8} mr={1}>
                                         <OpenInNewIcon />

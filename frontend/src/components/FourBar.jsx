@@ -22,6 +22,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import AppsIcon from "@mui/icons-material/Apps";
 import PublicIcon from "@mui/icons-material/Public";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import InfoIcon from "@mui/icons-material/Info";
 
 import Logo from "./Logo";
 import {ROOT} from "./ProtectedRoute";
@@ -30,6 +31,7 @@ import TrollFace from "../assets/defaultIcon.jpg";
 export default function FourBar(props) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [anchorElBoardit, setAnchorElBoardit] = useState(null);
 
     const navigate = useNavigate();
 
@@ -38,6 +40,9 @@ export default function FourBar(props) {
     };
     const handleOpenUserMenu = event => {
         setAnchorElUser(event.currentTarget);
+    };
+    const handleOpenBoarditMenu = event => {
+        setAnchorElBoardit(event.currentTarget);
     };
 
     const handleCloseNavMenu = (event, page) => {
@@ -60,6 +65,10 @@ export default function FourBar(props) {
         setAnchorElUser(null);
     };
 
+    const handleCloseBoarditMenu = event => {
+        setAnchorElBoardit(null);
+    };
+
     const barItems = {
         Home: <HomeIcon />,
         "4chat": <ChatIcon />,
@@ -68,6 +77,7 @@ export default function FourBar(props) {
         "Saved posts": <BookmarksIcon />
     };
     const profileDropdown = ["My Profile", "Notifications", "Logout"];
+    const boarditInfo = ["Users", "Join requests", "Stats", "Reports"];
 
     return (
         <AppBar position="static">
@@ -162,10 +172,76 @@ export default function FourBar(props) {
                                     <Box mt={0.8} mr={1}>
                                         {barItems[page]}
                                     </Box>
-                                    {page}
+                                    <Typography>{page}</Typography>
                                 </Box>
                             </Button>
                         ))}
+                        {props.boarditName ? (
+                            <React.Fragment>
+                                <Button
+                                    key="boardit"
+                                    onClick={handleOpenBoarditMenu}
+                                    sx={{
+                                        my: 2,
+                                        color: "white",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        width: "100%"
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "flex-start"
+                                        }}
+                                    >
+                                        <Box mt={0.8} mr={1}>
+                                            <InfoIcon />
+                                        </Box>
+
+                                        <Typography>
+                                            <Box
+                                                sx={{
+                                                    textTransform: "lowercase",
+                                                    fontSize: 19
+                                                }}
+                                            >
+                                                r/{props.boarditName}
+                                            </Box>
+                                        </Typography>
+                                    </Box>
+                                </Button>
+                                <Menu
+                                    sx={{mt: "45px"}}
+                                    id="menu-boardit"
+                                    anchorEl={anchorElBoardit}
+                                    anchorOrigin={{
+                                        vertical: "top",
+                                        horizontal: "center"
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "center"
+                                    }}
+                                    open={Boolean(anchorElBoardit)}
+                                    onClose={handleCloseBoarditMenu}
+                                >
+                                    {boarditInfo.map(setting => (
+                                        <MenuItem
+                                            key={setting}
+                                            onClick={handleCloseBoarditMenu}
+                                        >
+                                            <Typography textAlign="center">
+                                                {setting}
+                                            </Typography>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </React.Fragment>
+                        ) : null}
                     </Box>
                     <Box sx={{flexGrow: 0.03}}>
                         <Tooltip
