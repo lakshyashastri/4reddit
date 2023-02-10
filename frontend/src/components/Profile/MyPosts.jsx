@@ -78,7 +78,7 @@ export default function MyPosts() {
                         expanded={expanded === post}
                         onChange={handleChange(post)}
                         sx={{
-                            maxWidth: 796,
+                            maxWidth: 1000,
                             minWidth: 550
                         }}
                         key={post}

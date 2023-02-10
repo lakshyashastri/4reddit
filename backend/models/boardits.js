@@ -23,6 +23,10 @@ export const boarditSchema = new Schema(
             type: [String],
             required: true
         },
+        mods: {
+            type: [String],
+            required: true
+        },
         followers: {
             type: [String],
             required: true
@@ -32,6 +36,10 @@ export const boarditSchema = new Schema(
             required: true
         },
         pendingRequests: {
+            type: [String],
+            required: true
+        },
+        left: {
             type: [String],
             required: true
         },

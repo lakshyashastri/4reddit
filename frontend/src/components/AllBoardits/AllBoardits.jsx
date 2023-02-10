@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -14,17 +15,50 @@ import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
 import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
 
 import Fuse from "fuse.js";
 
 import Loading from "../Loading";
+import ConfirmationDialog from "../Confirmation";
+import {getFrom} from "../../helpers";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import SearchIcon from "@mui/icons-material/Search";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LoginIcon from "@mui/icons-material/Login";
 
 function Row(props) {
     const [open, setOpen] = useState(false);
+    const [left, setLeft] = useState(false);
+    const [joined, setJoined] = useState(false);
+
+    const navigate = useNavigate();
+
+    const handleLeave = async () => {
+        if (left) {
+            return;
+        }
+        let res = await getFrom("");
+        if (res.deletedCount == 1) {
+            setLeft(true);
+            setTimeout(() => window.location.reload(), 800);
+        }
+    };
+
+    const handleJoin = async () => {
+        if (joined) {
+            return;
+        }
+        let res = await getFrom("");
+        if (res.deletedCount == 1) {
+            setJoined(true);
+            setTimeout(() => window.location.reload(), 800);
+        }
+    };
 
     return (
         <React.Fragment>
@@ -40,10 +74,13 @@ function Row(props) {
                     {props.index + 1}
                 </TableCell>
                 {Object.keys(props).map(prop =>
-                    prop !== "description" &&
-                    prop !== "tags" &&
-                    prop !== "index" &&
-                    prop !== "createdAt" ? (
+                    ![
+                        "description",
+                        "tags",
+                        "index",
+                        "createdAt",
+                        "bannedKeywords"
+                    ].includes(prop) ? (
                         <TableCell align="center">
                             <Typography variant="subtitle1">
                                 {prop !== "name" ? (
@@ -54,7 +91,42 @@ function Row(props) {
                                         TransitionComponent={Zoom}
                                         arrow
                                     >
-                                        <span>{props[prop]}</span>
+                                        <Grid
+                                            container
+                                            // spacing={1}
+                                            display="flex"
+                                            justifyContent="center"
+                                        >
+                                            <Grid item>
+                                                <Button
+                                                    variant="text"
+                                                    sx={{
+                                                        textTransform:
+                                                            "lowercase",
+                                                        fontSize: 16
+                                                    }}
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/r/${props.name.slice(
+                                                                2
+                                                            )}`
+                                                        )
+                                                    }
+                                                >
+                                                    {props[prop]}
+                                                </Button>
+                                            </Grid>
+
+                                            {props.joined ? (
+                                                <Grid item marginTop={0.6}>
+                                                    <Chip
+                                                        label="Joined"
+                                                        color="primary"
+                                                        size="small"
+                                                    />
+                                                </Grid>
+                                            ) : null}
+                                        </Grid>
                                     </Tooltip>
                                 )}
                             </Typography>
@@ -68,40 +140,107 @@ function Row(props) {
                     colSpan={6}
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{margin: 1}}>
-                            <Typography
-                                variant="h6"
-                                gutterBottom
-                                component="div"
+                        <Grid display="flex" justifyContent="space-between">
+                            <Box sx={{margin: 1}}>
+                                <Typography
+                                    variant="h6"
+                                    gutterBottom
+                                    component="div"
+                                >
+                                    Description
+                                </Typography>
+                                <Typography
+                                    color="text.primary"
+                                    gutterBottom
+                                    component="div"
+                                >
+                                    {props.description}
+                                </Typography>
+                                {props.tags[0] != "" ? (
+                                    <React.Fragment>
+                                        <Typography
+                                            variant="h6"
+                                            gutterBottom
+                                            component="div"
+                                        >
+                                            Tags
+                                        </Typography>
+                                        <Typography
+                                            color="text.primary"
+                                            gutterBottom
+                                            component="div"
+                                        >
+                                            {props.tags.join(", ")}
+                                        </Typography>
+                                    </React.Fragment>
+                                ) : null}
+                                {props.bannedKeywords[0] != "" ? (
+                                    <React.Fragment>
+                                        <Typography
+                                            variant="h6"
+                                            gutterBottom
+                                            component="div"
+                                        >
+                                            Banned keywords
+                                        </Typography>
+                                        <Typography
+                                            color="text.primary"
+                                            gutterBottom
+                                            component="div"
+                                        >
+                                            {props.bannedKeywords.join(", ")}
+                                        </Typography>
+                                    </React.Fragment>
+                                ) : null}
+                            </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                alignContent="center"
+                                justifyContent="center"
+                                margin="auto"
                             >
-                                Description
-                            </Typography>
-                            <Typography
-                                color="text.primary"
-                                gutterBottom
-                                component="div"
-                            >
-                                {props.description}
-                            </Typography>
-                            {props.tags[0] != "" ? (
-                                <React.Fragment>
-                                    <Typography
-                                        variant="h6"
-                                        gutterBottom
-                                        component="div"
+                                {props.joined ? (
+                                    <Button
+                                        color={left ? "success" : "error"}
+                                        variant="contained"
+                                        sx={{margin: 2}}
+                                        onClick={handleLeave}
+                                        disabled={props.isMod}
                                     >
-                                        Tags
-                                    </Typography>
-                                    <Typography
-                                        color="text.primary"
-                                        gutterBottom
-                                        component="div"
+                                        <Box mt={0.8} mr={1}>
+                                            {left ? (
+                                                <DoneOutlineIcon />
+                                            ) : (
+                                                <ExitToAppIcon />
+                                            )}
+                                        </Box>
+                                        {left
+                                            ? "Boardit unfollowed!"
+                                            : `Leave ${props.name.slice(2)}`}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        color={joined ? "success" : "primary"}
+                                        variant="contained"
+                                        sx={{margin: 2}}
+                                        onClick={handleJoin}
+                                        disabled={props.isMod}
                                     >
-                                        {props.tags.join(", ")}
-                                    </Typography>
-                                </React.Fragment>
-                            ) : null}
-                        </Box>
+                                        <Box mt={0.8} mr={1}>
+                                            {left ? (
+                                                <DoneOutlineIcon />
+                                            ) : (
+                                                <LoginIcon />
+                                            )}
+                                        </Box>
+                                        {left
+                                            ? "Join request sent!"
+                                            : `Join ${props.name.slice(2)}`}
+                                    </Button>
+                                )}
+                            </Box>
+                        </Grid>
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -172,6 +311,7 @@ export default function AllBoarditsTable(props) {
         let rows = [];
         for (let [index, rowData] of finalData.entries()) {
             let parsedRowData = rowData.item ? rowData.item : rowData;
+
             rows.push(
                 <Row
                     key={index}
@@ -181,12 +321,22 @@ export default function AllBoarditsTable(props) {
                     numFollowers={parsedRowData.followers.length}
                     description={parsedRowData.description}
                     tags={parsedRowData.tags}
+                    bannedKeywords={parsedRowData.bannedKeywords}
                     createdAt={parsedRowData.createdAt}
                     createdBy={parsedRowData.createdBy}
+                    joined={parsedRowData.followers.includes(
+                        JSON.parse(localStorage.getItem("username"))
+                    )}
+                    isMod={parsedRowData.mods.includes(
+                        JSON.parse(localStorage.getItem("username"))
+                    )}
                 />
             );
         }
-        return rows;
+
+        return rows
+            .sort((a, b) => b.props.joined - a.props.joined)
+            .map((element, index) => React.cloneElement(element, {index}));
     };
 
     return tableData ? (

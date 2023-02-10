@@ -27,9 +27,11 @@ const boarditController = {
             tags: req.body.tags.split(", "),
             bannedKeywords: req.body.bannedKeywords.split(", "),
             posts: [],
+            mods: [req.body.createdBy],
             createdBy: req.body.createdBy,
             blockedUsers: [],
             pendingRequests: [],
+            left: [],
             followers: [req.body.createdBy]
         });
         await newBoardit.save();
@@ -77,6 +79,75 @@ const boarditController = {
         const [client, Boardits] = await getModelCon("boardits");
         let data = await Boardits.deleteOne({name: req.params.boarditName});
         res.send(data);
+    },
+    joinUser: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+
+        let data = await Boardits.findOne({
+            name: req.params.boarditName,
+            pendingRequests: {$in: [req.params.username]}
+        });
+
+        if (data != null) {
+            res.sendStatus(409); // request already sent, pending
+            return;
+        }
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$push: {pendingRequests: req.params.username}}
+        );
+
+        res.sendStatus(200);
+    },
+    acceptUser: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+
+        let reqPending = await Boardits.findOne({
+            name: req.params.boarditName,
+            pendingRequests: {$in: [req.params.username]}
+        });
+
+        if (reqPending == null) {
+            res.sendStatus(404);
+            return;
+        }
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$pull: {pendingRequests: req.params.username}}
+        );
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$push: {followers: req.params.username}}
+        );
+
+        res.sendStatus(200);
+    },
+    leaveUser: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+
+        let data = await Boardits.findOne({
+            name: req.params.boarditName,
+            followers: {$in: [req.params.username]}
+        });
+
+        if (data == null) {
+            res.sendStatus(404); // not a member
+            return;
+        }
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$pull: {followers: req.params.username}}
+        );
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$push: {left: req.params.username}}
+        );
+
+        res.sendStatus(200);
     }
 };
 
