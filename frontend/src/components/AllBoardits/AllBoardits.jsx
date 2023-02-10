@@ -35,6 +35,8 @@ function Row(props) {
     const [open, setOpen] = useState(false);
     const [left, setLeft] = useState(false);
     const [joined, setJoined] = useState(false);
+    const [joinSentAlready, setJoinSentAlready] = useState(false);
+    // const [notMember, setNotMember] = useState(false);
 
     const navigate = useNavigate();
 
@@ -42,21 +44,38 @@ function Row(props) {
         if (left) {
             return;
         }
-        let res = await getFrom("");
-        if (res.deletedCount == 1) {
+
+        let res = await getFrom(
+            `/boardits/${props.name.slice(2)}/leave/${JSON.parse(
+                window.localStorage.getItem("username")
+            )}`
+        );
+
+        if (res.ok) {
             setLeft(true);
             setTimeout(() => window.location.reload(), 800);
         }
+        // } else if (res.status == 404) {
+        //     setNotMember(true);
+        // }
     };
 
     const handleJoin = async () => {
         if (joined) {
             return;
         }
-        let res = await getFrom("");
-        if (res.deletedCount == 1) {
+
+        let res = await getFrom(
+            `/boardits/${props.name.slice(2)}/join/${JSON.parse(
+                window.localStorage.getItem("username")
+            )}`
+        );
+
+        if (res.ok) {
             setJoined(true);
             setTimeout(() => window.location.reload(), 800);
+        } else if (res.status == 409) {
+            setJoinSentAlready(true);
         }
     };
 
@@ -200,13 +219,13 @@ function Row(props) {
                                 justifyContent="center"
                                 margin="auto"
                             >
-                                {props.joined ? (
+                                {props.joined || props.left ? (
                                     <Button
                                         color={left ? "success" : "error"}
                                         variant="contained"
                                         sx={{margin: 2}}
                                         onClick={handleLeave}
-                                        disabled={props.isMod}
+                                        disabled={props.isMod || props.left}
                                     >
                                         <Box mt={0.8} mr={1}>
                                             {left ? (
@@ -215,7 +234,9 @@ function Row(props) {
                                                 <ExitToAppIcon />
                                             )}
                                         </Box>
-                                        {left
+                                        {props.left
+                                            ? "You cannot send a join request again"
+                                            : left
                                             ? "Boardit unfollowed!"
                                             : `Leave ${props.name.slice(2)}`}
                                     </Button>
@@ -225,7 +246,11 @@ function Row(props) {
                                         variant="contained"
                                         sx={{margin: 2}}
                                         onClick={handleJoin}
-                                        disabled={props.isMod}
+                                        disabled={
+                                            props.isMod ||
+                                            joinSentAlready ||
+                                            props.reqPending
+                                        }
                                     >
                                         <Box mt={0.8} mr={1}>
                                             {left ? (
@@ -234,7 +259,11 @@ function Row(props) {
                                                 <LoginIcon />
                                             )}
                                         </Box>
-                                        {left
+                                        {props.reqPending ||
+                                        joinSentAlready ||
+                                        joined
+                                            ? "Request already pending"
+                                            : left
                                             ? "Join request sent!"
                                             : `Join ${props.name.slice(2)}`}
                                     </Button>
@@ -309,6 +338,7 @@ export default function AllBoarditsTable(props) {
         }
 
         let rows = [];
+        let username = JSON.parse(localStorage.getItem("username"));
         for (let [index, rowData] of finalData.entries()) {
             let parsedRowData = rowData.item ? rowData.item : rowData;
 
@@ -324,12 +354,12 @@ export default function AllBoarditsTable(props) {
                     bannedKeywords={parsedRowData.bannedKeywords}
                     createdAt={parsedRowData.createdAt}
                     createdBy={parsedRowData.createdBy}
-                    joined={parsedRowData.followers.includes(
-                        JSON.parse(localStorage.getItem("username"))
+                    joined={parsedRowData.followers.includes(username)}
+                    reqPending={parsedRowData.pendingRequests.includes(
+                        username
                     )}
-                    isMod={parsedRowData.mods.includes(
-                        JSON.parse(localStorage.getItem("username"))
-                    )}
+                    left={parsedRowData.left.includes(username)}
+                    isMod={parsedRowData.mods.includes(username)}
                 />
             );
         }

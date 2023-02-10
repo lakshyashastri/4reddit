@@ -13,9 +13,17 @@ export function postTo(url, data) {
 export async function getFrom(url) {
     let res = await fetch(API_PATH + url);
     if (res.ok) {
-        let data = await res.json();
-        return data;
+        const isJson = res.headers
+            .get("content-type")
+            ?.includes("application/json");
+
+        if (isJson) {
+            let data = await res.json();
+            return data;
+        } else {
+            return res;
+        }
     } else {
-        return res.statusText;
+        return res;
     }
 }
