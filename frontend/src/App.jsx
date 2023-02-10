@@ -5,6 +5,7 @@ import ProfilePage from "./pages/Profile";
 import AllBoarditsPage from "./pages/AllBoardits";
 import MyBoarditsPage from "./pages/MyBoardits";
 import BoarditPage from "./pages/BoarditPage";
+import BoarditUsers from "./pages/BoarditPages/Users";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
@@ -29,10 +30,16 @@ export default function App() {
                 {redirect(["/u", "/r"], "/all")}
 
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/u/:username" element={<ProfilePage />} />
                     <Route path="/all" element={<AllBoarditsPage />} />
                     <Route path="/my" element={<MyBoarditsPage />} />
+
+                    <Route path="/u/:username" element={<ProfilePage />} />
                     <Route path="/r/:boarditName" element={<BoarditPage />} />
+
+                    <Route
+                        path="/r/:boarditName/users"
+                        element={<BoarditUsers />}
+                    />
                 </Route>
                 <Route path="*" element={<NotFound message={404} />} />
             </Routes>

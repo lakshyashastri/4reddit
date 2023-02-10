@@ -28,6 +28,8 @@ const boarditController = {
             bannedKeywords: req.body.bannedKeywords.split(", "),
             posts: [],
             createdBy: req.body.createdBy,
+            blockedUsers: [],
+            pendingRequests: [],
             followers: [req.body.createdBy]
         });
         await newBoardit.save();

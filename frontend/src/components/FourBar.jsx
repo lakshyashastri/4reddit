@@ -46,7 +46,9 @@ export default function FourBar(props) {
     };
 
     const handleCloseNavMenu = (event, page) => {
-        if (event.target.textContent == "All BoardIts") {
+        if (event.target.textContent == "Home") {
+            navigate("/");
+        } else if (event.target.textContent == "All BoardIts") {
             navigate("/all");
         } else if (event.target.textContent == "My BoardIts") {
             navigate("/my");
@@ -66,6 +68,11 @@ export default function FourBar(props) {
     };
 
     const handleCloseBoarditMenu = event => {
+        if (event.target.textContent == "Home") {
+            navigate(`/r/${props.boarditName}`);
+        } else if (event.target.textContent == "Users") {
+            navigate(`/r/${props.boarditName}/users`);
+        }
         setAnchorElBoardit(null);
     };
 
@@ -77,7 +84,7 @@ export default function FourBar(props) {
         "Saved posts": <BookmarksIcon />
     };
     const profileDropdown = ["My Profile", "Notifications", "Logout"];
-    const boarditInfo = ["Users", "Join requests", "Stats", "Reports"];
+    const boarditInfo = ["Home", "Users", "Join requests", "Stats", "Reports"];
 
     return (
         <AppBar position="static">
@@ -201,7 +208,7 @@ export default function FourBar(props) {
                                             <InfoIcon />
                                         </Box>
 
-                                        <Typography>
+                                        <Typography component={"div"}>
                                             <Box
                                                 sx={{
                                                     textTransform: "lowercase",

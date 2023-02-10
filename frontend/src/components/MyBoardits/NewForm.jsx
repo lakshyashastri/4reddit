@@ -56,7 +56,7 @@ export default function NewForm(props) {
         setTimeout(() => {
             props.modalFunc(false);
             window.location.reload();
-        }, 1200);
+        }, 800);
     };
 
     const handleNameChange = event => {

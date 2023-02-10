@@ -43,8 +43,7 @@ function Row(props) {
                     prop !== "description" &&
                     prop !== "tags" &&
                     prop !== "index" &&
-                    prop !== "createdAt" &&
-                    prop !== "createdBy" ? (
+                    prop !== "createdAt" ? (
                         <TableCell align="center">
                             <Typography variant="subtitle1">
                                 {prop !== "name" ? (
@@ -152,7 +151,7 @@ export default function AllBoarditsTable(props) {
         })();
     }, []);
 
-    const headings = ["S. No.", "Boardit name", "Posts", "Followers"];
+    const headings = ["S. No.", "Boardit name", "Posts", "Followers", "Owner"];
 
     const getRows = () => {
         const options = {
@@ -183,6 +182,7 @@ export default function AllBoarditsTable(props) {
                     description={parsedRowData.description}
                     tags={parsedRowData.tags}
                     createdAt={parsedRowData.createdAt}
+                    createdBy={parsedRowData.createdBy}
                 />
             );
         }

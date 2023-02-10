@@ -27,6 +27,14 @@ export const boarditSchema = new Schema(
             type: [String],
             required: true
         },
+        blockedUsers: {
+            type: [String],
+            required: true
+        },
+        pendingRequests: {
+            type: [String],
+            required: true
+        },
         createdBy: {
             type: String,
             required: true
