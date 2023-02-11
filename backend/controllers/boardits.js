@@ -60,6 +60,7 @@ const boarditController = {
 
         let newPost = new Posts({
             id: postID,
+            title: req.body.title,
             text: req.body.text,
             postedBy: req.body.postedBy,
             postedIn: boardit.name,
@@ -78,6 +79,10 @@ const boarditController = {
     deleteBoardit: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
         let data = await Boardits.deleteOne({name: req.params.boarditName});
+
+        const [postClient, Posts] = await getModelCon("posts");
+        await Posts.deleteMany({postedIn: req.params.boarditName});
+
         res.send(data);
     },
     joinUser: async (req, res) => {

@@ -4,7 +4,7 @@ import LoginPage from "./login";
 import ProfilePage from "./pages/Profile";
 import AllBoarditsPage from "./pages/AllBoardits";
 import MyBoarditsPage from "./pages/MyBoardits";
-import BoarditPage from "./pages/BoarditPage";
+import BoarditPage from "./pages/BoarditPages/Home";
 import BoarditUsers from "./pages/BoarditPages/Users";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";

@@ -6,6 +6,10 @@ export const postSchema = new Schema(
             type: String,
             unique: true
         },
+        title: {
+            type: String,
+            required: true
+        },
         text: {
             type: String,
             required: true
