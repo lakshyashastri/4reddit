@@ -3,16 +3,23 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
 
-import {getFrom} from "../helpers";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import {getFrom, modalStyling} from "../helpers";
+import NewCommentModal from "./BoarditPage/NewCommentModal";
 import VoteButton from "./VoteButton";
 import Loading from "../components/Loading";
 
 export default function Posts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -81,6 +88,50 @@ export default function Posts(props) {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>{post.text}</Typography>
+                                <Grid
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-evenly"
+                                    }}
+                                    spacing={1}
+                                    container
+                                >
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            color="info"
+                                            style={{marginTop: 10}}
+                                            onClick={() => setShowModal(true)}
+                                        >
+                                            Add comment
+                                        </Button>
+                                    </Grid>
+                                    <Modal
+                                        sx={{marginTop: 3}}
+                                        open={showModal}
+                                        onClose={() => setShowModal(false)}
+                                    >
+                                        <Fade in={showModal}>
+                                            <Box sx={modalStyling}>
+                                                <NewCommentModal
+                                                    modalFunc={setShowModal}
+                                                    postID={post.id}
+                                                />
+                                            </Box>
+                                        </Fade>
+                                    </Modal>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            color="info"
+                                            style={{marginTop: 10}}
+                                            // onClick={}
+                                        >
+                                            View comments (
+                                            {post.comments.length})
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </AccordionDetails>
                         </Accordion>
                     );

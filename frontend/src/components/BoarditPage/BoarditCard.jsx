@@ -17,18 +17,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 import Logo from "../../assets/4reddit_logo_trans.png";
-
-const modalStyling = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    maxWidth: 900,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4
-};
+import {modalStyling} from "../../helpers";
 
 export default function BoarditCard(props) {
     const [infoShown, setInfoShown] = useState(false);

@@ -6,6 +6,7 @@ import cors from "cors";
 import boardits from "./routes/boardits.js";
 import users from "./routes/users.js";
 import posts from "./routes/posts.js";
+import comments from "./routes/comments.js";
 
 // vars
 const app = express(); // express app
@@ -23,6 +24,7 @@ app.use("/4reddit/api", router); // base url
 router.use("/boardits", boardits);
 router.use("/users", users);
 router.use("/posts", posts);
+router.use("/comments", comments);
 
 // start app
 app.listen(PORT);

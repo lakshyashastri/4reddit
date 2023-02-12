@@ -7,18 +7,7 @@ import FourBar from "../components/FourBar";
 import CreateNew from "../components/MyBoardits/CreateNew";
 import NewForm from "../components/MyBoardits/NewForm";
 import MyBoarditsTable from "../components/MyBoardits/MyTable";
-
-const modalStyling = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    maxWidth: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4
-};
+import {modalStyling} from "../helpers";
 
 export default function MyBoarditsPage(props) {
     const [showModal, setShowModal] = useState(false);

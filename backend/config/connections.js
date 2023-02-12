@@ -4,13 +4,15 @@ import {userSchema} from "../models/users.js";
 import {boarditSchema} from "../models/boardits.js";
 import {postSchema} from "../models/posts.js";
 import {reportSchema} from "../models/reports.js";
+import {commentSchema} from "../models/comments.js";
 
 export const uri = "mongodb://localhost:27017/4reddit";
 const nameToSchema = {
     users: userSchema,
     boardits: boarditSchema,
     posts: postSchema,
-    reports: reportSchema
+    reports: reportSchema,
+    comments: commentSchema
 };
 
 export async function getModelCon(modelName) {

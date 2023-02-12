@@ -23,11 +23,7 @@ export default function VoteButton(props) {
     useEffect(() => {
         (async () => {
             let data = await getFrom(`/posts/${props.postData.id}`);
-            console.log(
-                props.upvote
-                    ? data.upvotedBy.includes(username)
-                    : data.downvotedBy.includes(username)
-            );
+
             setAlreadyVoted(
                 props.upvote
                     ? data.upvotedBy.includes(username)
