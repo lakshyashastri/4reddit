@@ -14,12 +14,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {getFrom, modalStyling} from "../helpers";
 import NewCommentModal from "./BoarditPage/NewCommentModal";
 import VoteButton from "./VoteButton";
-import Loading from "../components/Loading";
+import SavePost from "./SavePost";
+import Loading from "./Loading";
 
 export default function Posts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [showAddCommentModal, setShowAddCommentModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -101,25 +102,34 @@ export default function Posts(props) {
                                             variant="contained"
                                             color="info"
                                             style={{marginTop: 10}}
-                                            onClick={() => setShowModal(true)}
+                                            onClick={() =>
+                                                setShowAddCommentModal(true)
+                                            }
                                         >
                                             Add comment
                                         </Button>
                                     </Grid>
                                     <Modal
                                         sx={{marginTop: 3}}
-                                        open={showModal}
-                                        onClose={() => setShowModal(false)}
+                                        open={showAddCommentModal}
+                                        onClose={() =>
+                                            setShowAddCommentModal(false)
+                                        }
                                     >
-                                        <Fade in={showModal}>
+                                        <Fade in={showAddCommentModal}>
                                             <Box sx={modalStyling}>
                                                 <NewCommentModal
-                                                    modalFunc={setShowModal}
+                                                    modalFunc={
+                                                        setShowAddCommentModal
+                                                    }
                                                     postID={post.id}
                                                 />
                                             </Box>
                                         </Fade>
                                     </Modal>
+                                    <Grid item>
+                                        <SavePost post={post} />
+                                    </Grid>
                                     <Grid item>
                                         <Button
                                             variant="contained"

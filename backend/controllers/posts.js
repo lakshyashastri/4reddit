@@ -56,6 +56,45 @@ const postController = {
         );
 
         res.sendStatus(200);
+    },
+    save: async (req, res) => {
+        const [client, Posts] = await getModelCon("posts");
+        const [userClient, Users] = await getModelCon("users");
+
+        let post_exists = await Posts.find({id: req.params.postID});
+        if (post_exists.length == 0) {
+            res.sendStatus(404);
+        }
+
+        await Users.updateOne(
+            {username: req.body.user},
+            {$push: {savedPosts: req.params.postID}}
+        );
+
+        res.sendStatus(200);
+    },
+    unsave: async (req, res) => {
+        const [client, Posts] = await getModelCon("posts");
+        const [userClient, Users] = await getModelCon("users");
+
+        let post_exists = await Posts.find({id: req.params.postID});
+        if (post_exists.length == 0) {
+            res.sendStatus(404);
+        }
+
+        let postSaved = await Users.find({
+            savedPosts: {$in: req.params.postID}
+        });
+        if (postSaved.length == 0) {
+            res.sendStatus(404);
+        }
+
+        await Users.updateOne(
+            {username: req.body.user},
+            {$pull: {savedPosts: req.params.postID}}
+        );
+
+        res.sendStatus(200);
     }
 };
 
