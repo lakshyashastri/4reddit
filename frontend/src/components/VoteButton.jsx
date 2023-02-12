@@ -10,18 +10,39 @@ import ThumbDownSharpIcon from "@mui/icons-material/ThumbDownSharp";
 
 export default function VoteButton(props) {
     const username = JSON.parse(window.localStorage.getItem("username"));
-    const alreadyVoted = props.upvote
-        ? props.postData.upvotedBy.includes(username)
-        : props.postData.downvotedBy.includes(username);
+
+    const [alreadyVoted, setAlreadyVoted] = useState(
+        props.upvote
+            ? props.postData.upvotedBy.includes(username)
+            : props.postData.downvotedBy.includes(username)
+    );
+    const [count, setCount] = useState(
+        props.upvote ? props.postData.upvotes : props.postData.downvotes
+    );
+
+    useEffect(() => {
+        (async () => {
+            let data = await getFrom(`/posts/${props.postData.id}`);
+            console.log(
+                props.upvote
+                    ? data.upvotedBy.includes(username)
+                    : data.downvotedBy.includes(username)
+            );
+            setAlreadyVoted(
+                props.upvote
+                    ? data.upvotedBy.includes(username)
+                    : data.downvotedBy.includes(username)
+            );
+            setCount(props.upvote ? data.upvotes : data.downvotes);
+        })();
+    }, []);
 
     let handleClick = async event => {
+        setAlreadyVoted(!alreadyVoted);
+        setCount(alreadyVoted ? count - 1 : count + 1);
+
         event.stopPropagation();
 
-        console.log(
-            `/posts/${props.postData.id}/${
-                props.upvote ? "upvote" : "downvote"
-            }`
-        );
         let res = await postTo(
             `/posts/${props.postData.id}/${
                 props.upvote ? "upvote" : "downvote"
@@ -55,9 +76,7 @@ export default function VoteButton(props) {
                 type="submit"
                 onClick={handleClick}
             >
-                {props.upvote
-                    ? props.postData.upvotes
-                    : props.postData.downvotes}
+                {count}
             </Button>
         </React.Fragment>
     );
