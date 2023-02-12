@@ -65,7 +65,8 @@ const boarditController = {
             postedBy: req.body.postedBy,
             postedIn: boardit.name,
             upvotes: 0,
-            downvotes: 0
+            downvotes: 0,
+            comments: []
         });
         await newPost.save();
 

@@ -29,6 +29,18 @@ export const postSchema = new Schema(
         downvotes: {
             type: Number,
             required: true
+        },
+        comments: {
+            type: [String],
+            required: true
+        },
+        upvotedBy: {
+            type: [String],
+            required: true
+        },
+        downvotedBy: {
+            type: [String],
+            required: true
         }
         // reports: {
         //     type: [reportSchema],

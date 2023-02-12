@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 
 import FourBar from "../components/FourBar";
 import ProfileCard from "../components/Profile/ProfileCard";
-import MyPosts from "../components/Profile/MyPosts";
+import Posts from "../components/Posts";
 import FolloweringList from "../components/Profile/FolloweringList";
 
 import {getFrom} from "../helpers";
@@ -63,7 +63,7 @@ export default function ProfilePage(props) {
         return formattedData;
     };
 
-    return userData.length === 1 ? (
+    return userData.length == 1 ? (
         <React.Fragment>
             <FourBar />
             <Grid
@@ -74,7 +74,7 @@ export default function ProfilePage(props) {
                 }}
                 container
             >
-                <MyPosts />
+                <Posts user={username} />
                 <Grid sx={{display: "flex", flexDirection: "column"}}>
                     <ProfileCard user={userData[0]} />
                     <FolloweringList users={formatFollowers(followerData)} />

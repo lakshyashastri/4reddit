@@ -39,9 +39,7 @@ export default function NewPostModal(props) {
             postedBy: JSON.parse(window.localStorage.getItem("username"))
         });
         setPosted(true);
-        setTimeout(window.location.reload, 800);
-
-        console.log(await res.text());
+        setTimeout(() => window.location.reload(), 300);
     };
 
     return (

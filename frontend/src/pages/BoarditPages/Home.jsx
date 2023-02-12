@@ -6,6 +6,7 @@ import {getFrom} from "../../helpers";
 
 import FourBar from "../../components/FourBar";
 import BoarditCard from "../../components/BoarditPage/BoarditCard";
+import Posts from "../../components/Posts";
 import Loading from "../../components/Loading";
 
 export default function BoarditPage(props) {
@@ -26,7 +27,7 @@ export default function BoarditPage(props) {
             <Grid
                 sx={{
                     display: "flex",
-                    justifyContent: "left",
+                    justifyContent: "space-between",
                     marginTop: "20px"
                 }}
                 container
@@ -40,6 +41,9 @@ export default function BoarditPage(props) {
                     ) : (
                         <Loading />
                     )}
+                </Grid>
+                <Grid item>
+                    <Posts boardit={boarditName} />
                 </Grid>
             </Grid>
         </React.Fragment>

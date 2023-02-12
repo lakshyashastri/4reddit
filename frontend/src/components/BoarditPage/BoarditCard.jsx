@@ -23,7 +23,7 @@ const modalStyling = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    maxWidth: 400,
+    maxWidth: 900,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -35,13 +35,15 @@ export default function BoarditCard(props) {
     const [showModal, setShowModal] = useState(false);
     const handleClose = () => setShowModal(false);
 
+    const joined = props.boarditData.followers.includes(
+        JSON.parse(window.localStorage.getItem("username"))
+    );
+
     const handleInfoClick = () => {
         setInfoShown(!infoShown);
     };
 
     const handleCreateClick = () => setShowModal(true);
-
-    console.log(props.boarditData);
 
     return (
         <React.Fragment>
@@ -80,8 +82,11 @@ export default function BoarditCard(props) {
                         startIcon={<BorderColorIcon />}
                         color="success"
                         onClick={handleCreateClick}
+                        disabled={!joined}
                     >
-                        Create post
+                        <Typography>
+                            {joined ? "Create post" : "Join to create post"}
+                        </Typography>
                     </Button>
                     <Modal
                         sx={{marginTop: 3}}
