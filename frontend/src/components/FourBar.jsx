@@ -52,6 +52,8 @@ export default function FourBar(props) {
             navigate("/all");
         } else if (event.target.textContent == "My BoardIts") {
             navigate("/my");
+        } else if (event.target.textContent == "Saved posts") {
+            navigate("/saved");
         }
         setAnchorElNav(null);
     };

@@ -6,6 +6,7 @@ import AllBoarditsPage from "./pages/AllBoardits";
 import MyBoarditsPage from "./pages/MyBoardits";
 import BoarditPage from "./pages/BoarditPages/Home";
 import BoarditUsers from "./pages/BoarditPages/Users";
+import SavedPosts from "./pages/SavedPosts";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
@@ -32,6 +33,7 @@ export default function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route path="/all" element={<AllBoarditsPage />} />
                     <Route path="/my" element={<MyBoarditsPage />} />
+                    <Route path="/saved" element={<SavedPosts />} />
 
                     <Route path="/u/:username" element={<ProfilePage />} />
                     <Route path="/r/:boarditName" element={<BoarditPage />} />

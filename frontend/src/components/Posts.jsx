@@ -29,6 +29,8 @@ export default function Posts(props) {
                 data = await getFrom(`/posts/user/${props.user}`);
             } else if (props.boardit) {
                 data = await getFrom(`/posts/boardit/${props.boardit}`);
+            } else if (props.saved) {
+                data = await getFrom(`/users/${props.saved}/saved`);
             } else {
                 return;
             }
@@ -50,8 +52,8 @@ export default function Posts(props) {
                             expanded={expanded === post.id}
                             onChange={handleChange(post.id)}
                             sx={{
-                                maxWidth: 1000,
-                                minWidth: 800
+                                maxWidth: props.saved ? 1500 : 1000,
+                                minWidth: props.saved ? 1200 : 800
                             }}
                             key={post.id}
                         >
@@ -74,7 +76,9 @@ export default function Posts(props) {
                                         flexShrink: 0
                                     }}
                                 >
-                                    {props.boardit
+                                    {props.saved
+                                        ? `Posted by ${post.postedBy} in r/${post.postedIn}`
+                                        : props.boardit
                                         ? `Posted by ${post.postedBy}`
                                         : props.user
                                         ? `Posted in r/${post.postedIn}`

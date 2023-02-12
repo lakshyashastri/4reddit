@@ -38,6 +38,16 @@ const userController = {
         const [client, Boardits] = await getModelCon("boardits");
         let data = await Boardits.find({followers: req.params.username});
         res.send(data);
+    },
+    saved: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+        const [postClient, Posts] = await getModelCon("posts");
+
+        let userData = await Users.find({username: req.params.username});
+        let saved = userData[0].savedPosts;
+
+        let data = await Posts.find({id: {$in: saved}});
+        res.send(data);
     }
 };
 
