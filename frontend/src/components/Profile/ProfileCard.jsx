@@ -81,14 +81,22 @@ export default function ProfileCard(props) {
                 </CardContent>
 
                 <CardActions>
-                    <Button size="small" variant="text">
+                    <Button
+                        size="small"
+                        variant="text"
+                        onClick={() => props.followerModalFunc(true)}
+                    >
                         {props.user.followers.length} Followers
                     </Button>
                     <Button variant="text" startIcon={<LiquorIcon />}>
                         {props.user.dob}
                         {/* time.is link or something (basically lead to info about exact timestamp) */}
                     </Button>
-                    <Button size="small" variant="text">
+                    <Button
+                        size="small"
+                        variant="text"
+                        onClick={() => props.followingModalFunc(true)}
+                    >
                         {props.user.following.length} Following
                     </Button>
                 </CardActions>

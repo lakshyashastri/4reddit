@@ -63,7 +63,6 @@ export default function EditProfileModal(props) {
             }
         );
 
-        console.log(username ? username : props.user.username);
         localStorage.setItem(
             "username",
             JSON.stringify(username ? username : props.user.username)
@@ -72,10 +71,6 @@ export default function EditProfileModal(props) {
         setEditDone(true);
         setTimeout(() => window.location.reload(), 300);
     };
-
-    console.log(JSON.parse(window.localStorage.getItem("username")));
-    console.log(username);
-    console.log(usernameUnique);
 
     const error = () =>
         !usernameUnique &&
