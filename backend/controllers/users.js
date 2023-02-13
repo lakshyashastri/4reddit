@@ -48,6 +48,21 @@ const userController = {
 
         let data = await Posts.find({id: {$in: saved}});
         res.send(data);
+    },
+    update: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+
+        await Users.updateOne(
+            {username: req.params.username},
+            {
+                username: req.body.username,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                number: req.body.number
+            }
+        );
+
+        res.sendStatus(200);
     }
 };
 

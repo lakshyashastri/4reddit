@@ -3,7 +3,10 @@
 - Calculate basename depending on nodejs environment OS
 
 - loading profile page loads "user not found" for a second
-
+- upvote downvote not at same time (buttons should flip)
+- edit profile add username is taken thing
+  - change posts of user if username change?
+  - disable username all together?
 
 today
 - use cases -> 1 -> b (easy marks)
