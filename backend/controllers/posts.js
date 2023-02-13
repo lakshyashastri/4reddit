@@ -1,24 +1,48 @@
 import {getModelCon} from "../config/connections.js";
 
+const handleBanned = async data => {
+    const [client, Boardits] = await getModelCon("boardits");
+
+    for (let post of data) {
+        let boardit = await Boardits.find({name: post.postedIn});
+
+        for (let keyword of boardit[0].bannedKeywords) {
+            post.text = post.text.replace(
+                new RegExp(keyword, "gi"),
+                "*".repeat(keyword.length)
+            );
+            post.title = post.title.replace(
+                new RegExp(keyword, "gi"),
+                "*".repeat(keyword.length)
+            );
+        }
+    }
+    return data;
+};
+
 const postController = {
     getAll: async (req, res) => {
         const [client, Posts] = await getModelCon("posts");
         let data = await Posts.find();
+        data = await handleBanned(data);
         res.send(data);
     },
     getOne: async (req, res) => {
         const [client, Posts] = await getModelCon("posts");
         let data = await Posts.find({id: req.params.postID});
+        data = await handleBanned(data);
         res.send(data);
     },
     getUserPosts: async (req, res) => {
         const [client, Posts] = await getModelCon("posts");
         let data = await Posts.find({postedBy: req.params.username});
+        data = await handleBanned(data);
         res.send(data);
     },
     getBoarditPosts: async (req, res) => {
         const [client, Posts] = await getModelCon("posts");
         let data = await Posts.find({postedIn: req.params.boardit});
+        data = await handleBanned(data);
         res.send(data);
     },
     upvote: async (req, res) => {

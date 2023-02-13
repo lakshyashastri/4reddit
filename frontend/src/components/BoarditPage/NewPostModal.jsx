@@ -33,9 +33,26 @@ export default function NewPostModal(props) {
             return;
         }
 
+        let newTitle;
+        let newText;
+        for (let keyword of props.bannedKeywords) {
+            newTitle = title.replace(
+                new RegExp(keyword, "gi"),
+                "*".repeat(keyword.length)
+            );
+            newText = text.replace(
+                new RegExp(keyword, "gi"),
+                "*".repeat(keyword.length)
+            );
+        }
+
+        if (newTitle != title || newText != text) {
+            window.alert("Your post had certain banned keywords");
+        }
+
         let res = await postTo(`/boardits/${props.name}`, {
-            title,
-            text,
+            title: newTitle,
+            text: newText,
             postedBy: JSON.parse(window.localStorage.getItem("username"))
         });
         setPosted(true);

@@ -88,6 +88,9 @@ export default function BoarditCard(props) {
                                     modalFunc={setShowModal}
                                     name={props.boarditName}
                                     postedBy={props.boarditData.postedBy}
+                                    bannedKeywords={
+                                        props.boarditData.bannedKeywords
+                                    }
                                 />
                             </Box>
                         </Fade>

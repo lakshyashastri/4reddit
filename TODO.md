@@ -9,7 +9,8 @@
   - disable username all together?
 
 today
-- use cases -> 1 -> b (easy marks)
-- use cases -> 2 (easy marks: just alter response from backend)
-- use cases -> 1 -> c -> ii -> 1 -> a
-- use cases -> 1 -> d -> 2 -> g (EASY)
+- [X] use cases -> 1 -> b -> i (easy marks)
+- [ ] use cases -> 1 -> b -> ii (easy marks)
+- [ ] use cases -> 2 (easy marks: just alter response from backend)
+- [ ] use cases -> 1 -> c -> ii -> 1 -> a
+- [ ] use cases -> 1 -> d -> 2 -> g (EASY)
