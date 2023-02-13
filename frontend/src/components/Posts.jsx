@@ -11,7 +11,7 @@ import Fade from "@mui/material/Fade";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import {getFrom, modalStyling} from "../helpers";
+import {getFrom, postTo, modalStyling} from "../helpers";
 import NewCommentModal from "./BoarditPage/NewCommentModal";
 import VoteButton from "./VoteButton";
 import SavePost from "./SavePost";
@@ -21,6 +21,7 @@ export default function Posts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
     const [showAddCommentModal, setShowAddCommentModal] = useState(false);
+    const [followed, setFollowed] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -41,6 +42,13 @@ export default function Posts(props) {
 
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+    };
+
+    const handleFollow = async (follower, follow) => {
+        await postTo(`/users/${follow}/follow`, {
+            username: follower
+        });
+        setFollowed(true);
     };
 
     return (
@@ -154,6 +162,35 @@ export default function Posts(props) {
                                         <Grid item>
                                             <SavePost post={post} />
                                         </Grid>
+                                        {post.postedBy !=
+                                        JSON.parse(
+                                            window.localStorage.getItem(
+                                                "username"
+                                            )
+                                        ) ? (
+                                            <Grid item>
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    style={{marginTop: 10}}
+                                                    disabled={followed}
+                                                    onClick={() =>
+                                                        handleFollow(
+                                                            JSON.parse(
+                                                                window.localStorage.getItem(
+                                                                    "username"
+                                                                )
+                                                            ),
+                                                            post.postedBy
+                                                        )
+                                                    }
+                                                >
+                                                    {followed
+                                                        ? "User already followed"
+                                                        : "Follow user"}
+                                                </Button>
+                                            </Grid>
+                                        ) : null}
                                         <Grid item>
                                             <Button
                                                 variant="contained"

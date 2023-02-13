@@ -63,6 +63,34 @@ const userController = {
         );
 
         res.sendStatus(200);
+    },
+    follow: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+
+        await Users.updateOne(
+            {username: req.params.username},
+            {$push: {followers: req.body.username}}
+        );
+        await Users.updateOne(
+            {username: req.body.username},
+            {$push: {following: req.params.username}}
+        );
+
+        res.sendStatus(200);
+    },
+    unfollow: async (req, res) => {
+        const [client, Users] = await getModelCon("users");
+
+        await Users.updateOne(
+            {username: req.params.username},
+            {$pull: {followers: req.body.username}}
+        );
+        await Users.updateOne(
+            {username: req.body.username},
+            {$pull: {following: req.params.username}}
+        );
+
+        res.sendStatus(200);
     }
 };
 

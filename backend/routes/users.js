@@ -12,5 +12,7 @@ router.get("/:username", userController.getOne);
 router.post("/:username/update", userController.update);
 router.get("/:username/saved", userController.saved);
 router.get("/:username/boardits", userController.getBoards);
+router.post("/:username/follow", userController.follow);
+router.post("/:username/unfollow", userController.unfollow);
 
 export default router;
