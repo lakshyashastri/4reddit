@@ -130,6 +130,26 @@ const boarditController = {
 
         res.sendStatus(200);
     },
+    rejectUser: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+
+        let reqPending = await Boardits.findOne({
+            name: req.params.boarditName,
+            pendingRequests: {$in: [req.params.username]}
+        });
+
+        if (reqPending == null) {
+            res.sendStatus(404);
+            return;
+        }
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$pull: {pendingRequests: req.params.username}}
+        );
+
+        res.sendStatus(200);
+    },
     leaveUser: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
 
@@ -154,6 +174,20 @@ const boarditController = {
         );
 
         res.sendStatus(200);
+    },
+    prop: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+        let data = await Boardits.find(
+            {name: req.params.boarditName},
+            req.params.prop
+        );
+
+        if (req.params.prop == "pendingRequests" && data.length) {
+            const [client, Users] = await getModelCon("users");
+            data = await Users.find({username: {$in: data[0].pendingRequests}});
+        }
+
+        res.send(data);
     }
 };
 

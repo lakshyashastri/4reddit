@@ -7,6 +7,7 @@ import MyBoarditsPage from "./pages/MyBoardits";
 import BoarditPage from "./pages/BoarditPages/Home";
 import BoarditUsers from "./pages/BoarditPages/Users";
 import SavedPosts from "./pages/SavedPosts";
+import JoinRequestsPage from "./pages/BoarditPages/JoinReq";
 
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
@@ -41,6 +42,10 @@ export default function App() {
                     <Route
                         path="/r/:boarditName/users"
                         element={<BoarditUsers />}
+                    />
+                    <Route
+                        path="/r/:boarditName/joinreq"
+                        element={<JoinRequestsPage />}
                     />
                 </Route>
                 <Route path="*" element={<NotFound message={404} />} />

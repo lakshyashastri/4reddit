@@ -37,9 +37,12 @@ export default function NewCommentModal(props) {
             postedBy: JSON.parse(window.localStorage.getItem("username")),
             postID: props.postID
         });
+        console.log(props.postID);
         setPosted(true);
         setTimeout(() => window.location.reload(), 300);
     };
+
+    console.log(props.postID);
 
     return (
         <React.Fragment>

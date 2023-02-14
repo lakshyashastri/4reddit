@@ -11,6 +11,9 @@ router.get("/:boarditName/delete", boarditController.deleteBoardit);
 
 router.get("/:boarditName/join/:username", boarditController.joinUser);
 router.get("/:boarditName/accept/:username", boarditController.acceptUser);
+router.get("/:boarditName/reject/:username", boarditController.rejectUser);
 router.get("/:boarditName/leave/:username", boarditController.leaveUser);
+
+router.get("/:boarditName/prop/:prop", boarditController.prop);
 
 export default router;

@@ -37,7 +37,7 @@ export default function SavePost(props) {
             startIcon={saved ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             onClick={handleClick}
         >
-            {saved ? "Post already saved" : "Save post"}
+            {saved ? "Unsave" : "Save post"}
         </Button>
     );
 }

@@ -74,6 +74,8 @@ export default function FourBar(props) {
             navigate(`/r/${props.boarditName}`);
         } else if (event.target.textContent == "Users") {
             navigate(`/r/${props.boarditName}/users`);
+        } else if (event.target.textContent == "Join requests") {
+            navigate(`/r/${props.boarditName}/joinreq`);
         }
         setAnchorElBoardit(null);
     };
