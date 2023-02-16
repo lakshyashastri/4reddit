@@ -24,7 +24,7 @@ import Loading from "./Loading";
 function ReportButton(props) {
     const handleClick = event => {
         event.stopPropagation();
-        props.modalFunc(true);
+        props.modalFunc(props.postData);
     };
 
     return (
@@ -140,6 +140,8 @@ export default function Posts(props) {
         setFollowed(true);
     };
 
+    console.log(postData);
+
     return (
         <div>
             {postData ? (
@@ -183,22 +185,21 @@ export default function Posts(props) {
                                         <VoteButton postData={post} downvote />
                                         <ReportButton
                                             modalFunc={setShowReportModal}
-                                            pots={post.id}
+                                            postData={post}
                                         />
                                         <Modal
                                             sx={{marginTop: 3}}
-                                            open={showReportModal}
+                                            open={Boolean(showReportModal)}
                                             onClose={() =>
                                                 setShowReportModal(false)
                                             }
                                         >
-                                            <Fade in={showReportModal}>
+                                            <Fade in={Boolean(showReportModal)}>
                                                 <Box sx={modalStyling}>
                                                     <ReportModal
-                                                        modalFunc={
-                                                            setShowAddCommentModal
+                                                        postData={
+                                                            showReportModal
                                                         }
-                                                        postData={post}
                                                     />
                                                 </Box>
                                             </Fade>
@@ -249,7 +250,9 @@ export default function Posts(props) {
                                                 color="info"
                                                 style={{marginTop: 10}}
                                                 onClick={() =>
-                                                    setShowAddCommentModal(true)
+                                                    setShowAddCommentModal(
+                                                        post.id
+                                                    )
                                                 }
                                             >
                                                 Add comment
@@ -257,18 +260,21 @@ export default function Posts(props) {
                                         </Grid>
                                         <Modal
                                             sx={{marginTop: 3}}
-                                            open={showAddCommentModal}
+                                            open={Boolean(showAddCommentModal)}
                                             onClose={() =>
                                                 setShowAddCommentModal(false)
                                             }
                                         >
-                                            <Fade in={showAddCommentModal}>
+                                            <Fade
+                                                in={Boolean(
+                                                    showAddCommentModal
+                                                )}
+                                            >
                                                 <Box sx={modalStyling}>
                                                     <NewCommentModal
-                                                        modalFunc={
-                                                            setShowAddCommentModal
+                                                        postID={
+                                                            showAddCommentModal
                                                         }
-                                                        postID={post.id}
                                                     />
                                                 </Box>
                                             </Fade>

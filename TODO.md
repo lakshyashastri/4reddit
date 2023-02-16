@@ -25,8 +25,8 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
     - [ ] "blocked user" again same ass regex search from backend (turn to u/blockeduser (what happens if someone registers as u/blockeduser? make that username unavailable. also might need to make it just for that boardit or that post))
       - [ ] will have to make a sep path to get shit for the reports page, to make it easy make it so that the mod cant see it on the main posts page
     - [ ] even the bumass timer thing is easy cause you can just check before showing everytime and delete if old
-- [ ] comments thing fix: ids wrong coming from frontend or something: check console logs in [NewCommentModal.jsx](frontend/src/components/BoarditPage/NewCommentModal.jsx)
-- [ ] username edit fix: easy hai just one query
+- [X] comments thing fix: ids wrong coming from frontend or something: check console logs in [NewCommentModal.jsx](frontend/src/components/BoarditPage/NewCommentModal.jsx)
+- [ ] username edit fix (posts and shit disappear): easy hai just one query in backend
 
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH
