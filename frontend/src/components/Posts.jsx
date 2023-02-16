@@ -8,8 +8,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
+import TextField from "@mui/material/TextField";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import AddIcon from "@mui/icons-material/Add";
 
 import {getFrom, postTo, modalStyling} from "../helpers";
 import NewCommentModal from "./BoarditPage/NewCommentModal";
@@ -17,11 +21,96 @@ import VoteButton from "./VoteButton";
 import SavePost from "./SavePost";
 import Loading from "./Loading";
 
+function ReportButton(props) {
+    const handleClick = event => {
+        event.stopPropagation();
+        props.modalFunc(true);
+    };
+
+    return (
+        <React.Fragment>
+            <Button sx={{padding: 0}} onClick={handleClick}>
+                <OutlinedFlagIcon />
+            </Button>
+        </React.Fragment>
+    );
+}
+
+function ReportModal(props) {
+    const [text, setText] = useState(null);
+    const [posted, setPosted] = useState(null);
+
+    const inputFieldProps = {
+        style: {m: 0.5, input: {color: "rgb(51, 118, 204)"}},
+        variant: "filled"
+    };
+
+    const handlePostClick = async () => {
+        if (posted) {
+            return;
+        }
+
+        await postTo("/reports", {
+            reportedBy: JSON.parse(window.localStorage.getItem("username")),
+            reportedUser: props.postData.postedBy,
+            reportedPost: props.postData.id,
+            content: text
+        });
+
+        setPosted(true);
+        setTimeout(() => window.location.reload(), 300);
+    };
+
+    return (
+        <React.Fragment>
+            <Typography variant="h2" sx={{m: 1}} align="center">
+                Report post
+            </Typography>
+            <Grid marginTop={2} container>
+                <TextField
+                    {...inputFieldProps}
+                    label="Reason for report"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    onChange={event => setText(event.target.value)}
+                    required
+                />
+            </Grid>
+            <Grid
+                marginTop={2}
+                sx={{display: "flex", justifyContent: "center"}}
+                container
+            >
+                <Button
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    color={posted ? "success" : "primary"}
+                    sx={{mt: 1}}
+                    onClick={handlePostClick}
+                >
+                    <Box marginRight={0.8} paddingTop={0.6}>
+                        {posted ? <DoneOutlineIcon /> : <AddIcon />}
+                    </Box>
+                    {posted ? "Post reported!" : "Report"}
+                </Button>
+            </Grid>
+            {posted ? (
+                <Typography textAlign="center" mt={1} color="green">
+                    Success!
+                </Typography>
+            ) : null}
+        </React.Fragment>
+    );
+}
+
 export default function Posts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
     const [showAddCommentModal, setShowAddCommentModal] = useState(false);
     const [followed, setFollowed] = useState(false);
+    const [showReportModal, setShowReportModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -85,10 +174,35 @@ export default function Posts(props) {
                                     expandIcon={<ExpandMoreIcon />}
                                 >
                                     <Typography
-                                        sx={{width: "27%", flexShrink: 0}}
+                                        sx={{
+                                            width: "27%",
+                                            flexShrink: 0
+                                        }}
                                     >
                                         <VoteButton postData={post} upvote />
                                         <VoteButton postData={post} downvote />
+                                        <ReportButton
+                                            modalFunc={setShowReportModal}
+                                            pots={post.id}
+                                        />
+                                        <Modal
+                                            sx={{marginTop: 3}}
+                                            open={showReportModal}
+                                            onClose={() =>
+                                                setShowReportModal(false)
+                                            }
+                                        >
+                                            <Fade in={showReportModal}>
+                                                <Box sx={modalStyling}>
+                                                    <ReportModal
+                                                        modalFunc={
+                                                            setShowAddCommentModal
+                                                        }
+                                                        postData={post}
+                                                    />
+                                                </Box>
+                                            </Fade>
+                                        </Modal>
                                     </Typography>
                                     <Typography
                                         sx={{

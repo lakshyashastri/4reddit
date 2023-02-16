@@ -29,7 +29,7 @@ export default function App() {
                     element={!loggedIn ? <LoginPage /> : <Navigate to="/all" />}
                 />
 
-                {redirect(["/u", "/r"], "/all")}
+                {redirect(["/u", "/r", "/4reddit"], "/all")}
 
                 <Route element={<ProtectedRoute />}>
                     <Route path="/all" element={<AllBoarditsPage />} />

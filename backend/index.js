@@ -7,6 +7,7 @@ import boardits from "./routes/boardits.js";
 import users from "./routes/users.js";
 import posts from "./routes/posts.js";
 import comments from "./routes/comments.js";
+import reports from "./routes/reports.js";
 
 // vars
 const app = express(); // express app
@@ -25,6 +26,7 @@ router.use("/boardits", boardits);
 router.use("/users", users);
 router.use("/posts", posts);
 router.use("/comments", comments);
+router.use("/reports", reports);
 
 // start app
 app.listen(PORT);

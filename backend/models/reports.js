@@ -2,6 +2,10 @@ import {Schema} from "mongoose";
 
 export const reportSchema = new Schema(
     {
+        id: {
+            type: String,
+            required: true
+        },
         reportedBy: {
             type: String,
             required: true
@@ -10,11 +14,11 @@ export const reportSchema = new Schema(
             type: String,
             required: true
         },
-        concern: {
+        reportedPost: {
             type: String,
             required: true
         },
-        associatedPost: {
+        content: {
             type: String,
             required: true
         }

@@ -18,7 +18,7 @@ today
 today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [ ] 10min video about how JWT works and the concept, and you're done
 - [ ] START REPORTS: NAYA CHEEZ HAI KAAFI MARKS KA LIPAT JAYEGA
-  - [ ] Join requests: just copy saved posts layout, then display a list element with buttons
+  - [X] Join requests: just copy saved posts layout, then display a list element with buttons
   - [ ] Stats: ask cgt? how to maintain records or use triggers to upate data (and make it accurate to some time unit)
   - [ ] Reported page: add yellow flag next to like dislike, then pop modal (be careful about the comment bug, same cheez hone ke chances)
     - [ ] Simple ass requirements like one button fades two other buttons
