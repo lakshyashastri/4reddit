@@ -27,6 +27,7 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
     - [ ] even the bumass timer thing is easy cause you can just check before showing everytime and delete if old
 - [X] comments thing fix: ids wrong coming from frontend or something: check console logs in [NewCommentModal.jsx](frontend/src/components/BoarditPage/NewCommentModal.jsx)
 - [ ] username edit fix (posts and shit disappear): easy hai just one query in backend
+- [ ] Yes. If the user hasn't joined a SG, they shouldn't be able to interact in any way. You can either simply restrict the user from going to SG-specific page, or allow going to the page to see details but restrict interactions. Whatever you choose to do, make sure it's handled from the server side: basically just restrict post like dislike report for blocked and non-members (blocked will still be in member list since they need to show up in members list, so they also can't join): just show window.prompt or something for this
 
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH

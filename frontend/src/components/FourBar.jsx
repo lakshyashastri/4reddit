@@ -76,6 +76,8 @@ export default function FourBar(props) {
             navigate(`/r/${props.boarditName}/users`);
         } else if (event.target.textContent == "Join requests") {
             navigate(`/r/${props.boarditName}/joinreq`);
+        } else if (event.target.textContent == "Reports") {
+            navigate(`/r/${props.boarditName}/reports`);
         }
         setAnchorElBoardit(null);
     };
@@ -88,7 +90,7 @@ export default function FourBar(props) {
         "Saved posts": <BookmarksIcon />
     };
     const profileDropdown = ["My Profile", "Notifications", "Logout"];
-    const boarditInfo = ["Home", "Users", "Join requests", "Stats", "Reports"];
+    const boarditInfo = ["Home", "Users", "Join requests", "Reports", "Stats"];
 
     return (
         <AppBar position="static">

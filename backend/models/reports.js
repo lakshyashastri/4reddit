@@ -18,7 +18,15 @@ export const reportSchema = new Schema(
             type: String,
             required: true
         },
+        reportedIn: {
+            type: String,
+            required: true
+        },
         content: {
+            type: String,
+            required: true
+        },
+        action: {
             type: String,
             required: true
         }

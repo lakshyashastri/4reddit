@@ -54,6 +54,7 @@ function ReportModal(props) {
             reportedBy: JSON.parse(window.localStorage.getItem("username")),
             reportedUser: props.postData.postedBy,
             reportedPost: props.postData.id,
+            reportedIn: props.postData.postedIn,
             content: text
         });
 
@@ -139,8 +140,6 @@ export default function Posts(props) {
         });
         setFollowed(true);
     };
-
-    console.log(postData);
 
     return (
         <div>
