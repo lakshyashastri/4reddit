@@ -1,5 +1,5 @@
 import {getModelCon} from "../config/connections.js";
-import {getID} from "../helpers.js";
+import {getID, sendMail} from "../helpers.js";
 
 const handleBlocked = data => {
     data[0].followers = data[0].followers.map(follower =>
@@ -214,6 +214,19 @@ const boarditController = {
             {name: req.params.boarditName},
             {$push: {blockedUsers: req.body.user}}
         );
+
+        const [userClient, Users] = await getModelCon("users");
+        let reporter = await Users.find({username: req.body.reportedBy});
+        await sendMail(
+            reporter[0].email,
+            `A user you reported (u/${req.body.user}) has been blocked`
+        );
+        let reportee = await Users.find({username: req.body.user});
+        await sendMail(
+            reportee[0].email,
+            `You have been blocked from r/${req.body.blockBoard}`
+        );
+
         res.sendStatus(200);
     },
     noblock: async (req, res) => {

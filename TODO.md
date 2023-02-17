@@ -30,6 +30,7 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [ ] Yes. If the user hasn't joined a SG, they shouldn't be able to interact in any way. You can either simply restrict the user from going to SG-specific page, or allow going to the page to see details but restrict interactions. Whatever you choose to do, make sure it's handled from the server side: basically just restrict post like dislike report for blocked and non-members (blocked will still be in member list since they need to show up in members list, so they also can't join): just show window.prompt or something for this
 - [ ] `My Sub Greddiits was focused on the ones the logged in user has created for which he assumes the role of a moderator.` I am doing joined subreddits. Fix this by creating new path easy
 - [ ] Only mod sees name in Users page?
+- [ ] on the join requests the fourbar subreddit specific thing disappears
 
 
 - can user send req again if req rejected

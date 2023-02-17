@@ -1,4 +1,5 @@
 import {getModelCon} from "../config/connections.js";
+import {sendMail} from "../helpers.js";
 
 const handleBanned = async data => {
     const [client, Boardits] = await getModelCon("boardits");
@@ -21,6 +22,10 @@ const handleBanned = async data => {
 };
 
 const handleBlocked = async data => {
+    if (!data[0]) {
+        return data;
+    }
+
     const [client, Boardits] = await getModelCon("boardits");
     const boardit = await Boardits.find({name: data[0].postedIn});
 
@@ -146,7 +151,18 @@ const postController = {
             {$pull: {posts: req.params.postID}}
         );
 
-        res.sendStatus(200);
+        const [usersClient, Users] = await getModelCon("users");
+        let reporter = await Users.find({username: req.body.reportedBy});
+        await sendMail(
+            reporter[0].email,
+            "The post you reported has been deleted"
+        );
+        let reportee = await Users.find({username: req.body.reportedUser});
+        await sendMail(
+            reportee[0].email,
+            "Your post has been deleted due to a report"
+        );
+        await res.sendStatus(200);
     }
 };
 

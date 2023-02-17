@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", reportController.getAll);
 router.post("/", reportController.createReport);
 router.get("/:reportID", reportController.getOne);
-router.get("/:reportID/action/:action", reportController.action);
+router.post("/:reportID/action/:action", reportController.action);
 router.get("/post/:postID", reportController.postReports);
 router.get("/boardit/:boarditName", reportController.boarditReports);
 

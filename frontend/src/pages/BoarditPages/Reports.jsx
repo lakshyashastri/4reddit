@@ -47,7 +47,7 @@ function ReportedPosts(props) {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const handleBlock = async (blockUser, blockBoard) => {
+    const handleBlock = async (blockUser, blockBoard, reportedBy) => {
         if (blockCountDown) {
             window.location.reload();
             return;
@@ -62,24 +62,40 @@ function ReportedPosts(props) {
         await sleep(3000);
         clearInterval(intervalID);
 
-        await postTo(`/boardits/${blockBoard}/block`, {user: blockUser});
+        await postTo(`/boardits/${blockBoard}/block`, {
+            user: blockUser,
+            reportedBy,
+            blockBoard
+        });
         window.location.reload();
     };
 
-    const handleDelete = async (postID, reportBoard) => {
+    const handleDelete = async (
+        postID,
+        reportBoard,
+        reportedBy,
+        reportedUser
+    ) => {
         if (deleted) {
             return;
         }
-        await postTo(`/posts/${postID}/delete`, {boarditName: reportBoard});
+        await postTo(`/posts/${postID}/delete`, {
+            boarditName: reportBoard,
+            reportedBy,
+            reportedUser
+        });
         setDeleted(true);
         window.location.reload();
     };
 
-    const handleIgnore = async (reportID, reportAction) => {
-        await getFrom(
+    const handleIgnore = async (reportID, reportAction, reportedBy) => {
+        await postTo(
             `/reports/${reportID}/action/${
                 reportAction == "ignore" ? "none" : "ignore"
-            }`
+            }`,
+            {
+                reportedBy
+            }
         );
         window.location.reload();
     };
@@ -176,7 +192,8 @@ function ReportedPosts(props) {
                                         onClick={() => {
                                             handleBlock(
                                                 postData[report.id].postedBy,
-                                                postData[report.id].postedIn
+                                                postData[report.id].postedIn,
+                                                report.reportedBy
                                             );
                                         }}
                                     >
@@ -200,7 +217,9 @@ function ReportedPosts(props) {
                                         onClick={() =>
                                             handleDelete(
                                                 postData[report.id].id,
-                                                report.reportedIn
+                                                report.reportedIn,
+                                                report.reportedBy,
+                                                report.reportedUser
                                             )
                                         }
                                     >
@@ -217,7 +236,8 @@ function ReportedPosts(props) {
                                         onClick={() =>
                                             handleIgnore(
                                                 report.id,
-                                                report.action
+                                                report.action,
+                                                report.reportedBy
                                             )
                                         }
                                     >
