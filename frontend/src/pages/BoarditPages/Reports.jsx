@@ -17,10 +17,16 @@ import FourBar from "../../components/FourBar";
 import {getFrom, postTo} from "../../helpers";
 import Loading from "../../components/Loading";
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function ReportedPosts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
     const [boarditData, setBoarditData] = useState(null);
+    const [blockCountDown, setBlockCountDown] = useState(false);
+    const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -42,7 +48,30 @@ function ReportedPosts(props) {
     };
 
     const handleBlock = async (blockUser, blockBoard) => {
+        if (blockCountDown) {
+            window.location.reload();
+            return;
+        }
+
+        setBlockCountDown(3);
+
+        const intervalID = setInterval(() => {
+            setBlockCountDown(countDown => countDown - 1);
+        }, 1000);
+
+        await sleep(3000);
+        clearInterval(intervalID);
+
         await postTo(`/boardits/${blockBoard}/block`, {user: blockUser});
+        window.location.reload();
+    };
+
+    const handleDelete = async (postID, reportBoard) => {
+        if (deleted) {
+            return;
+        }
+        await postTo(`/posts/${postID}/delete`, {boarditName: reportBoard});
+        setDeleted(true);
         window.location.reload();
     };
 
@@ -132,7 +161,9 @@ function ReportedPosts(props) {
                                 <Grid item>
                                     <Button
                                         variant="contained"
-                                        color="error"
+                                        color={
+                                            blockCountDown ? "warning" : "error"
+                                        }
                                         style={{marginTop: 20}}
                                         disabled={
                                             report.action == "ignore" ||
@@ -149,7 +180,9 @@ function ReportedPosts(props) {
                                             );
                                         }}
                                     >
-                                        {boarditData
+                                        {blockCountDown
+                                            ? `Cancel in ${blockCountDown} seconds`
+                                            : boarditData
                                             ? boarditData.blockedUsers.includes(
                                                   report.reportedUser
                                               )
@@ -161,11 +194,19 @@ function ReportedPosts(props) {
                                 <Grid item>
                                     <Button
                                         variant="contained"
-                                        color="error"
+                                        color={deleted ? "success" : "error"}
                                         style={{marginTop: 20}}
                                         disabled={report.action == "ignore"}
+                                        onClick={() =>
+                                            handleDelete(
+                                                postData[report.id].id,
+                                                report.reportedIn
+                                            )
+                                        }
                                     >
-                                        Delete post
+                                        {deleted
+                                            ? "Post deleted!"
+                                            : "Delete post"}
                                     </Button>
                                 </Grid>
                                 <Grid item>

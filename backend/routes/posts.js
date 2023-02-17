@@ -14,4 +14,5 @@ router.post("/:postID/unsave", postController.unsave);
 router.get("/user/:username", postController.getUserPosts);
 router.get("/boardit/:boardit", postController.getBoarditPosts);
 
+router.post("/:postID/delete", postController.delete);
 export default router;

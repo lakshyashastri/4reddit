@@ -132,6 +132,21 @@ const postController = {
         );
 
         res.sendStatus(200);
+    },
+    delete: async (req, res) => {
+        const [client, Posts] = await getModelCon("posts");
+        await Posts.deleteOne({id: req.params.postID});
+
+        const [reportsClient, Reports] = await getModelCon("reports");
+        await Reports.deleteOne({reportedPost: req.params.postID});
+
+        const [boarditsClient, Boardits] = await getModelCon("boardits");
+        await Boardits.updateOne(
+            {name: req.body.boarditName},
+            {$pull: {posts: req.params.postID}}
+        );
+
+        res.sendStatus(200);
     }
 };
 
