@@ -14,12 +14,13 @@ import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import AddIcon from "@mui/icons-material/Add";
 
 import FourBar from "../../components/FourBar";
-import {getFrom} from "../../helpers";
+import {getFrom, postTo} from "../../helpers";
 import Loading from "../../components/Loading";
 
 function ReportedPosts(props) {
     const [expanded, setExpanded] = useState(false);
     const [postData, setPostData] = useState(null);
+    const [boarditData, setBoarditData] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -30,11 +31,19 @@ function ReportedPosts(props) {
                 _postData[report.id] = data[0];
             }
             setPostData(_postData);
+
+            data = await getFrom(`/boardits/${props.boarditName}`);
+            setBoarditData(data[0]);
         })();
     }, []);
 
     const handleChange = panel => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+    };
+
+    const handleBlock = async (blockUser, blockBoard) => {
+        await postTo(`/boardits/${blockBoard}/block`, {user: blockUser});
+        window.location.reload();
     };
 
     const handleIgnore = async (reportID, reportAction) => {
@@ -125,9 +134,28 @@ function ReportedPosts(props) {
                                         variant="contained"
                                         color="error"
                                         style={{marginTop: 20}}
-                                        disabled={report.action == "ignore"}
+                                        disabled={
+                                            report.action == "ignore" ||
+                                            (boarditData
+                                                ? boarditData.blockedUsers.includes(
+                                                      report.reportedUser
+                                                  )
+                                                : 0)
+                                        }
+                                        onClick={() => {
+                                            handleBlock(
+                                                postData[report.id].postedBy,
+                                                postData[report.id].postedIn
+                                            );
+                                        }}
                                     >
-                                        Block user
+                                        {boarditData
+                                            ? boarditData.blockedUsers.includes(
+                                                  report.reportedUser
+                                              )
+                                                ? "User already blocked"
+                                                : "Block user"
+                                            : "Loading"}
                                     </Button>
                                 </Grid>
                                 <Grid item>
@@ -187,7 +215,7 @@ export default function ReportsPage(props) {
                 direction="column"
                 alignItems="center"
                 justifyContent="center"
-                sx={{minHeight: "50vh"}}
+                sx={{minHeight: "70vh"}}
                 container
             >
                 <Grid item>
@@ -199,7 +227,10 @@ export default function ReportsPage(props) {
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <ReportedPosts reports={reports} />
+                    <ReportedPosts
+                        reports={reports}
+                        boarditName={boarditName}
+                    />
                 </Grid>
             </Grid>
         </React.Fragment>

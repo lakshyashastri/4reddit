@@ -1,15 +1,24 @@
 import {getModelCon} from "../config/connections.js";
 import {getID} from "../helpers.js";
 
+const handleBlocked = data => {
+    data[0].followers = data[0].followers.map(follower =>
+        data[0].blockedUsers.includes(follower) ? "BLOCKED_USER" : follower
+    );
+    return data;
+};
+
 const boarditController = {
     getAll: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
         let data = await Boardits.find();
+        data = handleBlocked(data);
         res.send(data);
     },
     getOne: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
         let data = await Boardits.find({name: req.params.boarditName});
+        data = handleBlocked(data);
         res.send(data);
     },
     createBoardit: async (req, res) => {
@@ -182,11 +191,34 @@ const boarditController = {
             req.params.prop
         );
 
-        if (req.params.prop == "pendingRequests" && data.length) {
+        if (req.params.prop == "followers") {
+            let blockedUsers = await Boardits.find(
+                {name: req.params.boarditName},
+                "blockedUsers"
+            );
+            data[0].followers = data[0].followers.map(follower =>
+                blockedUsers[0].blockedUsers.includes(follower)
+                    ? "BLOCKED_USER"
+                    : follower
+            );
+        } else if (req.params.prop == "pendingRequests" && data.length) {
             const [client, Users] = await getModelCon("users");
             data = await Users.find({username: {$in: data[0].pendingRequests}});
         }
 
+        res.send(data);
+    },
+    block: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$push: {blockedUsers: req.body.user}}
+        );
+        res.sendStatus(200);
+    },
+    noblock: async (req, res) => {
+        const [client, Boardits] = await getModelCon("boardits");
+        let data = await Boardits.find({name: req.params.boarditName});
         res.send(data);
     }
 };

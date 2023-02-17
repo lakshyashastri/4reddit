@@ -74,7 +74,7 @@ export default function UserTable(props) {
 
     useEffect(() => {
         (async () => {
-            let data = await getFrom(`/boardits/${props.boarditName}`);
+            let data = await getFrom(`/boardits/${props.boarditName}/noblock`);
 
             let newData = {};
             for (let follower of data[0].followers) {
@@ -107,6 +107,7 @@ export default function UserTable(props) {
         }
 
         let rows = [];
+        console.log(tableData);
         for (let [index, rowData] of !Array.isArray(finalData)
             ? Object.keys(finalData).entries()
             : finalData.entries()) {

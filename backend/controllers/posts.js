@@ -20,6 +20,18 @@ const handleBanned = async data => {
     return data;
 };
 
+const handleBlocked = async data => {
+    const [client, Boardits] = await getModelCon("boardits");
+    const boardit = await Boardits.find({name: data[0].postedIn});
+
+    for (let post of data) {
+        post.postedBy = boardit[0].blockedUsers.includes(post.postedBy)
+            ? "BLOCKED_USER"
+            : post.postedBy;
+    }
+    return data;
+};
+
 const postController = {
     getAll: async (req, res) => {
         const [client, Posts] = await getModelCon("posts");
@@ -43,6 +55,7 @@ const postController = {
         const [client, Posts] = await getModelCon("posts");
         let data = await Posts.find({postedIn: req.params.boardit});
         data = await handleBanned(data);
+        data = await handleBlocked(data);
         res.send(data);
     },
     upvote: async (req, res) => {

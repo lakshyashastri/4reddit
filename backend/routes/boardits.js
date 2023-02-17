@@ -14,6 +14,9 @@ router.get("/:boarditName/accept/:username", boarditController.acceptUser);
 router.get("/:boarditName/reject/:username", boarditController.rejectUser);
 router.get("/:boarditName/leave/:username", boarditController.leaveUser);
 
+router.get("/:boarditName/noblock", boarditController.noblock);
 router.get("/:boarditName/prop/:prop", boarditController.prop);
+
+router.post("/:boarditName/block", boarditController.block);
 
 export default router;
