@@ -63,6 +63,84 @@ const templateChartData = {
     ]
 };
 
+function DailyPosts(props) {
+    const [chartData, setChartData] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let res = await getFrom(
+                `/boardits/${props.boarditName}/prop/stats`
+            );
+
+            let labels = [];
+            let data = [];
+            for (let day in res) {
+                labels.push(day);
+                data.push(res[day].posts);
+            }
+
+            setChartData({
+                labels,
+                datasets: [
+                    {
+                        labels,
+                        data,
+                        backgroundColor: ["rgba(75,192,192,1)", "#ecf0f1"],
+                        borderColor: "black",
+                        borderWidth: 3
+                    }
+                ]
+            });
+        })();
+    }, []);
+
+    return chartData ? (
+        <div className="chart-container">
+            <Typography align="center" variant="h4">
+                {props.heading}
+            </Typography>
+
+            <Typography align="center" variant="h6" gutterBottom>
+                Posts today: {chartData.datasets[0].data.slice(-1)[0]}
+            </Typography>
+            <Line
+                data={chartData}
+                options={{
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Date",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Number of posts",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        }
+                    }
+                }}
+            />
+        </div>
+    ) : (
+        <Loading />
+    );
+}
+
 function DailyVisitors(props) {
     const [chartData, setChartData] = useState(null);
 
@@ -75,9 +153,6 @@ function DailyVisitors(props) {
             let labels = [];
             let data = [];
             for (let day in res) {
-                if (day == "_id") {
-                    continue;
-                }
                 labels.push(day);
                 data.push(res[day].visits.length);
             }
@@ -104,7 +179,7 @@ function DailyVisitors(props) {
             </Typography>
 
             <Typography align="center" variant="h6" gutterBottom>
-                Visitors today:
+                Visitors today: {chartData.datasets[0].data.slice(-1)[0]}
             </Typography>
             <Line
                 data={chartData}
@@ -209,24 +284,30 @@ function ReportedDeletedPosts(props) {
 
 function StatGrid(props) {
     return (
-        <Grid container spacing={3} justify="center">
-            <Grid item xs={6} md={6}>
+        <Grid
+            container
+            spacing={3}
+            justify="center"
+            style={{border: "1px solid black"}}
+        >
+            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
                 <Typography variant="h6" align="center">
                     Member Growth Over Time
                 </Typography>
             </Grid>
-            <Grid item xs={6} md={6}>
-                <Typography variant="h6" align="center">
-                    Daily Posts Count
-                </Typography>
+            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
+                <DailyPosts
+                    heading="Daily Posts Count"
+                    boarditName={props.boarditName}
+                />
             </Grid>
-            <Grid item xs={6} md={6}>
+            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
                 <DailyVisitors
                     heading="Daily Visitor Count"
                     boarditName={props.boarditName}
                 />
             </Grid>
-            <Grid item xs={6} md={6}>
+            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
                 <ReportedDeletedPosts
                     heading={"Reported vs Deleted Posts"}
                     boarditName={props.boarditName}

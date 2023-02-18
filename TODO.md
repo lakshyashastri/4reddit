@@ -32,7 +32,8 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [ ] Only mod sees name in Users page?
 - [X] on the join requests the fourbar subreddit specific thing disappears
 - [ ] ALL documents in each collection (ex boardits) do not have all fields. Standardise somehow: write js script using mongoose to check if exists or something
-
+- [ ] Stats.jsx making 4 requests for each component; fix that
+- [ ] Delete post takes too much time
 
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH

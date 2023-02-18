@@ -3,13 +3,18 @@ import {getID, sendMail} from "../helpers.js";
 import moment from "moment";
 
 const handleBlocked = data => {
+    // temp: sometimes data[0] is undefined: fix later
+    if (!data[0]) {
+        return data;
+    }
+
     data[0].followers = data[0].followers.map(follower =>
         data[0].blockedUsers.includes(follower) ? "BLOCKED_USER" : follower
     );
     return data;
 };
 
-// ensures there are stats objects for each day every day
+// ensures there are stats objects for each day every day including today
 const handleStats = async boarditName => {
     const [client, Boardits] = await getModelCon("boardits");
     let boarditStats = await Boardits.find({name: boarditName}, "stats").lean();
@@ -75,6 +80,7 @@ const boarditController = {
         res.sendStatus(200);
     },
     createPost: async (req, res) => {
+        const dateNow = await handleStats(req.params.boarditName);
         const [client, Boardits] = await getModelCon("boardits");
 
         let boardit = await Boardits.find({name: req.params.boarditName});
@@ -109,6 +115,19 @@ const boarditController = {
         await Boardits.updateOne(
             {name: boardit.name},
             {$push: {posts: postID}}
+        );
+
+        let stats = await Boardits.find(
+            {name: req.params.boarditName},
+            "stats"
+        );
+        stats = stats[0].stats;
+
+        stats[dateNow].posts += 1;
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$set: {stats}}
         );
 
         res.send(postID);
@@ -239,6 +258,7 @@ const boarditController = {
                 )
                 .forEach(key => {
                     if (/^\d{2}\/\d{2}\/\d{4}$/.test(key)) {
+                        // some hidden bullshit gets added to keys because of .find() (could use .lean() for this instead)
                         sortedStats[key] = data[0].stats[key];
                     }
                 });
