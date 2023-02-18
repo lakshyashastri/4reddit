@@ -1,5 +1,20 @@
 import {Schema} from "mongoose";
 
+const dateSchema = new Schema({
+    visits: Number,
+    posts: Number,
+    membersJoined: Number
+});
+
+const statSchema = new Schema({
+    date: {
+        type: Map,
+        of: dateSchema
+    }
+});
+
+const statSchemaNew = new Schema({}, {strict: false});
+
 export const boarditSchema = new Schema(
     {
         name: {
@@ -54,6 +69,10 @@ export const boarditSchema = new Schema(
         deletedPosts: {
             type: Number,
             required: true
+        },
+        stats: {
+            type: statSchemaNew,
+            default: {}
         }
     },
     {timestamps: true}

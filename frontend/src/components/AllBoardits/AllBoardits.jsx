@@ -40,6 +40,10 @@ function Row(props) {
 
     const navigate = useNavigate();
 
+    const handleVisit = boardit => {
+        navigate(`/r/${props.name.slice(2)}`);
+    };
+
     const handleLeave = async () => {
         if (left) {
             return;
@@ -125,10 +129,8 @@ function Row(props) {
                                                         fontSize: 16
                                                     }}
                                                     onClick={() =>
-                                                        navigate(
-                                                            `/r/${props.name.slice(
-                                                                2
-                                                            )}`
+                                                        handleVisit(
+                                                            props.name.slice(2)
                                                         )
                                                     }
                                                 >
