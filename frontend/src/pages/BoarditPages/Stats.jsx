@@ -11,57 +11,86 @@ import FourBar from "../../components/FourBar";
 import {getFrom, postTo} from "../../helpers";
 import Loading from "../../components/Loading";
 
-const Data = [
-    {
-        id: 1,
-        year: 2016,
-        userGain: 80000,
-        userLost: 823
-    },
-    {
-        id: 2,
-        year: 2017,
-        userGain: 45677,
-        userLost: 345
-    },
-    {
-        id: 3,
-        year: 2018,
-        userGain: 78888,
-        userLost: 555
-    },
-    {
-        id: 4,
-        year: 2019,
-        userGain: 90000,
-        userLost: 4555
-    },
-    {
-        id: 5,
-        year: 2020,
-        userGain: 4300,
-        userLost: 234
-    }
-];
+function MemberGrowth(props) {
+    const [chartData, setChartData] = useState(null);
 
-const templateChartData = {
-    labels: Data.map(data => data.year),
-    datasets: [
-        {
-            label: "Users Gained ",
-            data: Data.map(data => data.userGain),
-            backgroundColor: [
-                "rgba(75,192,192,1)",
-                "#ecf0f1",
-                "#50AF95",
-                "#f3ba2f",
-                "#2a71d0"
-            ],
-            borderColor: "black",
-            borderWidth: 3
-        }
-    ]
-};
+    useEffect(() => {
+        (async () => {
+            let res = await getFrom(
+                `/boardits/${props.boarditName}/prop/stats`
+            );
+
+            let labels = [];
+            let data = [];
+            for (let day in res) {
+                labels.push(day);
+                data.push(res[day].membersJoined);
+            }
+
+            console.log(data);
+
+            setChartData({
+                labels,
+                datasets: [
+                    {
+                        labels,
+                        data,
+                        backgroundColor: ["rgba(75,192,192,1)", "#ecf0f1"],
+                        borderColor: "black",
+                        borderWidth: 3
+                    }
+                ]
+            });
+        })();
+    }, []);
+
+    return chartData ? (
+        <div className="chart-container">
+            <Typography align="center" variant="h4">
+                {props.heading}
+            </Typography>
+
+            <Typography align="center" variant="h6" gutterBottom>
+                Number of members who joined today:{" "}
+                {chartData.datasets[0].data.slice(-1)[0]}
+            </Typography>
+            <Line
+                data={chartData}
+                options={{
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Date",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Number of posts",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        }
+                    }
+                }}
+            />
+        </div>
+    ) : (
+        <Loading />
+    );
+}
 
 function DailyPosts(props) {
     const [chartData, setChartData] = useState(null);
@@ -290,24 +319,25 @@ function StatGrid(props) {
             justify="center"
             style={{border: "1px solid black"}}
         >
-            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
-                <Typography variant="h6" align="center">
-                    Member Growth Over Time
-                </Typography>
+            <Grid item xs={6} md={3} style={{border: "1px solid black"}}>
+                <MemberGrowth
+                    heading="Member Growth Over Time"
+                    boarditName={props.boarditName}
+                />
             </Grid>
-            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
+            <Grid item xs={6} md={3} style={{border: "1px solid black"}}>
                 <DailyPosts
                     heading="Daily Posts Count"
                     boarditName={props.boarditName}
                 />
             </Grid>
-            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
+            <Grid item xs={6} md={3} style={{border: "1px solid black"}}>
                 <DailyVisitors
                     heading="Daily Visitor Count"
                     boarditName={props.boarditName}
                 />
             </Grid>
-            <Grid item xs={6} md={6} style={{border: "1px solid black"}}>
+            <Grid item xs={6} md={3} style={{border: "1px solid black"}}>
                 <ReportedDeletedPosts
                     heading={"Reported vs Deleted Posts"}
                     boarditName={props.boarditName}
@@ -323,7 +353,13 @@ export default function StatsPage(props) {
     return (
         <React.Fragment>
             <FourBar boarditName={boarditName} />
-            <Grid marginTop={"15vh"}>
+            <Typography variant="h2" align="center" marginTop={2}>
+                Boardit statistics
+            </Typography>
+            <Typography align="center" variant="h4" gutterBottom>
+                r/{boarditName}
+            </Typography>
+            <Grid marginTop={"5vh"}>
                 <StatGrid boarditName={boarditName} />
             </Grid>
         </React.Fragment>

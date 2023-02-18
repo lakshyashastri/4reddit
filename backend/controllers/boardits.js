@@ -142,6 +142,7 @@ const boarditController = {
         res.send(data);
     },
     joinUser: async (req, res) => {
+        const dateNow = await handleStats(req.params.boarditName);
         const [client, Boardits] = await getModelCon("boardits");
 
         let data = await Boardits.findOne({
@@ -157,6 +158,19 @@ const boarditController = {
         await Boardits.updateOne(
             {name: req.params.boarditName},
             {$push: {pendingRequests: req.params.username}}
+        );
+
+        let stats = await Boardits.find(
+            {name: req.params.boarditName},
+            "stats"
+        );
+        stats = stats[0].stats;
+
+        stats[dateNow].membersJoined += 1;
+
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$set: {stats}}
         );
 
         res.sendStatus(200);
