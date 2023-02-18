@@ -18,7 +18,7 @@ const handleStats = async boarditName => {
     let dateNow = moment().format("DD/MM/YYYY");
     if (!boarditStats[dateNow]) {
         boarditStats[dateNow] = {
-            visits: 1,
+            visits: [],
             posts: 0,
             membersJoined: 0
         };
@@ -231,6 +231,18 @@ const boarditController = {
         } else if (req.params.prop == "pendingRequests" && data.length) {
             const [client, Users] = await getModelCon("users");
             data = await Users.find({username: {$in: data[0].pendingRequests}});
+        } else if (req.params.prop == "stats") {
+            const sortedStats = {};
+            Object.keys(data[0].stats)
+                .sort((a, b) =>
+                    moment(a, "DD/MM/YYYY").diff(moment(b, "DD/MM/YYYY"))
+                )
+                .forEach(key => {
+                    if (/^\d{2}\/\d{2}\/\d{4}$/.test(key)) {
+                        sortedStats[key] = data[0].stats[key];
+                    }
+                });
+            data = Object.assign({}, sortedStats);
         }
 
         res.send(data);
@@ -271,7 +283,9 @@ const boarditController = {
         );
         stats = stats[0].stats;
 
-        stats[dateNow].visits += 1;
+        if (!stats[dateNow].visits.includes(req.body.user)) {
+            stats[dateNow].visits.push(req.body.user);
+        }
 
         await Boardits.updateOne(
             {name: req.params.boarditName},

@@ -22,7 +22,7 @@ import Fuse from "fuse.js";
 
 import Loading from "../Loading";
 import ConfirmationDialog from "../Confirmation";
-import {getFrom} from "../../helpers";
+import {getFrom, postTo} from "../../helpers";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -40,7 +40,10 @@ function Row(props) {
 
     const navigate = useNavigate();
 
-    const handleVisit = boardit => {
+    const handleVisit = async boardit => {
+        await postTo(`/boardits/${boardit}/visit`, {
+            user: JSON.parse(window.localStorage.getItem("username"))
+        });
         navigate(`/r/${props.name.slice(2)}`);
     };
 

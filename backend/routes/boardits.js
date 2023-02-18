@@ -19,7 +19,7 @@ router.get("/:boarditName/prop/:prop", boarditController.prop);
 
 router.post("/:boarditName/block", boarditController.block);
 
-router.get("/:boarditName/visit", boarditController.visit);
+router.post("/:boarditName/visit", boarditController.visit);
 router.get("/:boarditName/temp", boarditController.temp);
 
 export default router;

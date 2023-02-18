@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 
 import "chart.js/auto";
-import {Pie} from "react-chartjs-2";
+import {Line, Pie} from "react-chartjs-2";
 
 import FourBar from "../../components/FourBar";
 import {getFrom, postTo} from "../../helpers";
@@ -63,6 +63,87 @@ const templateChartData = {
     ]
 };
 
+function DailyVisitors(props) {
+    const [chartData, setChartData] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let res = await getFrom(
+                `/boardits/${props.boarditName}/prop/stats`
+            );
+
+            let labels = [];
+            let data = [];
+            for (let day in res) {
+                if (day == "_id") {
+                    continue;
+                }
+                labels.push(day);
+                data.push(res[day].visits.length);
+            }
+
+            setChartData({
+                labels,
+                datasets: [
+                    {
+                        labels,
+                        data,
+                        backgroundColor: ["rgba(75,192,192,1)", "#ecf0f1"],
+                        borderColor: "black",
+                        borderWidth: 3
+                    }
+                ]
+            });
+        })();
+    }, []);
+
+    return chartData ? (
+        <div className="chart-container">
+            <Typography align="center" variant="h4">
+                {props.heading}
+            </Typography>
+
+            <Typography align="center" variant="h6" gutterBottom>
+                Visitors today:
+            </Typography>
+            <Line
+                data={chartData}
+                options={{
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Date",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Number of unique visitors",
+                                color: "black"
+                            },
+                            ticks: {
+                                color: "black"
+                            }
+                        }
+                    }
+                }}
+            />
+        </div>
+    ) : (
+        <Loading />
+    );
+}
+
 function ReportedDeletedPosts(props) {
     const [chartData, setChartData] = useState(null);
     const [totalReported, setTotalReported] = useState(null);
@@ -95,22 +176,31 @@ function ReportedDeletedPosts(props) {
 
     return chartData ? (
         <div className="chart-container">
-            <h2 style={{textAlign: "center"}}>{props.heading}</h2>
-            <h3 style={{textAlign: "center"}}>
-                Total reported posts: {totalReported}
-            </h3>
-            <Pie
-                data={chartData}
-                options={{
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: "black"
+            <Typography align="center" variant="h4">
+                {props.heading}
+            </Typography>
+            {totalReported ? (
+                <React.Fragment>
+                    <Typography align="center" variant="h6" gutterBottom>
+                        Total reported posts: {totalReported}
+                    </Typography>
+
+                    <Pie
+                        data={chartData}
+                        options={{
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: "black"
+                                    }
+                                }
                             }
-                        }
-                    }
-                }}
-            />
+                        }}
+                    />
+                </React.Fragment>
+            ) : (
+                <Typography align="center">No reported posts yet</Typography>
+            )}
         </div>
     ) : (
         <Loading />
@@ -120,22 +210,23 @@ function ReportedDeletedPosts(props) {
 function StatGrid(props) {
     return (
         <Grid container spacing={3} justify="center">
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} md={6}>
                 <Typography variant="h6" align="center">
                     Member Growth Over Time
                 </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} md={6}>
                 <Typography variant="h6" align="center">
                     Daily Posts Count
                 </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
-                <Typography variant="h6" align="center">
-                    Daily Visitors Count
-                </Typography>
+            <Grid item xs={6} md={6}>
+                <DailyVisitors
+                    heading="Daily Visitor Count"
+                    boarditName={props.boarditName}
+                />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} md={6}>
                 <ReportedDeletedPosts
                     heading={"Reported vs Deleted Posts"}
                     boarditName={props.boarditName}
