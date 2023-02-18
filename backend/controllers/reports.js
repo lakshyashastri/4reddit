@@ -45,6 +45,18 @@ const reportController = {
             match = await Reports.find({id: reportID});
         }
 
+        let postAlreadyReported = await Reports.find({
+            reportedPost: req.body.reportedPost
+        });
+
+        if (postAlreadyReported.length == 0) {
+            const [boarditClient, Boardits] = await getModelCon("boardits");
+            await Boardits.updateOne(
+                {name: req.body.reportedIn},
+                {$inc: {reportedPosts: 1}}
+            );
+        }
+
         let newReport = new Reports({
             id: reportID,
             reportedBy: req.body.reportedBy,

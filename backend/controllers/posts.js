@@ -148,7 +148,7 @@ const postController = {
         const [boarditsClient, Boardits] = await getModelCon("boardits");
         await Boardits.updateOne(
             {name: req.body.boarditName},
-            {$pull: {posts: req.params.postID}}
+            {$pull: {posts: req.params.postID}, $inc: {deletedPosts: 1}}
         );
 
         const [usersClient, Users] = await getModelCon("users");

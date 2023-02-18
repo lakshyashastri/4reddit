@@ -41,7 +41,9 @@ const boarditController = {
             blockedUsers: [],
             pendingRequests: [],
             left: [],
-            followers: [req.body.createdBy]
+            followers: [req.body.createdBy],
+            reportedPosts: 0,
+            deletedPosts: 0
         });
         await newBoardit.save();
 

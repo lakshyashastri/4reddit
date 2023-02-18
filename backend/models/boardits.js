@@ -46,6 +46,14 @@ export const boarditSchema = new Schema(
         createdBy: {
             type: String,
             required: true
+        },
+        reportedPosts: {
+            type: Number,
+            required: true
+        },
+        deletedPosts: {
+            type: Number,
+            required: true
         }
     },
     {timestamps: true}

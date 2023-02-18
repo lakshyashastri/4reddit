@@ -97,7 +97,7 @@ export default function JoinRequestsPage() {
 
     return (
         <React.Fragment>
-            <FourBar />
+            <FourBar boarditName={boarditName} />
             <Grid
                 spacing={0}
                 direction="column"

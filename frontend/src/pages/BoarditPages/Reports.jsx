@@ -270,7 +270,7 @@ export default function ReportsPage(props) {
 
     return reports ? (
         <React.Fragment>
-            <FourBar />
+            <FourBar boarditName={boarditName} />
             <Grid
                 spacing={0}
                 direction="column"

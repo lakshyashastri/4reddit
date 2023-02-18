@@ -78,6 +78,8 @@ export default function FourBar(props) {
             navigate(`/r/${props.boarditName}/joinreq`);
         } else if (event.target.textContent == "Reports") {
             navigate(`/r/${props.boarditName}/reports`);
+        } else if (event.target.textContent == "Stats") {
+            navigate(`/r/${props.boarditName}/stats`);
         }
         setAnchorElBoardit(null);
     };
