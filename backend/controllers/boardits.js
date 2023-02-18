@@ -9,6 +9,29 @@ const handleBlocked = data => {
     return data;
 };
 
+// ensures there are stats objects for each day every day
+const handleStats = async boarditName => {
+    const [client, Boardits] = await getModelCon("boardits");
+    let boarditStats = await Boardits.find({name: boarditName}, "stats").lean();
+    boarditStats = boarditStats[0].stats;
+
+    let dateNow = moment().format("DD/MM/YYYY");
+    if (!boarditStats[dateNow]) {
+        boarditStats[dateNow] = {
+            visits: 1,
+            posts: 0,
+            membersJoined: 0
+        };
+    }
+
+    await Boardits.updateOne(
+        {name: boarditName},
+        {$set: {stats: boarditStats}}
+    );
+
+    return dateNow;
+};
+
 const boarditController = {
     getAll: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
@@ -239,58 +262,32 @@ const boarditController = {
         res.send(data);
     },
     visit: async (req, res) => {
+        const dateNow = await handleStats(req.params.boarditName);
         const [client, Boardits] = await getModelCon("boardits");
-        let boarditStats = await Boardits.find(
+
+        let stats = await Boardits.find(
             {name: req.params.boarditName},
             "stats"
-        ).lean();
-        boarditStats = boarditStats[0].stats;
-
-        let dateNow = moment().format("DD/MM/YYYY");
-        if (!boarditStats[dateNow]) {
-            boarditStats[dateNow] = {
-                visits: 0,
-                posts: 0,
-                membersJoined: 0
-            };
-        }
-
-        console.log(Object.keys(boarditStats)); // [ '$__parent', '$__', '$isNew', '_doc', '18/02/2023' ]
-        console.log(boarditStats["18/02/2023"]);
-
-        let resp = await Boardits.updateOne(
-            {name: req.params.boarditName},
-            {$set: {stats: boarditStats}}
         );
+        stats = stats[0].stats;
 
-        ////////////////
+        stats[dateNow].visits += 1;
 
-        // let stats = await Boardits.find(
-        //     {name: req.params.boarditName},
-        //     "stats"
-        // );
-        // stats = stats[0].stats;
-
-        // stats[dateNow].visits += 1;
-
-        // await Boardits.updateOne(
-        //     {name: req.params.boarditName},
-        //     {$set: {stats}}
-        // );
+        await Boardits.updateOne(
+            {name: req.params.boarditName},
+            {$set: {stats}}
+        );
         res.sendStatus(200);
     },
     temp: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
-
-        await Boardits.updateOne(
-            {name: "dondetti"},
-            {$set: {stats: {test: {gate: 5}}}}
+        let stats = await Boardits.find(
+            {name: req.params.boarditName},
+            "stats"
         );
-
-        let b = await Boardits.find({name: req.params.boarditName});
-        console.log(b[0].stats);
-
-        res.send(Object.keys(b[0].stats));
+        stats = stats[0].stats;
+        console.log(stats);
+        res.send(stats);
     }
 };
 
