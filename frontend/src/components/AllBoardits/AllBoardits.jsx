@@ -336,10 +336,40 @@ function SortBox(props) {
     );
 }
 
+function TagBox(props) {
+    return (
+        <Autocomplete
+            multiple
+            options={props.options}
+            getOptionLabel={option => option.value}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="Sort by tags"
+                    sx={{
+                        paddingLeft: 1,
+                        paddingTop: 0.5,
+                        paddingBottom: 0.5,
+                        paddingRight: 5,
+                        width: 500,
+                        "& input::placeholder": {
+                            color: "white"
+                        }
+                    }}
+                />
+            )}
+            onChange={props.handleTagChange}
+            value={props.selectedFilters}
+        />
+    );
+}
+
 export default function AllBoarditsTable(props) {
     const [tableData, setTableData] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedFilters, setSelectedFilters] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -353,6 +383,9 @@ export default function AllBoarditsTable(props) {
     const handleSelectionChange = (event, newValue) => {
         setSelectedOptions(newValue);
     };
+    const handleTagChange = (event, newValue) => {
+        setSelectedFilters(newValue);
+    };
 
     const headings = ["S. No.", "Boardit name", "Posts", "Followers", "Owner"];
     const sortOptions = [
@@ -361,6 +394,17 @@ export default function AllBoarditsTable(props) {
         {value: "Followers (Descending)"},
         {value: "Creation date (Descending)"}
     ];
+
+    let tagOptions = [];
+    if (tableData) {
+        for (let boarditData of tableData) {
+            for (let tag of boarditData.tags) {
+                if (tag.length > 0) {
+                    tagOptions.push({value: tag});
+                }
+            }
+        }
+    }
 
     const getRows = () => {
         // fuzzy search
@@ -378,8 +422,6 @@ export default function AllBoarditsTable(props) {
         } else {
             finalData = filtered;
         }
-
-        console.log(finalData);
 
         // sorting
         for (let option of selectedOptions) {
@@ -462,6 +504,13 @@ export default function AllBoarditsTable(props) {
                         handleSelectionChange={handleSelectionChange}
                         selectedOptions={selectedOptions}
                         options={sortOptions}
+                    />
+                </Grid>
+                <Grid item>
+                    <TagBox
+                        selectedFilters={selectedFilters}
+                        handleTagChange={handleTagChange}
+                        options={tagOptions}
                     />
                 </Grid>
             </Grid>
