@@ -17,8 +17,13 @@ import InputBase from "@mui/material/InputBase";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
+import PropTypes from "prop-types";
+import {Autocomplete} from "@mui/material";
 
 import Fuse from "fuse.js";
+import moment from "moment";
 
 import Loading from "../Loading";
 import ConfirmationDialog from "../Confirmation";
@@ -30,6 +35,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LoginIcon from "@mui/icons-material/Login";
+import {spacing} from "@mui/system";
 
 function Row(props) {
     const [open, setOpen] = useState(false);
@@ -284,36 +290,56 @@ function Row(props) {
 
 function SearchBox(props) {
     return (
-        <Grid
+        <TextField
+            placeholder="Filter by name"
+            onChange={event => props.changeFunc(event.target.value)}
             sx={{
-                m: 1,
-                mr: 0,
-                display: "flex",
-                justifyContent: "right"
+                paddingLeft: 1,
+                paddingTop: 0.5,
+                paddingBottom: 0.5,
+                paddingRight: 5,
+                "& input::placeholder": {
+                    color: "white"
+                },
+                width: 300
             }}
-            contianer
-        >
-            <Grid item>
-                <InputBase
-                    placeholder="Filter by name"
-                    // value={searchTerm}
-                    onChange={event => props.changeFunc(event.target.value)}
+        />
+    );
+}
+
+function SortBox(props) {
+    return (
+        <Autocomplete
+            multiple
+            options={props.options}
+            getOptionLabel={option => option.value}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="Sort by parameter"
                     sx={{
-                        backgroundColor: "white",
                         paddingLeft: 1,
                         paddingTop: 0.5,
                         paddingBottom: 0.5,
-                        paddingRight: 5
+                        paddingRight: 5,
+                        width: 500,
+                        "& input::placeholder": {
+                            color: "white"
+                        }
                     }}
                 />
-            </Grid>
-        </Grid>
+            )}
+            onChange={props.handleSelectionChange}
+            value={props.selectedOptions}
+        />
     );
 }
 
 export default function AllBoarditsTable(props) {
     const [tableData, setTableData] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -324,15 +350,26 @@ export default function AllBoarditsTable(props) {
         })();
     }, []);
 
+    const handleSelectionChange = (event, newValue) => {
+        setSelectedOptions(newValue);
+    };
+
     const headings = ["S. No.", "Boardit name", "Posts", "Followers", "Owner"];
+    const sortOptions = [
+        {value: "Name (Ascending)"},
+        {value: "Name (Descending)"},
+        {value: "Followers (Descending)"},
+        {value: "Creation date (Descending)"}
+    ];
 
     const getRows = () => {
-        const options = {
+        // fuzzy search
+        const fuzzyOptions = {
             includeScore: true,
             keys: ["name"]
         };
 
-        const fuse = new Fuse(tableData, options);
+        const fuse = new Fuse(tableData, fuzzyOptions);
         const filtered = fuse.search(searchTerm);
 
         let finalData;
@@ -342,6 +379,40 @@ export default function AllBoarditsTable(props) {
             finalData = filtered;
         }
 
+        console.log(finalData);
+
+        // sorting
+        for (let option of selectedOptions) {
+            if (option.value == sortOptions[0].value) {
+                finalData.sort((a, b) =>
+                    a.item
+                        ? a.item.name.localeCompare(b.item.name)
+                        : a.name.localeCompare(b.name)
+                );
+            } else if (option.value == sortOptions[1].value) {
+                finalData.sort((a, b) =>
+                    b.item
+                        ? b.item.name.localeCompare(a.item.name)
+                        : b.name.localeCompare(a.name)
+                );
+            } else if (option.value == sortOptions[2].value) {
+                finalData.sort((a, b) =>
+                    b.item
+                        ? b.item.followers.length - a.item.followers.length
+                        : b.followers.length - a.followers.length
+                );
+            } else if (option.value == sortOptions[3].value) {
+                finalData.sort((a, b) =>
+                    a.item
+                        ? moment(a.item.createdAt).diff(
+                              moment(b.item.createdAt)
+                          )
+                        : moment(a.createdAt).diff(moment(b.createdAt))
+                );
+            }
+        }
+
+        // compute rows
         let rows = [];
         let username = JSON.parse(localStorage.getItem("username"));
         for (let [index, rowData] of finalData.entries()) {
@@ -376,7 +447,24 @@ export default function AllBoarditsTable(props) {
 
     return tableData ? (
         <React.Fragment>
-            <SearchBox changeFunc={setSearchTerm} />
+            <Grid
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    m: 1
+                }}
+            >
+                <Grid item>
+                    <SearchBox changeFunc={setSearchTerm} />
+                </Grid>
+                <Grid item>
+                    <SortBox
+                        handleSelectionChange={handleSelectionChange}
+                        selectedOptions={selectedOptions}
+                        options={sortOptions}
+                    />
+                </Grid>
+            </Grid>
             <TableContainer component={Paper}>
                 <Table stickyHeader>
                     <TableHead>
