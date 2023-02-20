@@ -416,11 +416,39 @@ export default function AllBoarditsTable(props) {
         const fuse = new Fuse(tableData, fuzzyOptions);
         const filtered = fuse.search(searchTerm);
 
-        let finalData;
+        let _finalData;
         if (searchTerm == "") {
-            finalData = tableData;
+            _finalData = tableData;
         } else {
-            finalData = filtered;
+            _finalData = filtered;
+        }
+
+        // tag filter
+        let finalData;
+        if (selectedFilters.length) {
+            finalData = [];
+            for (let data of _finalData) {
+                let boarditData = data.item ? data.item : data;
+
+                let match = 0;
+                for (let tag of boarditData.tags) {
+                    if (!tag.length) {
+                        continue;
+                    }
+
+                    console.log(tag, selectedFilters);
+                    if (selectedFilters.some(filter => filter.value == tag)) {
+                        match = 1;
+                        break;
+                    }
+                }
+
+                if (match) {
+                    finalData.push(data);
+                }
+            }
+        } else {
+            finalData = _finalData;
         }
 
         // sorting
