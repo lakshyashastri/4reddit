@@ -1,3 +1,4 @@
+import {React, useState, useEffect} from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
 import LoginPage from "./login";
@@ -11,6 +12,7 @@ import JoinRequestsPage from "./pages/BoarditPages/JoinReq";
 import ReportsPage from "./pages/BoarditPages/Reports";
 import StatsPage from "./pages/BoarditPages/Stats";
 
+import {postTo} from "./helpers";
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
 
@@ -21,7 +23,21 @@ function redirect(paths, redirectPath) {
 }
 
 export default function App() {
-    const loggedIn = JSON.parse(window.localStorage.getItem("LOGGED_IN"));
+    const [loggedIn, setLoggedIn] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const token = window.localStorage.getItem("token");
+            let res = await postTo("/login/auth", {token});
+            res = await res.json();
+
+            if (!res.success) {
+                setLoggedIn(true);
+            } else {
+                setLoggedIn(false);
+            }
+        })();
+    }, []);
 
     return (
         <BrowserRouter basename={ROOT}>

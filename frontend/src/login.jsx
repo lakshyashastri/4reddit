@@ -62,19 +62,20 @@ function SignInForm(props) {
     let handleSignInClick = async event => {
         event.preventDefault(); // prevents page reload
 
-        let userData = await getFrom("/users/" + username);
-        if (userData.length) {
-            userData = userData[0];
-        }
+        window.localStorage.removeItem("username");
+        window.localStorage.removeItem("token");
 
-        if (username == userData.username && password == userData.password) {
-            localStorage.setItem("LOGGED_IN", JSON.stringify(true));
-            localStorage.setItem("username", JSON.stringify(username));
-            navigate(`/u/${username}`);
+        let res = await postTo("/login", {username, password});
+        res = await res.json();
+
+        if (res.success) {
+            window.localStorage.setItem("username", res.userData.username);
+            window.localStorage.setItem("token", res.token);
+            navigate(`/u/${res.userData.username}`);
         } else {
             setWrongFields({
-                username: username == userData.username ? 0 : 1,
-                password: password == userData.password ? 0 : 1
+                username: res.username,
+                password: res.password
             });
         }
     };

@@ -8,6 +8,7 @@ import users from "./routes/users.js";
 import posts from "./routes/posts.js";
 import comments from "./routes/comments.js";
 import reports from "./routes/reports.js";
+import login from "./routes/login.js";
 
 // vars
 const app = express(); // express app
@@ -27,6 +28,7 @@ router.use("/users", users);
 router.use("/posts", posts);
 router.use("/comments", comments);
 router.use("/reports", reports);
+router.use("/login", login);
 
 // start app
 app.listen(PORT);

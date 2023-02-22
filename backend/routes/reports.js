@@ -1,7 +1,9 @@
 import express from "express";
 import reportController from "../controllers/reports.js";
+import {authenticateToken} from "../helpers.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 
 router.get("/", reportController.getAll);
 router.post("/", reportController.createReport);

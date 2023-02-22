@@ -1,7 +1,9 @@
 import express from "express";
 import postController from "../controllers/posts.js";
+import {authenticateToken} from "../helpers.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 
 router.get("/", postController.getAll);
 router.get("/:postID", postController.getOne);

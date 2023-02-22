@@ -1,7 +1,9 @@
 import express from "express";
 import boarditController from "../controllers/boardits.js";
+import {authenticateToken} from "../helpers.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 
 router.get("/", boarditController.getAll);
 router.post("/", boarditController.createBoardit);
