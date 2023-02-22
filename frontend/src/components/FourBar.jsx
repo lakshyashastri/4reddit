@@ -60,11 +60,12 @@ export default function FourBar(props) {
 
     const handleCloseUserMenu = event => {
         if (event.target.textContent == "Logout") {
-            localStorage.setItem("LOGGED_IN", JSON.stringify(false));
-            localStorage.setItem("username", JSON.stringify(null));
+            localStorage.removeItem("username");
+            localStorage.removeItem("token");
+            navigate("/");
             window.location.reload();
         } else if (event.target.textContent == "My Profile") {
-            navigate(`/u/${JSON.parse(localStorage.getItem("username"))}`);
+            navigate(`/u/${localStorage.getItem("username")}`);
         }
         setAnchorElUser(null);
     };

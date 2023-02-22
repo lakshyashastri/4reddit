@@ -9,7 +9,7 @@ import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbDownSharpIcon from "@mui/icons-material/ThumbDownSharp";
 
 export default function VoteButton(props) {
-    const username = JSON.parse(window.localStorage.getItem("username"));
+    const username = window.localStorage.getItem("username");
 
     const [alreadyVoted, setAlreadyVoted] = useState(
         props.upvote

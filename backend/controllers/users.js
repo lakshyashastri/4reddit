@@ -1,4 +1,5 @@
 import {getModelCon} from "../config/connections.js";
+import {getAccessToken} from "./login.js";
 
 const userController = {
     getAll: async (req, res) => {
@@ -32,7 +33,11 @@ const userController = {
         });
         await newUser.save();
 
-        res.sendStatus(200);
+        res.json({
+            username: req.body.username,
+            success: true,
+            token: getAccessToken(req.body.username)
+        });
     },
     getBoards: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");

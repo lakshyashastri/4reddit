@@ -43,7 +43,7 @@ export default function NewForm(props) {
             description: desc.length == 0 ? "No description" : desc,
             tags,
             bannedKeywords: banned,
-            createdBy: JSON.parse(localStorage.getItem("username"))
+            createdBy: localStorage.getItem("username")
         });
 
         if (res.status == 409) {

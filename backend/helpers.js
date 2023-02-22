@@ -38,6 +38,7 @@ export function authenticateToken(req, res, next) {
             return res.sendStatus(403);
         }
         req.username = user;
+        req.token = token;
         next();
     });
 }

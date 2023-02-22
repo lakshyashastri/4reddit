@@ -317,8 +317,8 @@ const boarditController = {
         );
         stats = stats[0].stats;
 
-        if (!stats[dateNow].visits.includes(req.body.user)) {
-            stats[dateNow].visits.push(req.body.user);
+        if (!stats[dateNow].visits.includes(jwt.decode(req.token).username)) {
+            stats[dateNow].visits.push(jwt.decode(req.token).username);
         }
 
         await Boardits.updateOne(

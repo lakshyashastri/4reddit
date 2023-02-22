@@ -66,7 +66,14 @@ function SignInForm(props) {
         window.localStorage.removeItem("token");
 
         let res = await postTo("/login", {username, password});
-        res = await res.json();
+        if (res.status != 204) {
+            res = await res.json();
+        } else {
+            setWrongFields({
+                username: res.username,
+                password: res.password
+            });
+        }
 
         if (res.success) {
             window.localStorage.setItem("username", res.userData.username);
@@ -191,11 +198,13 @@ function RegForm(props) {
     let handleRegClick = event => {
         event.preventDefault();
         postTo("/users", formatData())
-            .then(response => {
+            .then(async response => {
                 if (response.ok) {
-                    localStorage.setItem("LOGGED_IN", JSON.stringify(true));
-                    localStorage.setItem("username", JSON.stringify(username));
+                    const data = await response.json();
+                    localStorage.setItem("username", data.username);
+                    localStorage.setItem("token", data.token);
                     navigate(`/u/${username}`);
+                    window.location.reload();
                 } else {
                     document.write("oops");
                 }

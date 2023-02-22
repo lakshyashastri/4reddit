@@ -43,7 +43,7 @@ export default function EditProfileModal(props) {
         let res = await getFrom(`/users/${username}`);
         if (
             res.length == 0 ||
-            username == JSON.parse(window.localStorage.getItem("username"))
+            username == window.localStorage.getItem("username")
         ) {
             setUsernameUnique(true);
         } else {
@@ -52,9 +52,7 @@ export default function EditProfileModal(props) {
         }
 
         await postTo(
-            `/users/${JSON.parse(
-                window.localStorage.getItem("username")
-            )}/update`,
+            `/users/${window.localStorage.getItem("username")}/update`,
             {
                 username: username ? username : props.user.username,
                 firstName: firstName ? firstName : props.user.firstName,
@@ -73,8 +71,7 @@ export default function EditProfileModal(props) {
     };
 
     const error = () =>
-        !usernameUnique &&
-        username == JSON.parse(window.localStorage.getItem("username"));
+        !usernameUnique && username == window.localStorage.getItem("username");
 
     return (
         <React.Fragment>

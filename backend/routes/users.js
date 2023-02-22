@@ -4,17 +4,16 @@ import cors from "cors";
 import {authenticateToken} from "../helpers.js";
 
 const router = express.Router();
-router.use(authenticateToken);
 
-router.get("/", userController.getAll);
+router.get("/", authenticateToken, userController.getAll);
 router.post("/", userController.create);
 
-router.get("/:username", userController.getOne);
+router.get("/:username", authenticateToken, userController.getOne);
 
-router.post("/:username/update", userController.update);
-router.get("/:username/saved", userController.saved);
-router.get("/:username/boardits", userController.getBoards);
-router.post("/:username/follow", userController.follow);
-router.post("/:username/unfollow", userController.unfollow);
+router.post("/:username/update", authenticateToken, userController.update);
+router.get("/:username/saved", authenticateToken, userController.saved);
+router.get("/:username/boardits", authenticateToken, userController.getBoards);
+router.post("/:username/follow", authenticateToken, userController.follow);
+router.post("/:username/unfollow", authenticateToken, userController.unfollow);
 
 export default router;

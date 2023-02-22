@@ -4,14 +4,17 @@ export function postTo(url, data) {
     return fetch(API_PATH + url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(data)
     });
 }
 
 export async function getFrom(url) {
-    let res = await fetch(API_PATH + url);
+    let res = await fetch(API_PATH + url, {
+        headers: {authorization: `Bearer ${localStorage.getItem("token")}`}
+    });
     if (res.ok) {
         const isJson = res.headers
             .get("content-type")

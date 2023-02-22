@@ -1,5 +1,6 @@
 import {getModelCon} from "../config/connections.js";
 import {sendMail} from "../helpers.js";
+import jwt from "jsonwebtoken";
 
 const handleBanned = async data => {
     const [client, Boardits] = await getModelCon("boardits");
@@ -71,8 +72,8 @@ const postController = {
         await Posts.updateOne(
             {id: req.params.postID},
             increment
-                ? {$push: {upvotedBy: req.body.user}}
-                : {$pull: {upvotedBy: req.body.user}}
+                ? {$push: {upvotedBy: jwt.decode(req.token).username}}
+                : {$pull: {upvotedBy: jwt.decode(req.token).username}}
         );
         await Posts.updateOne(
             {id: req.params.postID},
@@ -89,8 +90,8 @@ const postController = {
         await Posts.updateOne(
             {id: req.params.postID},
             increment
-                ? {$push: {downvotedBy: req.body.user}}
-                : {$pull: {downvotedBy: req.body.user}}
+                ? {$push: {downvotedBy: jwt.decode(req.token).username}}
+                : {$pull: {downvotedBy: jwt.decode(req.token).username}}
         );
         await Posts.updateOne(
             {id: req.params.postID},
@@ -109,7 +110,7 @@ const postController = {
         }
 
         await Users.updateOne(
-            {username: req.body.user},
+            {username: jwt.decode(req.token).username},
             {$push: {savedPosts: req.params.postID}}
         );
 
@@ -132,7 +133,7 @@ const postController = {
         }
 
         await Users.updateOne(
-            {username: req.body.user},
+            {username: jwt.decode(req.token).username},
             {$pull: {savedPosts: req.params.postID}}
         );
 

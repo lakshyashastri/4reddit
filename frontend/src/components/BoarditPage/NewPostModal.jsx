@@ -53,7 +53,7 @@ export default function NewPostModal(props) {
         let res = await postTo(`/boardits/${props.name}`, {
             title,
             text,
-            postedBy: JSON.parse(window.localStorage.getItem("username"))
+            postedBy: window.localStorage.getItem("username")
         });
         setPosted(true);
         setTimeout(() => window.location.reload(), 300);

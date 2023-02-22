@@ -2,7 +2,7 @@
 - Profile page box md flex: customise profile page for phone?
 - Calculate basename depending on nodejs environment OS
 
-- loading profile page loads "user not found" for a second
+<!-- - loading profile page loads "user not found" for a second -->
 - upvote downvote not at same time (buttons should flip)
 - edit profile add username is taken thing
   - change posts of user if username change?

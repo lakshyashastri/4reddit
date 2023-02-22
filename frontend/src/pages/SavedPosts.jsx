@@ -23,15 +23,11 @@ export default function SavePosts(props) {
                     </Typography>
                     <Typography align="center" variant="h4" gutterBottom>
                         by u/
-                        {JSON.parse(window.localStorage.getItem("username"))}
+                        {window.localStorage.getItem("username")}
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Posts
-                        saved={JSON.parse(
-                            window.localStorage.getItem("username")
-                        )}
-                    />
+                    <Posts saved={window.localStorage.getItem("username")} />
                 </Grid>
             </Grid>
         </React.Fragment>

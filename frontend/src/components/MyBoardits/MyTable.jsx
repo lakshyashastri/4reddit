@@ -229,10 +229,9 @@ export default function MyBoarditsTable(props) {
     useEffect(() => {
         (async () => {
             let data = await getFrom(
-                `/users/${JSON.parse(
-                    localStorage.getItem("username")
-                )}/boardits`
+                `/users/${localStorage.getItem("username")}/boardits`
             );
+            console.log(data);
 
             setTimeout(() => setTableData(data), 500);
         })();

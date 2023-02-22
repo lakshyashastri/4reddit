@@ -4,26 +4,26 @@ import {postTo} from "../helpers";
 
 export let ROOT = "/";
 
-export const ProtectedRoute = () => {
-    const [success, setSuccess] = useState(null);
+export const ProtectedRoute = ({children}) => {
+    const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
         (async () => {
             const token = window.localStorage.getItem("token");
-            console.log(token);
+
             let res = await postTo("/login/auth", {token});
             res = await res.json();
 
-            if (!res.success) {
-                setSuccess(false);
+            if (res.success) {
+                setAuthenticated(true);
             } else {
-                setSuccess(true);
+                setAuthenticated(false);
             }
         })();
     }, []);
 
-    if (success) {
-        return <Outlet />;
+    if (authenticated) {
+        return children;
     }
     return <Navigate to={ROOT} />;
 };

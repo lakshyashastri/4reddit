@@ -25,7 +25,7 @@ export default function BoarditCard(props) {
     const handleClose = () => setShowModal(false);
 
     const joined = props.boarditData.followers.includes(
-        JSON.parse(window.localStorage.getItem("username"))
+        window.localStorage.getItem("username")
     );
 
     const handleInfoClick = () => {

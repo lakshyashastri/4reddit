@@ -13,6 +13,7 @@ import FolloweringList from "../components/Profile/FolloweringList";
 
 import {getFrom, modalStyling} from "../helpers";
 import NotFound from "./notFound";
+import Loading from "../components/Loading";
 
 import TrollFace from "../assets/defaultIcon.jpg";
 
@@ -22,17 +23,23 @@ export default function ProfilePage(props) {
     const [userData, setUserData] = useState([]);
     const [followerModal, setFollowerModal] = useState(false);
     const [followingModal, setFollowingModal] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
             let data = await getFrom("/users/" + username);
             setUserData(data);
+            setLoading(false);
         })();
     }, []);
 
+    if (loading) {
+        return <Loading />;
+    }
+
     if (userData.length === 0) {
         return <NotFound message={"User not found"} />;
-    } else if (username != JSON.parse(localStorage.getItem("username"))) {
+    } else if (username != localStorage.getItem("username")) {
         return <NotFound message={"This is not your user page"} />;
     }
 

@@ -12,7 +12,7 @@ export default function SavePost(props) {
     useEffect(() => {
         (async () => {
             let res = await getFrom(
-                `/users/${JSON.parse(window.localStorage.getItem("username"))}`
+                `/users/${window.localStorage.getItem("username")}`
             );
             setSaved(res[0].savedPosts.includes(props.post.id));
         })();
@@ -22,7 +22,7 @@ export default function SavePost(props) {
         let res = await postTo(
             `/posts/${props.post.id}/${saved ? "unsave" : "save"}`,
             {
-                user: JSON.parse(window.localStorage.getItem("username"))
+                user: window.localStorage.getItem("username")
             }
         );
 

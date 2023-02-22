@@ -48,7 +48,7 @@ function Row(props) {
 
     const handleVisit = async boardit => {
         await postTo(`/boardits/${boardit}/visit`, {
-            user: JSON.parse(window.localStorage.getItem("username"))
+            user: window.localStorage.getItem("username")
         });
         navigate(`/r/${props.name.slice(2)}`);
     };
@@ -59,9 +59,9 @@ function Row(props) {
         }
 
         let res = await getFrom(
-            `/boardits/${props.name.slice(2)}/leave/${JSON.parse(
-                window.localStorage.getItem("username")
-            )}`
+            `/boardits/${props.name.slice(
+                2
+            )}/leave/${window.localStorage.getItem("username")}`
         );
 
         if (res.ok) {
@@ -79,9 +79,9 @@ function Row(props) {
         }
 
         let res = await getFrom(
-            `/boardits/${props.name.slice(2)}/join/${JSON.parse(
-                window.localStorage.getItem("username")
-            )}`
+            `/boardits/${props.name.slice(
+                2
+            )}/join/${window.localStorage.getItem("username")}`
         );
 
         if (res.ok) {
@@ -373,7 +373,14 @@ export default function AllBoarditsTable(props) {
 
     useEffect(() => {
         (async () => {
-            let res = await fetch("http://localhost:3001/4reddit/api/boardits");
+            let res = await fetch(
+                "http://localhost:3001/4reddit/api/boardits",
+                {
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            );
             let data = await res.json();
 
             setTimeout(() => setTableData(data), 500);
@@ -484,7 +491,7 @@ export default function AllBoarditsTable(props) {
 
         // compute rows
         let rows = [];
-        let username = JSON.parse(localStorage.getItem("username"));
+        let username = localStorage.getItem("username");
         for (let [index, rowData] of finalData.entries()) {
             let parsedRowData = rowData.item ? rowData.item : rowData;
 

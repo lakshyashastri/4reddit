@@ -34,7 +34,7 @@ export default function NewCommentModal(props) {
 
         let res = await postTo("/comments", {
             text,
-            postedBy: JSON.parse(window.localStorage.getItem("username")),
+            postedBy: window.localStorage.getItem("username"),
             postID: props.postID
         });
 

@@ -51,7 +51,7 @@ function ReportModal(props) {
         }
 
         await postTo("/reports", {
-            reportedBy: JSON.parse(window.localStorage.getItem("username")),
+            reportedBy: window.localStorage.getItem("username"),
             reportedUser: props.postData.postedBy,
             reportedPost: props.postData.id,
             reportedIn: props.postData.postedIn,
@@ -282,10 +282,8 @@ export default function Posts(props) {
                                             <SavePost post={post} />
                                         </Grid>
                                         {post.postedBy !=
-                                        JSON.parse(
-                                            window.localStorage.getItem(
-                                                "username"
-                                            )
+                                        window.localStorage.getItem(
+                                            "username"
                                         ) ? (
                                             <Grid item>
                                                 <Button
@@ -293,15 +291,14 @@ export default function Posts(props) {
                                                     color="info"
                                                     style={{marginTop: 10}}
                                                     disabled={followed}
-                                                    onClick={() =>
-                                                        handleFollow(
-                                                            JSON.parse(
+                                                    onClick={
+                                                        (() =>
+                                                            handleFollow(
                                                                 window.localStorage.getItem(
                                                                     "username"
                                                                 )
                                                             ),
-                                                            post.postedBy
-                                                        )
+                                                        post.postedBy)
                                                     }
                                                 >
                                                     {followed

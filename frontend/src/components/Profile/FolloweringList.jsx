@@ -34,14 +34,10 @@ export default function FolloweringList(props) {
         await postTo(
             props.following
                 ? `/users/${follower}/unfollow`
-                : `/users/${JSON.parse(
-                      window.localStorage.getItem("username")
-                  )}/unfollow`,
+                : `/users/${window.localStorage.getItem("username")}/unfollow`,
             props.following
                 ? {
-                      username: JSON.parse(
-                          window.localStorage.getItem("username")
-                      )
+                      username: window.localStorage.getItem("username")
                   }
                 : {username: follower}
         );
