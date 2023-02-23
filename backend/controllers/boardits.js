@@ -1,6 +1,7 @@
 import {getModelCon} from "../config/connections.js";
 import {getID, sendMail} from "../helpers.js";
 import moment from "moment";
+import jwt from "jsonwebtoken";
 
 const handleBlocked = data => {
     // temp: sometimes data[0] is undefined: fix later

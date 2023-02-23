@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import CASAuthentication from "node-cas-authentication";
 
 import {ACCESS_TOKEN_SECRET} from "./controllers/login.js";
 
@@ -50,4 +51,27 @@ export async function hashPW(password) {
 
     const hashedPW = await bcrypt.hash(password, saltRounds);
     return hashedPW;
+}
+
+export function casAuth(req, res, next) {
+    // already signed in
+    if (req.token) {
+        next();
+    }
+
+    const cas = new CASAuthentication({
+        cas_url: "https://login.iiit.ac.in/cas",
+        service_url: "http://localhost:3000",
+        cas_version: "3.0",
+        renew: true,
+        is_dev_mode: false,
+        dev_mode_user: "",
+        dev_mode_info: {},
+        session_name: "cas_user",
+        session_info: "cas_userinfo",
+        destroy_session: true,
+        return_to: "http://localhost:3000/"
+    });
+
+    return cas.bounce.bind(cas);
 }

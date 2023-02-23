@@ -11,13 +11,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
-// import bcrypt from "bcrypt";
-
 import logo from "./assets/4reddit_logo_trans.png";
 import logoGIF from "./assets/obamasphere.gif";
 
 import LoginIcon from "@mui/icons-material/Login";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import SchoolIcon from "@mui/icons-material/School";
+import GoogleIcon from "@mui/icons-material/Google";
 
 // import "./index.css";
 
@@ -250,7 +250,7 @@ function RegForm(props) {
                         250,
                         "number"
                     )}
-                    inputProps={{maxlength: 10}}
+                    inputProps={{maxLength: 10}}
                 />
                 <TextField
                     {...getTextFieldStyle("Age (18+)", "age", 250, "number")}
@@ -282,57 +282,86 @@ function RegForm(props) {
 
 function BottomText(props) {
     return (
-        <Grid sx={{textAlign: "center"}}>
-            <Typography component="h6" variant="h6">
-                {props.showSignIn
-                    ? "Don't have an account?"
-                    : "Already have an account?"}
-            </Typography>
-            <Button variant="text" size="small" onClick={props.onClick}>
-                {props.showSignIn ? "Register" : "Sign in"} here
-            </Button>
-        </Grid>
+        <React.Fragment>
+            <Grid sx={{textAlign: "center"}}>
+                <Typography component="h6" variant="h6">
+                    {props.showSignIn
+                        ? "Don't have an account?"
+                        : "Already have an account?"}
+                </Typography>
+                <Button variant="text" size="small" onClick={props.onClick}>
+                    {props.showSignIn ? "Register" : "Sign in"} here
+                </Button>
+            </Grid>
+            <Grid
+                display="flex"
+                justifyContent="center"
+                spacing={2}
+                marginTop={3}
+                container
+            >
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        endIcon={<SchoolIcon />}
+                        sx={{mt: 1}}
+                        color="warning"
+                        onClick={() =>
+                            (window.location.href =
+                                "http://localhost:3001/4reddit/api/login/cas")
+                        }
+                    >
+                        Sign in using IIIT CAS
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        endIcon={<GoogleIcon />}
+                        sx={{mt: 1}}
+                        color="error"
+                    >
+                        Sign in using Google
+                    </Button>
+                </Grid>
+            </Grid>
+        </React.Fragment>
     );
 }
 
-export default class LoginPage extends React.Component {
-    state = {
-        showSignIn: true
+export default function LoginPage(props) {
+    const [showSignIn, setShowSignIn] = useState(true);
+
+    const handleClick = () => {
+        setShowSignIn(!showSignIn);
     };
 
-    handleClick = () => {
-        this.setState({
-            showSignIn: !this.state.showSignIn
-        });
-    };
+    return (
+        <React.Fragment>
+            <CssBaseline />
 
-    render() {
-        return (
-            <React.Fragment>
-                <CssBaseline />
-
-                <div style={{...styles.flexbox}}>
-                    <Logo
-                        sx={{
-                            height: "256px",
-                            width: "256px",
-                            marginTop: "20px",
-                            borderRadius: "50%"
-                        }}
-                        href={ROOT}
-                    />
-                </div>
-
-                <Grid component="form" sx={{m: 1, textAlign: "center"}}>
-                    {this.state.showSignIn ? <SignInForm /> : <RegForm />}
-                </Grid>
-                <BottomText
-                    showSignIn={this.state.showSignIn}
-                    onClick={this.handleClick}
+            <div style={{...styles.flexbox}}>
+                <Logo
+                    sx={{
+                        height: "256px",
+                        width: "256px",
+                        marginTop: "20px",
+                        borderRadius: "50%"
+                    }}
+                    href={ROOT}
                 />
-            </React.Fragment>
-        );
-    }
+            </div>
+
+            <Grid component="form" sx={{m: 1, textAlign: "center"}}>
+                {showSignIn ? <SignInForm /> : <RegForm />}
+            </Grid>
+            <BottomText showSignIn={showSignIn} onClick={handleClick} />
+        </React.Fragment>
+    );
 }
 
 // If you want to start measuring performance in your app, pass a function

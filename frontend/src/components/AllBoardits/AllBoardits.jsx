@@ -443,7 +443,6 @@ export default function AllBoarditsTable(props) {
                         continue;
                     }
 
-                    console.log(tag, selectedFilters);
                     if (selectedFilters.some(filter => filter.value == tag)) {
                         match = 1;
                         break;

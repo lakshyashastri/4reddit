@@ -20,15 +20,15 @@ const loginController = {
             return res.json({username: 1, password: 1});
         }
 
-        const pwCorrect = await bcrypt.compare(
+        const result = await bcrypt.compare(
             req.body.password,
             userData[0].password
         );
 
-        if (req.body.username == userData[0].username && pwCorrect) {
+        if (req.body.username == userData[0].username && result) {
             const token = getAccessToken(req.body.username);
             res.json({userData: userData[0], success: true, token});
-        } else if (req.body.username == userData[0].username && !pwCorrect) {
+        } else if (req.body.username == userData[0].username && !result) {
             res.json({username: 0, password: 1});
         } else {
             res.json({username: 0, password: 0});
@@ -41,6 +41,14 @@ const loginController = {
             }
             res.json({success: true});
         });
+    },
+    casAuth: async (req, res) => {
+        const token = getAccessToken(req.session.cas_userinfo.uid);
+
+        res.redirect(
+            `http://localhost:3000?token=${token}&username=${req.session.cas_userinfo.uid}&email=${req.session.cas_userinfo["e-mail"]}`
+        );
+        // res.json({login: cas.getLoginQueryString()});
     }
 };
 

@@ -1,9 +1,10 @@
 import express from "express";
 import boarditController from "../controllers/boardits.js";
-import {authenticateToken} from "../helpers.js";
+import {authenticateToken, casAuth} from "../helpers.js";
 
 const router = express.Router();
 router.use(authenticateToken);
+// router.use(casAuth);
 
 router.get("/", boarditController.getAll);
 router.post("/", boarditController.createBoardit);

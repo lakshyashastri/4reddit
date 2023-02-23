@@ -42,3 +42,12 @@ export const modalStyling = {
     boxShadow: 24,
     p: 4
 };
+
+export function parseQuery(location) {
+    let params = {};
+    for (let param of location.slice(1).split("&")) {
+        const paramSet = param.split("=");
+        params[paramSet[0]] = paramSet[1];
+    }
+    return params;
+}

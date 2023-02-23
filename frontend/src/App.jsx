@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Navigate,
+    useParams
+} from "react-router-dom";
 
 import LoginPage from "./login";
 import ProfilePage from "./pages/Profile";
@@ -12,7 +18,7 @@ import JoinRequestsPage from "./pages/BoarditPages/JoinReq";
 import ReportsPage from "./pages/BoarditPages/Reports";
 import StatsPage from "./pages/BoarditPages/Stats";
 
-import {postTo} from "./helpers";
+import {postTo, parseQuery} from "./helpers";
 import {ProtectedRoute, ROOT} from "./components/ProtectedRoute";
 import NotFound from "./pages/notFound";
 import Loading from "./components/Loading";
@@ -27,17 +33,28 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
 
+    console.log(parseQuery(window.location.search));
+
     useEffect(() => {
         (async () => {
             const token = window.localStorage.getItem("token");
-            let res = await postTo("/login/auth", {token});
-            res = await res.json();
 
-            if (res.success) {
-                setLoggedIn(true);
-            } else {
-                setLoggedIn(false);
+            if (token) {
+                let res = await postTo("/login/auth", {token});
+                res = await res.json();
+
+                if (res.success) {
+                    setLoggedIn(true);
+                } else {
+                    setLoggedIn(false);
+                }
             }
+
+            // token = window.localStorage.getItem("casToken");
+            // if (token) {
+            //     // create new jwt token?
+            // }
+
             setLoading(false);
         })();
     }, []);
@@ -53,6 +70,7 @@ export default function App() {
                     path="/"
                     element={!loggedIn ? <LoginPage /> : <Navigate to="/all" />}
                 />
+                <Route path="4reddit/api/login/cas" />
 
                 {redirect(["/u", "/r", "/4reddit"], "/all")}
 
