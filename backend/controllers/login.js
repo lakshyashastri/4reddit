@@ -39,7 +39,7 @@ const loginController = {
             if (err) {
                 return res.json({error: "Invalid token"});
             }
-            res.json({success: true});
+            res.json({success: true, username: user});
         });
     },
     casAuth: async (req, res) => {
@@ -49,6 +49,43 @@ const loginController = {
             `http://localhost:3000?token=${token}&username=${req.session.cas_userinfo.uid}&email=${req.session.cas_userinfo["e-mail"]}`
         );
         // res.json({login: cas.getLoginQueryString()});
+    },
+    verify: async (req, res) => {
+        try {
+            const user = await jwt.verify(req.body.token, ACCESS_TOKEN_SECRET);
+            const [client, Users] = await getModelCon("users");
+
+            const userExists = await Users.find({
+                username: user.username,
+                email: req.body.email
+            });
+
+            if (!userExists.length) {
+                let newUser = new Users({
+                    username: user.username,
+                    password: "IIIT",
+                    firstName: req.body.email.split(".")[0],
+                    lastName: req.body.email.split(".")[1].split("@")[0],
+                    email: req.body.email,
+                    number: 1234567890,
+                    dob: 0,
+                    followers: [],
+                    following: [],
+                    savedPosts: []
+                });
+                await newUser.save();
+
+                res.json({
+                    username: user.username,
+                    success: true
+                });
+            } else {
+                res.json({success: true, username: user});
+            }
+        } catch (err) {
+            console.log(err);
+            return res.json({error: "Invalid token"});
+        }
     }
 };
 

@@ -33,8 +33,6 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    console.log(parseQuery(window.location.search));
-
     useEffect(() => {
         (async () => {
             const token = window.localStorage.getItem("token");
@@ -50,10 +48,42 @@ export default function App() {
                 }
             }
 
-            // token = window.localStorage.getItem("casToken");
-            // if (token) {
-            //     // create new jwt token?
-            // }
+            const params = parseQuery(window.location.search);
+
+            if (
+                "token" in params &&
+                "username" in params &&
+                "email" in params
+            ) {
+                let res = await postTo("/login/auth", {
+                    token: params.token
+                });
+                res = await res.json();
+
+                if (res.success) {
+                    let verify = await postTo("/login/cas/verify", {
+                        token: params.token,
+                        username: params.username,
+                        email: params.email
+                    });
+                    verify = await verify.json();
+
+                    if (verify.success) {
+                        window.localStorage.setItem(
+                            "username",
+                            verify.username
+                        );
+                        window.localStorage.setItem("token", params.token);
+                        setLoggedIn(true);
+                    } else {
+                        setLoggedIn(false);
+                    }
+                } else {
+                    setLoggedIn(false);
+                }
+            } else {
+                setLoggedIn(false);
+            }
 
             setLoading(false);
         })();

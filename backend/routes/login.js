@@ -21,5 +21,6 @@ const router = express.Router();
 router.post("/", loginController.login);
 router.post("/auth", loginController.authenticate);
 router.get("/cas", cas.bounce, loginController.casAuth);
+router.post("/cas/verify", loginController.verify);
 
 export default router;
