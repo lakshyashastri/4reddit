@@ -79,6 +79,7 @@ function SignInForm(props) {
             window.localStorage.setItem("username", res.userData.username);
             window.localStorage.setItem("token", res.token);
             navigate(`/u/${res.userData.username}`);
+            window.location.reload();
         } else {
             setWrongFields({
                 username: res.username,

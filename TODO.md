@@ -35,6 +35,7 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [ ] Stats.jsx making 4 requests for each component; fix that (low priority)
 - [ ] Delete post takes too much time
 - [ ] address DOB/Age thing
+- [ ] **PERMISSIONS: ONLY MOD CAN VIEW CERTAIN PAGES AND DELETE: front and back: really easy**
 
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH

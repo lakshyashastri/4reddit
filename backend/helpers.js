@@ -1,5 +1,7 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+
 import {ACCESS_TOKEN_SECRET} from "./controllers/login.js";
 
 export function getID(length = 3) {
@@ -41,4 +43,11 @@ export function authenticateToken(req, res, next) {
         req.token = token;
         next();
     });
+}
+
+export async function hashPW(password) {
+    const saltRounds = 10;
+
+    const hashedPW = await bcrypt.hash(password, saltRounds);
+    return hashedPW;
 }

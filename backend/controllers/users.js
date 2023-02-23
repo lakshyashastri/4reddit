@@ -1,5 +1,6 @@
 import {getModelCon} from "../config/connections.js";
 import {getAccessToken} from "./login.js";
+import {hashPW} from "../helpers.js";
 
 const userController = {
     getAll: async (req, res) => {
@@ -21,7 +22,7 @@ const userController = {
 
         let newUser = new Users({
             username: req.body.username,
-            password: req.body.password,
+            password: await hashPW(req.body.password),
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
