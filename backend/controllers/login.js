@@ -48,7 +48,6 @@ const loginController = {
         res.redirect(
             `http://localhost:3000?token=${token}&username=${req.session.cas_userinfo.uid}&email=${req.session.cas_userinfo["e-mail"]}`
         );
-        // res.json({login: cas.getLoginQueryString()});
     },
     verify: async (req, res) => {
         try {

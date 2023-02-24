@@ -43,6 +43,8 @@ export default function App() {
 
                 if (res.success) {
                     setLoggedIn(true);
+                    setLoading(false);
+                    return;
                 } else {
                     setLoggedIn(false);
                 }
@@ -71,7 +73,7 @@ export default function App() {
                     if (verify.success) {
                         window.localStorage.setItem(
                             "username",
-                            verify.username
+                            verify.username.username
                         );
                         window.localStorage.setItem("token", params.token);
                         setLoggedIn(true);

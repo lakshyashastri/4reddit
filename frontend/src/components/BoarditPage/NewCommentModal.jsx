@@ -42,8 +42,6 @@ export default function NewCommentModal(props) {
         setTimeout(() => window.location.reload(), 300);
     };
 
-    console.log(props.postID);
-
     return (
         <React.Fragment>
             <HeadingText name={props.name} />

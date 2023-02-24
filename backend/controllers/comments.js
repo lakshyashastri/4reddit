@@ -42,7 +42,11 @@ const commentController = {
         let data = await Comments.find({id: req.params.commentID});
         res.send(data);
     },
-    getPostComments: async (req, res) => {}
+    getPostComments: async (req, res) => {
+        const [client, Comments] = await getModelCon("comments");
+        let data = await Comments.find({postID: req.params.postID});
+        res.send(data);
+    }
 };
 
 export default commentController;

@@ -17,6 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 import {getFrom, postTo, modalStyling} from "../helpers";
 import NewCommentModal from "./BoarditPage/NewCommentModal";
+import ViewCommentsModal from "./BoarditPage/ViewCommentsModal";
 import VoteButton from "./VoteButton";
 import SavePost from "./SavePost";
 import Loading from "./Loading";
@@ -112,6 +113,7 @@ export default function Posts(props) {
     const [showAddCommentModal, setShowAddCommentModal] = useState(false);
     const [followed, setFollowed] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
+    const [showViewCommentsModal, setShowViewCommentsModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -312,11 +314,40 @@ export default function Posts(props) {
                                                 variant="contained"
                                                 color="info"
                                                 style={{marginTop: 10}}
-                                                // onClick={}
+                                                onClick={() =>
+                                                    setShowViewCommentsModal(
+                                                        post.id
+                                                    )
+                                                }
                                             >
                                                 View comments (
                                                 {post.comments.length})
                                             </Button>
+                                            <Modal
+                                                sx={{marginTop: 3}}
+                                                open={Boolean(
+                                                    showViewCommentsModal
+                                                )}
+                                                onClose={() =>
+                                                    setShowViewCommentsModal(
+                                                        false
+                                                    )
+                                                }
+                                            >
+                                                <Fade
+                                                    in={Boolean(
+                                                        showViewCommentsModal
+                                                    )}
+                                                >
+                                                    <Box sx={modalStyling}>
+                                                        <ViewCommentsModal
+                                                            postID={
+                                                                showViewCommentsModal
+                                                            }
+                                                        />
+                                                    </Box>
+                                                </Fade>
+                                            </Modal>
                                         </Grid>
                                     </Grid>
                                 </AccordionDetails>
