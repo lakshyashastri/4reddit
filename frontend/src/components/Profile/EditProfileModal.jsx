@@ -54,16 +54,10 @@ export default function EditProfileModal(props) {
         await postTo(
             `/users/${window.localStorage.getItem("username")}/update`,
             {
-                username: username ? username : props.user.username,
                 firstName: firstName ? firstName : props.user.firstName,
                 lastName: lastName ? lastName : props.user.lastName,
                 number: number ? number : props.user.number
             }
-        );
-
-        localStorage.setItem(
-            "username",
-            JSON.stringify(username ? username : props.user.username)
         );
 
         setEditDone(true);
@@ -76,20 +70,7 @@ export default function EditProfileModal(props) {
     return (
         <React.Fragment>
             <HeadingText name={props.name} />
-            <Grid marginTop={2} container>
-                <TextField
-                    {...inputFieldProps}
-                    label="Username"
-                    fullWidth
-                    onChange={event => setUsername(event.target.value)}
-                    required
-                    defaultValue={props.user.username}
-                    error={error()}
-                    helperText={
-                        error() ? "This username is already taken" : null
-                    }
-                />
-            </Grid>
+
             <Grid marginTop={2} container>
                 <TextField
                     {...inputFieldProps}

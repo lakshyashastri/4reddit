@@ -61,7 +61,6 @@ const userController = {
         await Users.updateOne(
             {username: req.params.username},
             {
-                username: req.body.username,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 number: req.body.number

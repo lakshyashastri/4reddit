@@ -6,7 +6,7 @@
 - Visits for a subreddit is calculated by the number of unique visitors who visit the Boardit in one day
 
 # Like actual reddit, these features have been adopted:
-- Usernames are unique
+- Usernames are unique and cannot be changed
 - Boardit names can not have spaces
 - When you go to a Boardit page, by default you land on a new `Home` page where all posts in that Boardit can be seen
 
