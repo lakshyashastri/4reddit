@@ -7,7 +7,7 @@ export const ACCESS_TOKEN_SECRET =
 
 export function getAccessToken(username) {
     return jwt.sign({username}, ACCESS_TOKEN_SECRET, {
-        expiresIn: "20m"
+        expiresIn: "120m"
     });
 }
 

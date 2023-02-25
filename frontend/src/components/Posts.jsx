@@ -10,6 +10,8 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import TextField from "@mui/material/TextField";
 
+import jwt_decode from "jwt-decode";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
@@ -52,7 +54,8 @@ function ReportModal(props) {
         }
 
         await postTo("/reports", {
-            reportedBy: window.localStorage.getItem("username"),
+            reportedBy: jwt_decode(window.localStorage.getItem("token"))
+                .username,
             reportedUser: props.postData.postedBy,
             reportedPost: props.postData.id,
             reportedIn: props.postData.postedIn,

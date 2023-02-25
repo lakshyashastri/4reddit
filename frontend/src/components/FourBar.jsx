@@ -14,9 +14,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Zoom from "@mui/material/Zoom";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 
+import jwt_decode from "jwt-decode";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-
 import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -65,7 +66,11 @@ export default function FourBar(props) {
             navigate("/");
             window.location.reload();
         } else if (event.target.textContent == "My Profile") {
-            navigate(`/u/${localStorage.getItem("username")}`);
+            navigate(
+                `/u/${
+                    jwt_decode(window.localStorage.getItem("token")).username
+                }`
+            );
         }
         setAnchorElUser(null);
     };

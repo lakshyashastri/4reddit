@@ -12,6 +12,8 @@ import Fade from "@mui/material/Fade";
 
 import NewPostModal from "../../components/BoarditPage/NewPostModal";
 
+import jwt_decode from "jwt-decode";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -25,7 +27,7 @@ export default function BoarditCard(props) {
     const handleClose = () => setShowModal(false);
 
     const joined = props.boarditData.followers.includes(
-        window.localStorage.getItem("username")
+        jwt_decode(window.localStorage.getItem("token")).username
     );
 
     const handleInfoClick = () => {

@@ -24,6 +24,7 @@ import {Autocomplete} from "@mui/material";
 
 import Fuse from "fuse.js";
 import moment from "moment";
+import jwt_decode from "jwt-decode";
 
 import Loading from "../Loading";
 import ConfirmationDialog from "../Confirmation";
@@ -48,7 +49,7 @@ function Row(props) {
 
     const handleVisit = async boardit => {
         await postTo(`/boardits/${boardit}/visit`, {
-            user: window.localStorage.getItem("username")
+            user: jwt_decode(window.localStorage.getItem("token")).username
         });
         navigate(`/r/${props.name.slice(2)}`);
     };
@@ -59,9 +60,9 @@ function Row(props) {
         }
 
         let res = await getFrom(
-            `/boardits/${props.name.slice(
-                2
-            )}/leave/${window.localStorage.getItem("username")}`
+            `/boardits/${props.name.slice(2)}/leave/${
+                jwt_decode(window.localStorage.getItem("token")).username
+            }`
         );
 
         if (res.ok) {
@@ -79,9 +80,9 @@ function Row(props) {
         }
 
         let res = await getFrom(
-            `/boardits/${props.name.slice(
-                2
-            )}/join/${window.localStorage.getItem("username")}`
+            `/boardits/${props.name.slice(2)}/join/${
+                jwt_decode(window.localStorage.getItem("token")).username
+            }`
         );
 
         if (res.ok) {
@@ -490,7 +491,10 @@ export default function AllBoarditsTable(props) {
 
         // compute rows
         let rows = [];
-        let username = localStorage.getItem("username");
+        let username = jwt_decode(
+            window.localStorage.getItem("token")
+        ).username;
+        console.log(username);
         for (let [index, rowData] of finalData.entries()) {
             let parsedRowData = rowData.item ? rowData.item : rowData;
 

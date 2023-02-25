@@ -8,6 +8,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import {postTo} from "../../helpers";
 
+import jwt_decode from "jwt-decode";
+
 import AddIcon from "@mui/icons-material/Add";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
@@ -43,7 +45,7 @@ export default function NewForm(props) {
             description: desc.length == 0 ? "No description" : desc,
             tags,
             bannedKeywords: banned,
-            createdBy: localStorage.getItem("username")
+            createdBy: jwt_decode(window.localStorage.getItem("token")).username
         });
 
         if (res.status == 409) {

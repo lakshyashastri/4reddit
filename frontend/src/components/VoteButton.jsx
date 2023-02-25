@@ -3,13 +3,15 @@ import Button from "@mui/material/Button";
 
 import {getFrom, postTo} from "../helpers";
 
+import jwt_decode from "jwt-decode";
+
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbUpSharpIcon from "@mui/icons-material/ThumbUpSharp";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbDownSharpIcon from "@mui/icons-material/ThumbDownSharp";
 
 export default function VoteButton(props) {
-    const username = window.localStorage.getItem("username");
+    const username = jwt_decode(window.localStorage.getItem("token")).username;
 
     const [alreadyVoted, setAlreadyVoted] = useState(
         props.upvote

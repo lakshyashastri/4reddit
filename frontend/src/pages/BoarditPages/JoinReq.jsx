@@ -10,6 +10,8 @@ import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
+import jwt_decode from "jwt-decode";
+
 import {getFrom} from "../../helpers";
 import FourBar from "../../components/FourBar";
 import Loading from "../../components/Loading";
@@ -104,7 +106,11 @@ export default function JoinRequestsPage() {
 
     if (loading) {
         return <Loading />;
-    } else if (!mods.includes(window.localStorage.getItem("username"))) {
+    } else if (
+        !mods.includes(
+            jwt_decode(window.localStorage.getItem("token")).username
+        )
+    ) {
         return (
             <Typography align="center" variant="h2">
                 You do not have access to this page

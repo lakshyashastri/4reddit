@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
+import jwt_decode from "jwt-decode";
+
 import RemoveFollow from "./RemoveFollow";
 import {getFrom, postTo} from "../../helpers";
 import TrollFace from "../../assets/defaultIcon.jpg";
@@ -34,10 +36,13 @@ export default function FolloweringList(props) {
         await postTo(
             props.following
                 ? `/users/${follower}/unfollow`
-                : `/users/${window.localStorage.getItem("username")}/unfollow`,
+                : `/users/${
+                      jwt_decode(window.localStorage.getItem("token")).username
+                  }/unfollow`,
             props.following
                 ? {
-                      username: window.localStorage.getItem("username")
+                      username: jwt_decode(window.localStorage.getItem("token"))
+                          .username
                   }
                 : {username: follower}
         );

@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 
 import {getFrom, postTo} from "../helpers";
 
+import jwt_decode from "jwt-decode";
+
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
@@ -12,7 +14,9 @@ export default function SavePost(props) {
     useEffect(() => {
         (async () => {
             let res = await getFrom(
-                `/users/${window.localStorage.getItem("username")}`
+                `/users/${
+                    jwt_decode(window.localStorage.getItem("token")).username
+                }`
             );
             setSaved(res[0].savedPosts.includes(props.post.id));
         })();
@@ -22,7 +26,7 @@ export default function SavePost(props) {
         let res = await postTo(
             `/posts/${props.post.id}/${saved ? "unsave" : "save"}`,
             {
-                user: window.localStorage.getItem("username")
+                user: jwt_decode(window.localStorage.getItem("token")).username
             }
         );
 

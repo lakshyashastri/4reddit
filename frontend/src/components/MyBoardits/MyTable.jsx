@@ -18,6 +18,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 
 import Fuse from "fuse.js";
+import jwt_decode from "jwt-decode";
 
 import {getFrom} from "../../helpers";
 import Loading from "../Loading";
@@ -229,7 +230,9 @@ export default function MyBoarditsTable(props) {
     useEffect(() => {
         (async () => {
             let data = await getFrom(
-                `/users/${localStorage.getItem("username")}/boardits`
+                `/users/${
+                    jwt_decode(window.localStorage.getItem("token")).username
+                }/boardits`
             );
             console.log(data);
 

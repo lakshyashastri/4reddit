@@ -47,7 +47,8 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [ ] 4chat? cgt se karva
 - [ ] Image
 - [ ] Mod can see banned keywords (if requirement)
-- [ ] token decode instead of direct local storaget get on frontend
+- [X] token decode instead of direct local storaget get on frontend
+- [ ] for cas all query data should be inside jwt tbh
 
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH

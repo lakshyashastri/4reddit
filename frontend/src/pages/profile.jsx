@@ -6,6 +6,8 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 
+import jwt_decode from "jwt-decode";
+
 import FourBar from "../components/FourBar";
 import ProfileCard from "../components/Profile/ProfileCard";
 import Posts from "../components/Posts";
@@ -39,7 +41,9 @@ export default function ProfilePage(props) {
 
     if (userData.length === 0) {
         return <NotFound message={"User not found"} />;
-    } else if (username != localStorage.getItem("username")) {
+    } else if (
+        username != jwt_decode(window.localStorage.getItem("token")).username
+    ) {
         return <NotFound message={"This is not your user page"} />;
     }
 

@@ -2,6 +2,8 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
+import jwt_decode from "jwt-decode";
+
 import FourBar from "../components/FourBar";
 import Posts from "../components/Posts";
 
@@ -23,11 +25,19 @@ export default function SavePosts(props) {
                     </Typography>
                     <Typography align="center" variant="h4" gutterBottom>
                         by u/
-                        {window.localStorage.getItem("username")}
+                        {
+                            jwt_decode(window.localStorage.getItem("token"))
+                                .username
+                        }
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Posts saved={window.localStorage.getItem("username")} />
+                    <Posts
+                        saved={
+                            jwt_decode(window.localStorage.getItem("token"))
+                                .username
+                        }
+                    />
                 </Grid>
             </Grid>
         </React.Fragment>

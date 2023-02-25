@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 
 import {postTo} from "../../helpers";
 
+import jwt_decode from "jwt-decode";
+
 import AddIcon from "@mui/icons-material/Add";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
@@ -34,7 +36,7 @@ export default function NewCommentModal(props) {
 
         let res = await postTo("/comments", {
             text,
-            postedBy: window.localStorage.getItem("username"),
+            postedBy: jwt_decode(window.localStorage.getItem("token")).username,
             postID: props.postID
         });
 

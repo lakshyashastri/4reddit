@@ -8,6 +8,8 @@ import Grid from "@mui/material/Grid";
 
 import {getFrom, postTo} from "../../helpers";
 
+import jwt_decode from "jwt-decode";
+
 import EditIcon from "@mui/icons-material/Edit";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
@@ -43,7 +45,8 @@ export default function EditProfileModal(props) {
         let res = await getFrom(`/users/${username}`);
         if (
             res.length == 0 ||
-            username == window.localStorage.getItem("username")
+            username ==
+                jwt_decode(window.localStorage.getItem("token")).username
         ) {
             setUsernameUnique(true);
         } else {
@@ -52,7 +55,9 @@ export default function EditProfileModal(props) {
         }
 
         await postTo(
-            `/users/${window.localStorage.getItem("username")}/update`,
+            `/users/${
+                jwt_decode(window.localStorage.getItem("token")).username
+            }/update`,
             {
                 firstName: firstName ? firstName : props.user.firstName,
                 lastName: lastName ? lastName : props.user.lastName,
@@ -65,7 +70,8 @@ export default function EditProfileModal(props) {
     };
 
     const error = () =>
-        !usernameUnique && username == window.localStorage.getItem("username");
+        !usernameUnique &&
+        username == jwt_decode(window.localStorage.getItem("token")).username;
 
     return (
         <React.Fragment>
