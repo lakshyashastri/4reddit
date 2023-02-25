@@ -29,6 +29,7 @@ function ReportedPosts(props) {
     const [boarditData, setBoarditData] = useState(null);
     const [blockCountDown, setBlockCountDown] = useState(false);
     const [deleted, setDeleted] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
@@ -83,12 +84,14 @@ function ReportedPosts(props) {
         if (deleted) {
             return;
         }
+        setLoadingDelete(true);
         await postTo(`/posts/${postID}/delete`, {
             boarditName: reportBoard,
             reportedBy,
             reportedUser
         });
         setDeleted(true);
+        setLoadingDelete(false);
         window.location.reload();
     };
 
@@ -236,7 +239,10 @@ function ReportedPosts(props) {
                                         variant="contained"
                                         color={deleted ? "success" : "error"}
                                         style={{marginTop: 20}}
-                                        disabled={report.action == "ignore"}
+                                        disabled={
+                                            report.action == "ignore" ||
+                                            loadingDelete
+                                        }
                                         onClick={() =>
                                             handleDelete(
                                                 postData[report.id].id,
@@ -246,7 +252,9 @@ function ReportedPosts(props) {
                                             )
                                         }
                                     >
-                                        {deleted
+                                        {loadingDelete
+                                            ? "Deleting post . . ."
+                                            : deleted
                                             ? "Post deleted!"
                                             : "Delete post"}
                                     </Button>

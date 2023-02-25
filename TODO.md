@@ -43,7 +43,7 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 - [X] DOCKER
 - [X] Mod permissions: not everyone can view and do everything: just check if user mod in backend and remove button on frontend: easy shit
 - [X] remove username change (add in readme that actual edit)
-- [ ] loader for buttons like delete post: might just simply disable
+- [X] loader for buttons like delete post: might just simply disable
 - [ ] 4chat? cgt se karva
 - [ ] Image
 - [ ] Mod can see banned keywords (if requirement)
