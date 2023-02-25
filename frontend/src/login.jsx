@@ -310,7 +310,7 @@ function BottomText(props) {
                         color="warning"
                         onClick={() =>
                             (window.location.href =
-                                "http://localhost:3001/4reddit/api/login/cas")
+                                "http://localhost:8000/4reddit/api/login/cas")
                         }
                     >
                         Sign in using IIIT CAS

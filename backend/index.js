@@ -15,7 +15,7 @@ import login from "./routes/login.js";
 const app = express(); // express app
 const router = express.Router();
 const corsOptions = {origin: "http://localhost:3000"};
-const PORT = 3001; // app port
+const PORT = 8000; // app port
 
 // middleware
 app.use(cors(corsOptions));

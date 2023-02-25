@@ -1,4 +1,4 @@
-let API_PATH = "http://localhost:3001/4reddit/api";
+let API_PATH = "http://localhost:8000/4reddit/api";
 
 export function postTo(url, data) {
     return fetch(API_PATH + url, {

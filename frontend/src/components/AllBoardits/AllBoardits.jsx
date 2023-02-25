@@ -374,7 +374,7 @@ export default function AllBoarditsTable(props) {
     useEffect(() => {
         (async () => {
             let res = await fetch(
-                "http://localhost:3001/4reddit/api/boardits",
+                "http://localhost:8000/4reddit/api/boardits",
                 {
                     headers: {
                         authorization: `Bearer ${localStorage.getItem("token")}`

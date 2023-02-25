@@ -39,13 +39,14 @@ today (****************IMPLEMENT FAST EK KE BAAD EK****************)
 
 # Final day
 - [ ] Passport
-- [ ] View comments (create similar modal box)
+- [X] View comments (create similar modal box)
 - [ ] DOCKER
 - [ ] Mod permissions: not everyone can view and do everything: just check if user mod in backend and remove button on frontend: easy shit
 - [ ] remove username change (add in readme that actual edit)
 - [ ] loader for buttons like delete post: might just simply disable
 - [ ] 4chat? cgt se karva
 - [ ] Image
-- [ ] disable username change
+- [ ] Mod can see banned keywords (if requirement)
+
 - can user send req again if req rejected
 NOTE: protecting routes using jwt AND protecting exploitation by doing direct API calls ARE DIFFERENT THINGS: THEY CARRY SEPARATE WEIGHTAGE SO ENSURE BOTH

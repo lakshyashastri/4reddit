@@ -4,7 +4,7 @@ import CASAuthentication from "node-cas-authentication";
 
 const cas = new CASAuthentication({
     cas_url: "https://login.iiit.ac.in/cas",
-    service_url: "http://localhost:3001/4reddit/api/login/",
+    service_url: "http://localhost:8000/4reddit/api/login/",
     cas_version: "3.0",
     renew: true,
     is_dev_mode: false,
@@ -13,7 +13,7 @@ const cas = new CASAuthentication({
     session_name: "cas_user",
     session_info: "cas_userinfo",
     destroy_session: true,
-    return_to: "http://localhost:3001/4reddit/api/login/cas"
+    return_to: "http://localhost:8000/4reddit/api/login/cas"
 });
 
 const router = express.Router();
