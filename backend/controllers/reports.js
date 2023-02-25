@@ -1,6 +1,7 @@
 import {getModelCon} from "../config/connections.js";
 import {getID, sendMail} from "../helpers.js";
 import moment from "moment";
+import jwt from "jsonwebtoken";
 
 const ACTION_DEFAULT = "none";
 const REPORT_EXPIRY = 240; // unit = REPORT_EXPIRY_UNIT
@@ -81,6 +82,13 @@ const reportController = {
         res.send(data);
     },
     action: async (req, res) => {
+        const [boarditsClient, Boardits] = await getModelCon("boardits");
+        let mods = await Boardits.find({name: req.body.reportedIn}, "mods");
+        mods = mods[0].mods;
+        if (!mods.includes(jwt.decode(req.token).username)) {
+            return res.sendStatus(403);
+        }
+
         const [client, Reports] = await getReportCon();
         if (!["ignore", "block", ACTION_DEFAULT].includes(req.params.action)) {
             res.sendStatus(405);

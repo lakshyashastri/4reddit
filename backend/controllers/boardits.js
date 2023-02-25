@@ -178,6 +178,11 @@ const boarditController = {
     },
     acceptUser: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
+        let mods = await Boardits.find({name: req.params.boarditName}, "mods");
+        mods = mods[0].mods;
+        if (!mods.includes(jwt.decode(req.token).username)) {
+            return res.sendStatus(403);
+        }
 
         let reqPending = await Boardits.findOne({
             name: req.params.boarditName,
@@ -202,6 +207,11 @@ const boarditController = {
     },
     rejectUser: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
+        let mods = await Boardits.find({name: req.params.boarditName}, "mods");
+        mods = mods[0].mods;
+        if (!mods.includes(jwt.decode(req.token).username)) {
+            return res.sendStatus(403);
+        }
 
         let reqPending = await Boardits.findOne({
             name: req.params.boarditName,
@@ -284,6 +294,12 @@ const boarditController = {
     },
     block: async (req, res) => {
         const [client, Boardits] = await getModelCon("boardits");
+        let mods = await Boardits.find({name: req.params.boarditName}, "mods");
+        mods = mods[0].mods;
+        if (!mods.includes(jwt.decode(req.token).username)) {
+            return res.sendStatus(403);
+        }
+
         await Boardits.updateOne(
             {name: req.params.boarditName},
             {$push: {blockedUsers: req.body.user}}

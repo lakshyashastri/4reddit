@@ -92,13 +92,19 @@ function ReportedPosts(props) {
         window.location.reload();
     };
 
-    const handleIgnore = async (reportID, reportAction, reportedBy) => {
+    const handleIgnore = async (
+        reportID,
+        reportAction,
+        reportedBy,
+        reportedIn
+    ) => {
         await postTo(
             `/reports/${reportID}/action/${
                 reportAction == "ignore" ? "none" : "ignore"
             }`,
             {
-                reportedBy
+                reportedBy,
+                reportedIn
             }
         );
         window.location.reload();
@@ -254,7 +260,8 @@ function ReportedPosts(props) {
                                             handleIgnore(
                                                 report.id,
                                                 report.action,
-                                                report.reportedBy
+                                                report.reportedBy,
+                                                report.reportedIn
                                             )
                                         }
                                     >
