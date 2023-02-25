@@ -11,7 +11,7 @@
 - When you go to a Boardit page, by default you land on a new `Home` page where all posts in that Boardit can be seen
 
 # Run the app
-- Run `npm start` inside the `backend` and `frontend` directories to start frontend and backend
+- Run `npm install` and `npm start` inside the `backend` and `frontend` directories to start frontend and backend
 
 # Run using docker
 - Run `docker-compose up --build` in the `4reddit` directory

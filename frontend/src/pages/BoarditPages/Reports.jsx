@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 
+import jwt_decode from "jwt-decode";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import OutlinedFlagIcon from "@mui/icons-material/OutlinedFlag";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
@@ -27,6 +29,7 @@ function ReportedPosts(props) {
     const [boarditData, setBoarditData] = useState(null);
     const [blockCountDown, setBlockCountDown] = useState(false);
     const [deleted, setDeleted] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
         (async () => {
@@ -40,6 +43,7 @@ function ReportedPosts(props) {
 
             data = await getFrom(`/boardits/${props.boarditName}`);
             setBoarditData(data[0]);
+            setLoadingData(false);
         })();
     }, []);
 
@@ -102,6 +106,19 @@ function ReportedPosts(props) {
 
     const reports = Object.assign([], props.reports);
 
+    if (loadingData) {
+        return <Loading />;
+    } else if (
+        !boarditData.mods.includes(
+            jwt_decode(window.localStorage.getItem("token")).username
+        )
+    ) {
+        return (
+            <Typography align="center" variant="h2">
+                You do not have access to this page
+            </Typography>
+        );
+    }
     return postData ? (
         props.reports.length == 0 ? (
             <Grid

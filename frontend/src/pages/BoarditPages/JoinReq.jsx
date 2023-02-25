@@ -83,6 +83,8 @@ function PendingRequests(props) {
 
 export default function JoinRequestsPage() {
     const [joinReqData, setJoinReqData] = useState(null);
+    const [mods, setMods] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const {boarditName} = useParams();
 
@@ -92,8 +94,23 @@ export default function JoinRequestsPage() {
                 `/boardits/${boarditName}/prop/pendingRequests`
             );
             setJoinReqData(data);
+
+            const _mods = await getFrom(`/boardits/${boarditName}/prop/mods`);
+            setMods(_mods[0].mods);
+
+            setLoading(false);
         })();
     }, []);
+
+    if (loading) {
+        return <Loading />;
+    } else if (!mods.includes(window.localStorage.getItem("username"))) {
+        return (
+            <Typography align="center" variant="h2">
+                You do not have access to this page
+            </Typography>
+        );
+    }
 
     return (
         <React.Fragment>
